@@ -22,13 +22,14 @@ public class Program
             .Build();
         
         var context = host.Services.GetService<Context>();
-        if(context != null )
+        if(context == null )
         {
-            context.Database.Migrate();
+            throw new Exception("Unable to context of db");
         }
 
-        var app = host.Services.GetService<App>();
-        
+        context!.Database.Migrate();
+
+        var app = host.Services.GetService<App>()        
         app?.Run();
     }
 }
