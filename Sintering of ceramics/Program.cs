@@ -29,7 +29,7 @@ public class Program
 
         context!.Database.Migrate();
 
-        var app = host.Services.GetService<App>()        
+        var app = host.Services.GetService<App>();        
         app?.Run();
     }
 }
