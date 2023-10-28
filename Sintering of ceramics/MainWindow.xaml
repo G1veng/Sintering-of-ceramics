@@ -4,9 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sintering_of_ceramics"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ScottPlot:WpfPlot Grid.Row="1" x:Name="Temperature" Margin="10px"/>
+        <ScottPlot:WpfPlot Grid.Column="1" x:Name="AvgGrainSize" Margin="10px"/>
+        <ScottPlot:WpfPlot x:Name="Porosity" Margin="10px" />
+        <ScottPlot:WpfPlot Grid.Row="1" Grid.Column="1" x:Name="Density" Margin="10px"/>
     </Grid>
 </Window>

@@ -222,7 +222,7 @@ namespace Mathematics
             double k0, k1, k2, k3;
 
             double L = _l0;
-            double P = _p0;
+            double P = _p0 / 100;
             double roNach = _ro0 * (1 - P);
             double ro = roNach;
 
@@ -235,23 +235,23 @@ namespace Mathematics
 
             for (time = 0; time < _tau1; time = time + h)
             {
-                T = CurrentTemperatue(time);
-                _temperature.Add(time / 60, T - 273.15);
+                T = dT1dt(time);
+                _temperature.Add(time / 60, T);
 
-                k0 = h * dPdt(time, L, P);
-                k1 = h * dPdt(time + (h / 2), L, P + (k0 / 2));
-                k2 = h * dPdt(time + (h / 2), L, P + (k1 / 2));
-                k3 = h * dPdt(time + h, L, P + k2);
+                k0 = dPdt(time, L, P);
+                k1 = dPdt(time + (h / 2), L, P + (h * k0 / 2));
+                k2 = dPdt(time + (h / 2), L, P + (h * k1 / 2));
+                k3 = dPdt(time + h, L, P + h * k2);
 
-                P = P + ((k0 + 2 * k1 + 2 * k2 + k3) / 6);
+                P = P + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
                 _porosity.Add((time + h) / 60, P * 100);
 
-                k0 = h * dLdt(time, L);
-                k1 = h * dLdt(time + (h / 2), L + (k0 / 2));
-                k2 = h * dLdt(time + (h / 2), L + (k1 / 2));
-                k3 = h * dLdt(time + h, L + k2);
+                k0 = dLdt(time, L);
+                k1 = dLdt(time + (h / 2), L + (k0 * h / 2));
+                k2 = dLdt(time + (h / 2), L + (k1 * h / 2));
+                k3 = dLdt(time + h, L + h * k2);
 
-                L = L + ((k0 + 2 * k1 + 2 * k2 + k3) / 6);
+                L = L + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
                 _grainSize.Add((time + h) / 60, L * 1000000);
 
                 ro = (1 - P) * _ro0;
@@ -264,7 +264,7 @@ namespace Mathematics
             if (!isothermalSinteringStageEnabled)
             {
                 _pP = P * 100;
-                _lL = L / 0.000001;
+                _lL = L * 1000000;
                 _ett = eta(P) / 1000000;
                 _pPP = Math.Floor(_pP);
                 _ro = ro;
@@ -283,22 +283,22 @@ namespace Mathematics
 
             for (; time < _tau1 + _tau2; time = time + h)
             {
-                _temperature.Add(time / 60, T - 273.15);
+                _temperature.Add((time + h) / 60, T);
 
-                k0 = h * dP2dt(time, P);
-                k1 = h * dP2dt(time + (h / 2), P + (k0 / 2));
-                k2 = h * dP2dt(time + (h / 2), P + (k1 / 2));
-                k3 = h * dP2dt(time + h, P + k2);
+                k0 = dP2dt(0, P);
+                k1 = dP2dt(0, P + (h * k0 / 2));
+                k2 = dP2dt(0, P + (h * k1 / 2));
+                k3 = dP2dt(0, P + k2 * h);
 
-                P = P + ((k0 + 2 * k1 + 2 * k2 + k3) / 6);
+                P = P + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
                 _porosity.Add((time + h) / 60, P * 100);
 
-                k0 = h * dL2dt(time, L);
-                k1 = h * dL2dt(time + (h / 2), L + (k0 / 2));
-                k2 = h * dL2dt(time + (h / 2), L + (k1 / 2));
-                k3 = h * dL2dt(time + h, L + k2);
+                k0 = dL2dt(0, L);
+                k1 = dL2dt(0, L + (h / 2));
+                k2 = dL2dt(0, L + (h / 2));
+                k3 = dL2dt(0, L + h);
 
-                L = L + ((k0 + 2 * k1 + 2 * k2 + k3) / 6);
+                L = L + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
                 _grainSize.Add((time + h) / 60, L * 1000000);
 
                 ro = (1 - P) * _ro0;
@@ -362,67 +362,78 @@ namespace Mathematics
 
         #region Private Methods
 
-        private double CurrentTemperatue(double time)
+        private double dT1dt(double time)
         {
-            var wT = (_tk - _t0) / _tau1;
+            var wT = (_tk - _t0) / (_tau1);
             return _t0 + wT * time;
+            //return wT;
+        }
+
+        private double dT2dt(double time)
+        {
+            return _tk;
         }
 
         private double dPdt(double t, double L, double P)
         {
-            var a = Db(CurrentTemperatue(t)) * _d * _d * _d * _d * _s * P;
-            var b = L * L * L * L * _k * CurrentTemperatue(t);
+            var a = Db(dT1dt(t)) * _d * _d * _d * _d * _s * P;
+            var b = L * L * L * L * _k * (dT1dt(t) + 273);
             return -a / b;
         }
 
         private double Db(double T)
         {
-            return _db0 * Math.Exp(-(_eb) / (_r * T));
+            return _db0 * Math.Exp(-_eb / (_r * (T + 273)));
         }
 
         private double dLdt(double t, double L)
         {
-            var a = 8 * _r * Ds(CurrentTemperatue(t)) * _d * _d * _d * _d * _s;
+            var a = 8 * _r * Ds(dT1dt(t)) * _d * _d * _d * _d * _s;
             var b = L * L * L * _k * _es;
-            return (a / b) * (1 + ((_es) / (_r * CurrentTemperatue(t))));
+            return (a / b) * (1 + (_es / (_r * (dT1dt(t) + 273))));
         }
 
         private double Ds(double T)
         {
-            return _ds0 * Math.Exp(-(_es) / (_r * T));
+            return _ds0 * Math.Exp(-(_es) / (_r * (T + 273)));
         }
 
         private double eta(double P)
         {
+            var temp = _eta0 * Math.Pow(1 - P, 5.0 / 3);
             return _eta0 * Math.Pow(1 - P, 5.0 / 3);
         }
 
         private double dP2dt(double t, double P2)
         {
+            var temp = hi(P2);
             return -((Pc(P2) + _pg) * (1 - P2)) / hi(P2);
         }
 
         private double Pc(double P2)
         {
-            return 2 * P2 / Rp(P2);
+            var temp = 2 * P2 * _s / Rp(P2);
+            return 2 * P2 * _s / Rp(P2);
         }
 
         private double Rp(double P2)
         {
             var a = (1 - _p20) * P2;
             var b = _p20 * (1 - P2);
-            return _rp0 * Math.Pow(a / b, 1 / 3);
+            var temp = _rp0 * Math.Pow(a / b, 1.0 / 3);
+            return _rp0 * Math.Pow(a / b, 1.0 / 3);
         }
 
         private double hi(double P)
         {
+            var temp = (400 * eta(P) * (1 - P)) / (3 * P);
             return (400 * eta(P) * (1 - P)) / (3 * P);
         }
 
         private double dL2dt(double t, double L)
         {
-            var a = 8 * Ds(CurrentTemperatue(t)) * _d * _d * _d * _d * _s;
-            var b = L * L * L * _k * CurrentTemperatue(t);
+            var a = 8 * Ds(dT2dt(t) + 273) * _d * _d * _d * _d * _s;
+            var b = L * L * L * _k * (dT2dt(t) + 273);
             return (a / b);
         }
 
