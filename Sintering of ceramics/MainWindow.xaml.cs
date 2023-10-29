@@ -8,6 +8,7 @@ namespace Sintering_of_ceramics
 {
     public partial class MainWindow : Window
     {
+        // Всем привет это пробный коммит
         public MainWindow(Context context)
         {
             InitializeComponent();
