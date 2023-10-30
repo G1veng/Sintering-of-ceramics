@@ -37,10 +37,10 @@ namespace Entity.Migrations.PostDeploymentScripts
                     PreExponentialFactorOfSurfaceSelfCoefficient, GrainBoundaryDiffusionActivationEnergy,
                     SurfaceSelfDiffusionActivationEnergy, MaterialId) VALUES 
                 (1, 0.35, 0.4, 171.5, 245, 1),
-                (2, 0.25, 0.5, 350, 300, 2),
-                (3, 0.2, 0.3, 300, 200, 3),
-                (4, 0.55, 0.55, 310, 220, 4),
-                (5, 0.15, 0.2, 400, 200, 5);
+                (2, 0.25, 0.5, 256, 300, 2),
+                (3, 0.2, 0.3, 149, 200, 3),
+                (4, 0.55, 0.55, 199, 220, 4),
+                (5, 0.15, 0.2, 169, 200, 5);
                 INSERT INTO TheoreticalMMParams SELECT * FROM tempTheoreticalMMParams
                 WHERE NOT EXISTS (SELECT * FROM TheoreticalMMParams WHERE tempTheoreticalMMParams.Id = TheoreticalMMParams.Id);
                 UPDATE TheoreticalMMParams SET PreExponentialFactorOfGraindBoundaryDiffusionCoefficient = (SELECT PreExponentialFactorOfGraindBoundaryDiffusionCoefficient FROM tempTheoreticalMMParams WHERE tempTheoreticalMMParams.Id = TheoreticalMMParams.Id);
