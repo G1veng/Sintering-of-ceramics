@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -11,13 +13,15 @@ using Entity;
 using Entity.Models;
 using Mathematics;
 using Microsoft.EntityFrameworkCore;
+using Sintering_of_ceramics.Models;
 
 namespace Sintering_of_ceramics
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private Context _context;
-        public event PropertyChangedEventHandler? PropertyChanged;
+        #region Private properties
+
+        private Context _context;        
         private ObservableCollection<Material> _materialsList;
         private Material _selectedMaterial;
         private bool _isothermalSinteringStageDisabled = false;
@@ -27,6 +31,17 @@ namespace Sintering_of_ceramics
         private double _excerptTime = 30;
         private double _pressure = 6;
 
+        private double _resultPorosity = 0;
+        private double _resultAvarageGrainSize = 0;
+        private double _resultDensity = 0;
+        private double _resultViscosity = 0;
+
+        private ObservableCollection<ChartTable> _table = new ObservableCollection<ChartTable>();
+
+        #endregion
+
+
+        #region Properties
 
         public ObservableCollection<Material> MaterialsList
         {
@@ -89,6 +104,16 @@ namespace Sintering_of_ceramics
         public double ExcerptTime { get => _excerptTime; set => _excerptTime = value; }
         public double Pressure { get => _pressure; set => _pressure = value; }
 
+        public double ResultPorosity { get => _resultPorosity; set { _resultPorosity = value; NotifyPropertyChanged(); } }
+        public double ResultAvarageGrainSize { get => _resultAvarageGrainSize; set { _resultAvarageGrainSize = value; NotifyPropertyChanged(); } }
+        public double ResultDensity { get => _resultDensity; set { _resultDensity = value; NotifyPropertyChanged(); } }
+        public double ResultViscosity { get => _resultViscosity; set { _resultViscosity = value; NotifyPropertyChanged(); } }
+
+        public ObservableCollection<ChartTable> Table { get => _table; set { _table = value; NotifyPropertyChanged(); } }
+
+        #endregion
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainWindow(Context context)
         {
@@ -100,20 +125,16 @@ namespace Sintering_of_ceramics
             _selectedMaterial = _materialsList.First();
 
             this.DataContext = SelectedMaterial;
+            this.grid.ItemsSource = Table;
 
             Temperature.Plot.XLabel("Время, мин");
             Temperature.Plot.YLabel("Температура в печи, С");
             Density.Plot.XLabel("Время, мин");
-            Density.Plot.YLabel("Плотнсоть материала, кг/м^3");
+            Density.Plot.YLabel("Плотность материала, кг/м^3");
             PorosityPlot.Plot.XLabel("Время, мин");
             PorosityPlot.Plot.YLabel("Пористость материала, %");
             AvgGrainSize.Plot.XLabel("Время, мин");
             AvgGrainSize.Plot.YLabel("Средний размер зерна, мкм");
-
-            Temperature.Refresh();
-            Density.Refresh();
-            PorosityPlot.Refresh();
-            AvgGrainSize.Refresh();
         }
 
         private void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -154,10 +175,28 @@ namespace Sintering_of_ceramics
 
             var result = model.Calculate(!IsothermalSinteringStageDisabled);
 
+            ResultPorosity = Math.Round(result.PP, 2);
+            ResultDensity = Math.Round(result.Ro, 2);
+            ResultViscosity = Math.Round(result.Ett, 2);
+            ResultAvarageGrainSize = Math.Round(result.LL, 2);
+
             var temperaturePlot = model.GetTemperatureChartValues();
             var densityPlot = model.GetDensityChartValues();
             var porosityPlot = model.GetPorosityChartValues();
             var grainSizePlot = model.GetGrainSizeChartValues();
+
+            Table.Clear();
+            foreach (var key in temperaturePlot.Keys)
+            {
+                Table.Add(new ChartTable()
+                {
+                    Time = Math.Round(key, 2),
+                    Temperature = Math.Round(temperaturePlot[key], 2),
+                    Porosity = Math.Round(porosityPlot[key], 2),
+                    Density = Math.Round(densityPlot[key], 2),
+                    GrainSize = Math.Round(grainSizePlot[key], 2)
+                });
+            }
 
             Temperature.Plot.Clear();
             Density.Plot.Clear();
@@ -173,6 +212,11 @@ namespace Sintering_of_ceramics
             Density.Refresh();
             PorosityPlot.Refresh();
             AvgGrainSize.Refresh();
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

@@ -37,7 +37,7 @@
         <Menu FontSize="{DynamicResource ResourceKey=MainFontSize}" VerticalAlignment="Top">
             <MenuItem Header="Файл">
                 <Separator />
-                <MenuItem Header="Выйти" x:Name="exit"></MenuItem>
+                <MenuItem Header="Выйти" Click="Exit"></MenuItem>
             </MenuItem>
         </Menu>
         <TabControl Margin="0px 30px 0px 0px">
@@ -557,6 +557,138 @@ Margin="10px 0px 5px 0px">
                         <WpfPlot Grid.Column="1" Grid.Row="1" Margin="5px" x:Name="AvgGrainSize" FontSize="10">
 
                         </WpfPlot>
+                    </Grid>
+                </TabControl>
+            </TabItem>
+            <TabItem x:Name="CalculationResult">
+                <TabItem.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                            Результаты вычислений
+                        </TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabControl>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <GroupBox Header="Результаты процесса спекания"
+                                  FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                  Margin="10px">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Margin="10px">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap">
+                                        Конечная пористость, %:
+                                    </TextBlock>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                            Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ResultPorosity, 
+                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                            HorizontalAlignment="Stretch" TextWrapping="Wrap">
+                                    </TextBlock>
+                                </Grid>
+
+                                <Grid Margin="10px" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap">
+                                        Конечный средний размер зерна, мкм:
+                                    </TextBlock>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ResultAvarageGrainSize, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                HorizontalAlignment="Stretch" TextWrapping="Wrap">
+                                    </TextBlock>
+                                </Grid>
+
+                                <Grid Margin="10px" Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                TextWrapping="Wrap">
+                                        Конечная плотность материала, кг/м^3:
+                                    </TextBlock>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ResultDensity, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                HorizontalAlignment="Stretch" TextWrapping="Wrap">
+                                    </TextBlock>
+                                </Grid>
+
+                                <Grid Margin="10px" Grid.Column="1" Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap">
+                                        Конечная вязкость материала, МПа*с:
+                                    </TextBlock>
+                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ResultViscosity, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                HorizontalAlignment="Stretch" TextWrapping="Wrap">
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+
+                        <DataGrid Grid.Row="1" FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="10px" 
+                                  AutoGenerateColumns="False" x:Name="grid" ColumnWidth="*">
+                            <DataGrid.Resources>
+                                <Style x:Key="wordWrapStyleView" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                                <Style x:Key="wordWrapStyleEdit" TargetType="{x:Type TextBox}">
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGrid.Resources>
+
+                            <DataGrid.Columns >
+                                <DataGridTextColumn Header="Время, мин" Binding="{Binding Time}" Width="0.6*" 
+                                                    ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                                <DataGridTextColumn Header="Температура в печи, С" Binding="{Binding Temperature}"
+                                                    ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                                <DataGridTextColumn Header="Средний размер зерна, мкм" Binding="{Binding GrainSize}" Width="1.2*"
+                                                    ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                                <DataGridTextColumn Header="Пористость, %" Binding="{Binding Porosity}"/>
+                                <DataGridTextColumn Header="Плотность материала, кг/м^3" Binding="{Binding Density}" Width="1.2*"
+                                                    ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Grid>
                 </TabControl>
             </TabItem>
