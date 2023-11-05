@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -212,6 +213,8 @@ namespace Sintering_of_ceramics
             Density.Refresh();
             PorosityPlot.Refresh();
             AvgGrainSize.Refresh();
+
+            MessageBox.Show("Рассчет успешно завершен", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Exit(object sender, RoutedEventArgs e)
