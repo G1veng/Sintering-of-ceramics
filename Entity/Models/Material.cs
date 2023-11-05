@@ -1,4 +1,8 @@
-﻿namespace Entity.Models
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
+
+namespace Entity.Models
 {
     /// <summary>
     /// Справочник материалов
