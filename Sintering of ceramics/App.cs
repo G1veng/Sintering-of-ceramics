@@ -4,15 +4,18 @@ using System.Windows;
 public class App : Application
 {
     readonly MainWindow mainWindow;
+    readonly AuthorizationWindow authorizationWindow;
 
-    public App(MainWindow mainWindow)
+    public App(MainWindow mainWindow, AuthorizationWindow authorizationWindow)
     {
         this.mainWindow = mainWindow;
+        this.authorizationWindow = authorizationWindow;
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        mainWindow.Show();
+        authorizationWindow.Show();
+        //mainWindow.Show();
         base.OnStartup(e);
     }
 }

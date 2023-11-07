@@ -8,7 +8,8 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1100"
-        MinHeight="450" MinWidth="800">
+        MinHeight="450" MinWidth="800"
+        Closing="Window_Closing">
 
     <Window.Resources>
         <sys:Double x:Key="MainFontSize">16</sys:Double>
@@ -115,7 +116,7 @@
                                             <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
         HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
         Margin="10px 0px 5px 0px">
- Толщина поерхностного слоя, нм
+ Толщина поверхностного слоя, нм
                                             </TextBlock>
                                             <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
      Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"

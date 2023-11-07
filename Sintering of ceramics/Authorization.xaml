@@ -1,0 +1,49 @@
+﻿<Window x:Class="Sintering_of_ceramics.AuthorizationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sintering_of_ceramics"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:components="clr-namespace:Sintering_of_ceramics.Components"
+        mc:Ignorable="d"
+        Title="Authorization" Height="350" Width="380">
+    <Window.Resources>
+        <sys:Double x:Key="MainFontSize">20</sys:Double>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin=" 20px 10px 20px 10px" FontSize="25">
+            Авторизация
+        </TextBlock>
+        
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="20px 0px 20px 0px">
+                Логин
+            </TextBlock>
+            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="20px 0px 20px 0px"
+                     Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Login, 
+                     Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+                
+            </TextBox>
+
+            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="20px 40px 20px 0px">
+    Пароль
+            </TextBlock>
+            <components:BindablePasswordBox FontSize="{DynamicResource ResourceKey=MainFontSize}" 
+                                            Margin="20px 0px 20px 0px"
+                                            Password="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Password, 
+                                                       Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <Button Grid.Row="2" Height="40px" Width="120px" FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                Click="LogIn">
+            Войти
+        </Button>
+    </Grid>
+</Window>

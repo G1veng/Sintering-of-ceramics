@@ -6,10 +6,25 @@ namespace Entity
 {
     public class Context : DbContext
     {
+        private string? _connectionString;
+
         //Creation
         public Context(DbContextOptions<Context> options) : base(options)
         {
             
+        }
+
+        public Context(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if(_connectionString != null)
+            {
+                optionsBuilder.UseSqlite(_connectionString);
+            }
         }
 
         //Indexes
@@ -75,6 +90,7 @@ namespace Entity
         public DbSet<ControlAction> ControlActions => Set<ControlAction>();
         public DbSet<ExperimentalData> ExperimentalDatas => Set<ExperimentalData>();
         public DbSet<Qualities> Qualities => Set<Qualities>();
+        public DbSet<User> Users => Set<User>();
         #endregion
     }
 }

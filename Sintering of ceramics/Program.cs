@@ -15,7 +15,8 @@ public class Program
             .ConfigureServices(services =>
             {
                 services.AddTransient<App>();
-                services.AddTransient<MainWindow>();
+                services.AddSingleton<MainWindow>();
+                services.AddSingleton<AuthorizationWindow>();
                 services.AddDbContext<Context>(options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["mainDb"].ConnectionString));
             })
