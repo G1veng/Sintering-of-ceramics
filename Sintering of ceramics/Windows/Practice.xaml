@@ -7,7 +7,7 @@
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1100"
+        Title="Спекание керамики" Height="750" Width="1100"
         MinHeight="450" MinWidth="800"
         Closing="Window_Closing">
 
@@ -38,7 +38,25 @@
         <Menu FontSize="{DynamicResource ResourceKey=MainFontSize}" VerticalAlignment="Top">
             <MenuItem Header="Файл">
                 <Separator />
-                <MenuItem Header="Выйти" Click="Exit"></MenuItem>
+                <MenuItem Header="Выйти из аккаунта" Click="LogOut"/>
+                <MenuItem Header="Закрыть" Click="Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Редактировать базу" Click="EditDataBase">
+                <MenuItem.Style>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=IsAdmin, 
+                                         Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=IsAdmin, 
+                                         Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
             </MenuItem>
         </Menu>
         <TabControl Margin="0px 30px 0px 0px">

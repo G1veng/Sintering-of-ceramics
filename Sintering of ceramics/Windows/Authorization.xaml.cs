@@ -28,6 +28,9 @@ namespace Sintering_of_ceramics
         public string Login { get => _login; set => _login = value; }
         public string Password { get => _password; set => _password = value; }
 
+        #endregion
+
+
         public AuthorizationWindow(Context context, MainWindow mainWindow)
         {
             _context = context;
@@ -36,8 +39,6 @@ namespace Sintering_of_ceramics
             InitializeComponent();
         }
 
-        #endregion
-
         private void LogIn(object sender, RoutedEventArgs e)
         {
             var user = _context.Users.AsNoTracking().FirstOrDefault(user => user.Login == _login && user.Password == _password);
@@ -45,6 +46,8 @@ namespace Sintering_of_ceramics
             {
                 _wrongPasswordInputs = 0;
                 this.Hide();
+                _mainWindow.IsAdmin = user.IsAdmin;
+
                 _mainWindow.Show();
 
                 return;
@@ -60,8 +63,13 @@ namespace Sintering_of_ceramics
                 return;
             }
 
-            MessageBox.Show($"Осталось {_attemptsAmount - _wrongPasswordInputs} попыток ввода пароля",
+            MessageBox.Show($"Осталось {_attemptsAmount - _wrongPasswordInputs} попытки ввода пароля",
                 "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

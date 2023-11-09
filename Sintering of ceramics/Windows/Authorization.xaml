@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Sintering_of_ceramics"
         xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:components="clr-namespace:Sintering_of_ceramics.Components"
         mc:Ignorable="d"
-        Title="Authorization" Height="350" Width="380">
+        Title="Авторизация" Height="350" Width="380"
+        Closing="Window_Closing">
     <Window.Resources>
         <sys:Double x:Key="MainFontSize">20</sys:Double>
     </Window.Resources>

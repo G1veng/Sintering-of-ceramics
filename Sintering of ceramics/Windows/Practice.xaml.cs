@@ -19,7 +19,9 @@ namespace Sintering_of_ceramics
     {
         #region Private properties
 
-        private Context _context;        
+        private readonly Context _context;
+        private readonly EditDataBaseWindow _editDataBaseWindow;
+
         private ObservableCollection<Material> _materialsList;
         private Material _selectedMaterial;
         private bool _isothermalSinteringStageDisabled = false;
@@ -28,6 +30,7 @@ namespace Sintering_of_ceramics
         private double _sinteringTime = 70;
         private double _excerptTime = 30;
         private double _pressure = 6;
+        private bool _isAdmin = true;
 
         private double _resultPorosity = 0;
         private double _resultAvarageGrainSize = 0;
@@ -101,6 +104,7 @@ namespace Sintering_of_ceramics
         public double SinteringTime { get => _sinteringTime; set => _sinteringTime = value; }
         public double ExcerptTime { get => _excerptTime; set => _excerptTime = value; }
         public double Pressure { get => _pressure; set => _pressure = value; }
+        public bool IsAdmin { get => _isAdmin; set { _isAdmin = value; NotifyPropertyChanged(); } }
 
         public double ResultPorosity { get => _resultPorosity; set { _resultPorosity = value; NotifyPropertyChanged(); } }
         public double ResultAvarageGrainSize { get => _resultAvarageGrainSize; set { _resultAvarageGrainSize = value; NotifyPropertyChanged(); } }
@@ -113,9 +117,11 @@ namespace Sintering_of_ceramics
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public MainWindow(Context context)
+        public MainWindow(Context context, EditDataBaseWindow editDataBaseWindow)
         {
             _context = context;
+            _editDataBaseWindow = editDataBaseWindow;
+
             InitializeComponent();
 
             _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
@@ -222,6 +228,19 @@ namespace Sintering_of_ceramics
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void EditDataBase(object sender, RoutedEventArgs e)
+        {
+            _editDataBaseWindow.Show();
+        }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+
+            var authWindow = new AuthorizationWindow(_context, this);
+            authWindow.Show();
         }
     }
 }

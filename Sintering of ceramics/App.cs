@@ -10,12 +10,14 @@ public class App : Application
     {
         this.mainWindow = mainWindow;
         this.authorizationWindow = authorizationWindow;
+
+        this.ShutdownMode = ShutdownMode.OnMainWindowClose;
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        authorizationWindow.Show();
-        //mainWindow.Show();
+        //authorizationWindow.Show();
+        mainWindow.Show();
         base.OnStartup(e);
     }
 }

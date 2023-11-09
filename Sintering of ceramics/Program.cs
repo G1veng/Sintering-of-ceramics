@@ -14,9 +14,10 @@ public class Program
         var host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-                services.AddTransient<App>();
+                services.AddSingleton<App>();
                 services.AddSingleton<MainWindow>();
-                services.AddSingleton<AuthorizationWindow>();
+                services.AddScoped<AuthorizationWindow>();
+                services.AddScoped<EditDataBaseWindow>();
                 services.AddDbContext<Context>(options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["mainDb"].ConnectionString));
             })
