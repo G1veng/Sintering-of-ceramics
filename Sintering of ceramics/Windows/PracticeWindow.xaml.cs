@@ -227,9 +227,12 @@ namespace Sintering_of_ceramics
         {
             _editDataBaseWindow.ShowDialog();
 
-            _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
+            MaterialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
                 .Include(material => material.TheoreticalMMParam));
-            _selectedMaterial = _context.Materials.FirstOrDefault() ?? new Material();
+            SelectedMaterial = _context.Materials.FirstOrDefault() ?? new Material();
+
+            NotifyPropertyChanged(nameof(SelectedMaterial));
+            NotifyPropertyChanged(nameof(MaterialsList));
         }
 
         private void LogOut(object sender, RoutedEventArgs e)
