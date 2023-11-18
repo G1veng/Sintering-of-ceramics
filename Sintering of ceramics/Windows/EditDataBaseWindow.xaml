@@ -1,0 +1,224 @@
+﻿<Window x:Class="Sintering_of_ceramics.EditDataBaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sintering_of_ceramics"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Редактирование базы" Height="450" Width="800"
+        Closing="Window_Closing">
+
+    <Window.Resources>
+        <sys:Double x:Key="MainFontSize">16</sys:Double>
+        <sys:Double x:Key="GridFontSize">10</sys:Double>
+        <sys:Double x:Key="AvgGridFontSize">13</sys:Double>
+    </Window.Resources>
+
+    <TabControl>
+        <TabItem >
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                        Пользователи
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+            <TabControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Users, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                              ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                              SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedUser, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                              x:Name="usersGrid">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Логин" Binding="{Binding Login}"/>
+                            <DataGridTextColumn Header="Пароль" Binding="{Binding Password}"/>
+                            <DataGridCheckBoxColumn Header="Администратор" Binding="{Binding IsAdmin}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button Height="40px" Width="120px" Content="Удалить" 
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Click="DeleteUser"/>
+                        <Button Height="40px" Width="120px" Content="Добавить" 
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="1" Click="CreateUser"/>
+                        <Button Height="40px" Width="120px" Content="Изменить"
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="2" Click="EditUser"/>
+                    </Grid>
+                </Grid>
+            </TabControl>
+        </TabItem>
+        <TabItem >
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                        Материалы
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+            <TabControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Materials, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                              AutoGenerateColumns="False" IsReadOnly="True" ColumnWidth="*" FontSize="{DynamicResource ResourceKey=GridFontSize}"
+                              x:Name="materialGrid"
+                              SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedMaterial, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="auto"/>
+                            <DataGridTextColumn Binding="{Binding Porosity}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Начальная пористость, %" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding AvarageGrainSize}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Начальный средний размер зерна, мкм" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding SurfaceLayerThickness}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Толщина поверхностного слоя, нм" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding SpecificSurfaceEnergy}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Удельная поверхностная энергия, Дж/м^2" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding CompactMaterialDensity}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Плотность компактного материала, кг/м^3" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding CompactMaterialViscosity}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Вязкость компактного материала, МПа*с" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Weight}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Масса материала, кг" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Name}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Название материала" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Height="40px" Width="120px" Content="Удалить" 
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Click="DeleteMaterial"/>
+                        <Button Height="40px" Width="120px" Content="Добавить" 
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="1" Click="CreateMaterial"/>
+                        <Button Height="40px" Width="120px" Content="Изменить"
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="2" Click="EditMaterial"/>
+                    </Grid>
+                </Grid>
+            </TabControl>
+        </TabItem>
+        <TabItem >
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="12" Width="170px" TextWrapping="Wrap" TextAlignment="Center">
+                        Коэффициенты теоритической математической модели
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+            <TabControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=TheoreticalMMParams, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedTheoreticalMMParam, 
+                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                              ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" FontSize="{DynamicResource ResourceKey=AvgGridFontSize}"
+                              x:Name="theoreticalMMParamsGrid">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Width="auto">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Id" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MaterialId}" Width="auto">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Id материала" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding PreExponentialFactorOfGraindBoundaryDiffusionCoefficient}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Предэкспоненциальный множитель для коэффициентов зернограничной диффузии" TextWrapping="Wrap"
+                                               TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding PreExponentialFactorOfSurfaceSelfCoefficient}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Предэкспоненциальный множитель для коэффициентов поверхностной самодиффузии" TextWrapping="Wrap"
+                                               TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding GrainBoundaryDiffusionActivationEnergy}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Энергии активации роста зерен материала" TextWrapping="Wrap"
+                                               TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding SurfaceSelfDiffusionActivationEnergy}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Энергии активации уплотнения материала" TextWrapping="Wrap"
+                                               TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Height="40px" Width="120px" Content="Удалить" 
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Click="DeleteTheoreticalMMParam"/>
+                        <Button Height="40px" Width="120px" Content="Добавить" 
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="1" Click="CreateTheoreticalMMParam"/>
+                        <Button Height="40px" Width="120px" Content="Изменить"
+                                FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="2" Click="EditTheoreticalMMParam"/>
+                    </Grid>
+                </Grid>
+            </TabControl>
+        </TabItem>
+    </TabControl>
+</Window>

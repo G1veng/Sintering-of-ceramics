@@ -33,7 +33,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <Menu FontSize="{DynamicResource ResourceKey=MainFontSize}" VerticalAlignment="Top">
             <MenuItem Header="Файл">
@@ -102,162 +102,161 @@
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
-                                        
 
-                                        <Grid Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                            <Grid Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
         HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
         Margin="10px 0px 5px 0px">
  Начальный средний размер зерна, мкм
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
      Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
      Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=AvarageGrainSize, 
          Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
      Style="{StaticResource CustomErrorControlOnErrorStyle}"
      PreviewTextInput="TextBox_OnPreviewTextInput"
      HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+                                                </TextBox>
+                                            </Grid>
 
-                                        <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
         HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
         Margin="10px 0px 5px 0px">
  Толщина поверхностного слоя, нм
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
      Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
      Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SurfaceLayerThickness, 
          Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
      Style="{StaticResource CustomErrorControlOnErrorStyle}"
      PreviewTextInput="TextBox_OnPreviewTextInput"
      HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+                                                </TextBox>
+                                            </Grid>
 
-                                        <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="123*"/>
+                                                    <ColumnDefinition Width="251*"/>
+                                                    <ColumnDefinition Width="125*"/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-Margin="10px 0px 5px 0px">
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
+Margin="0,1,5,0">
  Начальная пористость, %
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
- Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+ Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" Margin="5,0,24,0"
  Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Porosity, 
      Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
  Style="{StaticResource CustomErrorControlOnErrorStyle}"
- PreviewTextInput="TextBox_OnPreviewTextInput"
- HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+ PreviewTextInput="TextBox_OnPreviewTextInput" />
+                                            </Grid>
 
-                                        <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
  HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
  Margin="10px 0px 5px 0px">
  Удельная поверхностная энергия, Дж/м^2
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
  Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SpecificSurfaceEnergy, 
      Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
  Style="{StaticResource CustomErrorControlOnErrorStyle}"
  PreviewTextInput="TextBox_OnPreviewTextInput"
  HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+                                                </TextBox>
+                                            </Grid>
 
-                                        <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
  HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
  Margin="10px 0px 5px 0px">
  Плотность компактного материала, кг/м^3
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
  Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=CompactMaterialDensity, 
      Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
  Style="{StaticResource CustomErrorControlOnErrorStyle}"
  PreviewTextInput="TextBox_OnPreviewTextInput"
  HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+                                                </TextBox>
+                                            </Grid>
 
-                                        <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
 HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
 Margin="10px 0px 5px 0px">
  Вязкость компактного материала, МПа*с
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
  Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=CompactMaterialViscosity, 
      Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
  Style="{StaticResource CustomErrorControlOnErrorStyle}"
  PreviewTextInput="TextBox_OnPreviewTextInput"
  HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+                                                </TextBox>
+                                            </Grid>
 
-                                        <Grid Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
 HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
 Margin="10px 0px 5px 0px">
  Масса материала, кг
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
  Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Weight, 
      Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
  Style="{StaticResource CustomErrorControlOnErrorStyle}"
  PreviewTextInput="TextBox_OnPreviewTextInput"
  HorizontalAlignment="Stretch" >
-                                            </TextBox>
-                                        </Grid>
+                                                </TextBox>
+                                            </Grid>
                                         </Grid>
                                     </GroupBox>
-                                    
-                                    
+
+
                                 </Grid>
-                                
+
                             </GroupBox>
-                            
+
                             <GroupBox Header="Параметры математической модели" FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="10px">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -372,7 +371,7 @@ Margin="10px 0px 5px 0px">
                                             </Grid>
                                         </Grid>
                                     </GroupBox>
-                                    
+
                                 </Grid>
                             </GroupBox>
 
@@ -485,7 +484,7 @@ Margin="10px 0px 5px 0px">
                                                               VerticalContentAlignment="Center"
                                                               >
                                                         <TextBlock Text="Исключить стадию изотермического спекания" TextWrapping="Wrap">
-                                                            
+
                                                         </TextBlock>
                                                     </CheckBox>
                                                 </Grid>
@@ -539,7 +538,7 @@ Margin="10px 0px 5px 0px">
 
                             <Button Content="Рассчитать" Click="Calculate" Width="150px" Height="40px" Margin="10px" HorizontalAlignment="Right"
                                     FontSize="{DynamicResource ResourceKey=MainFontSize}">
-                                
+
                             </Button>
                         </StackPanel>
                     </ScrollViewer>
@@ -565,7 +564,7 @@ Margin="10px 0px 5px 0px">
                         </Grid.RowDefinitions>
 
                         <WpfPlot Margin="5px" x:Name="Temperature" FontSize="10">
-                            
+
                         </WpfPlot>
                         <WpfPlot Grid.Column="1" Margin="5px" x:Name="Density" FontSize="10">
 
@@ -593,7 +592,7 @@ Margin="10px 0px 5px 0px">
                             <RowDefinition/>
                             <RowDefinition Height="3*"/>
                         </Grid.RowDefinitions>
-                        
+
                         <GroupBox Header="Результаты процесса спекания"
                                   FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                   Margin="10px">

@@ -208,7 +208,7 @@ namespace Mathematics
         /// Расчет характеристик конечно продукта
         /// </summary>
         /// <param name="isothermalSinteringStageEnabled">Включена ли стадия изотермического спекания</param>
-        public MaterialCharacteristicsDTO Calculate(bool isothermalSinteringStageEnabled)
+        public MaterialCharacteristicsDTO Calculate(bool isothermalSinteringStageEnabled, int stepsAmount)
         {
             _temperature = new Dictionary<double, double>();
             _porosity = new Dictionary<double, double>();
@@ -217,7 +217,7 @@ namespace Mathematics
             _shirnkage = new Dictionary<double, double>();
 
             double time = 0.0;
-            double h = (_tau1 + _tau2) / 1000;
+            double h = (_tau1 + _tau2) / stepsAmount;
             double T = _t0;
             double k0, k1, k2, k3;
 

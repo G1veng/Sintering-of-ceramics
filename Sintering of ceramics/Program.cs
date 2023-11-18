@@ -5,6 +5,7 @@ using Sintering_of_ceramics;
 using Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Sintering_of_ceramics.Windows;
 
 public class Program
 {
@@ -18,6 +19,7 @@ public class Program
                 services.AddSingleton<MainWindow>();
                 services.AddScoped<AuthorizationWindow>();
                 services.AddScoped<EditDataBaseWindow>();
+                services.AddScoped<CreateEditDeleteWindow>();
                 services.AddDbContext<Context>(options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["mainDb"].ConnectionString));
             })

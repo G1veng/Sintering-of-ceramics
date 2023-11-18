@@ -177,7 +177,7 @@ namespace Sintering_of_ceramics
                 ro0: CompactMaterialDensity,
                 tau2: ExcerptTime * 60);
 
-            var result = model.Calculate(!IsothermalSinteringStageDisabled);
+            var result = model.Calculate(!IsothermalSinteringStageDisabled, Int32.Parse(Properties.Resources.StepsAmount));
 
             ResultPorosity = Math.Round(result.PP, 2);
             ResultDensity = Math.Round(result.Ro, 2);
