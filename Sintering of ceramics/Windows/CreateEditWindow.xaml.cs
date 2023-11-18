@@ -115,7 +115,9 @@ namespace Sintering_of_ceramics.Windows
                     ItemsSource = lValues,
                     DisplayMemberPath = displayMemberPath,
                     SelectedIndex = selectedIndex ?? 0,
-                    Name = name
+                    Name = name,
+                    FontSize = (double)this.Resources["MainFontSize"],
+                    Margin = new Thickness() { Right = 100, Left = 50 }
                 };
 
                 Grid.SetColumn(comboBox, 1);
@@ -163,13 +165,6 @@ namespace Sintering_of_ceramics.Windows
 
         private void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
-            var fullText = textBox!.Text.Insert(textBox.SelectionStart, e.Text);
-
-            e.Handled = !double.TryParse(fullText,
-                            NumberStyles.AllowDecimalPoint,
-                            CultureInfo.InvariantCulture,
-                            out var val);
         }
     }
 }

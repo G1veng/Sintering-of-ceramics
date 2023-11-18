@@ -126,7 +126,7 @@ namespace Sintering_of_ceramics
 
             _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
                 .Include(material => material.TheoreticalMMParam));
-            _selectedMaterial = _materialsList.First();
+            _selectedMaterial = _materialsList.FirstOrDefault() ?? new Material();
 
             this.DataContext = SelectedMaterial;
             this.grid.ItemsSource = Table;
@@ -143,13 +143,6 @@ namespace Sintering_of_ceramics
 
         private void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
-            var fullText = textBox!.Text.Insert(textBox.SelectionStart, e.Text);
-            
-            e.Handled = !double.TryParse(fullText,
-                            NumberStyles.AllowDecimalPoint,
-                            CultureInfo.InvariantCulture,
-                            out var val);
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -232,7 +225,11 @@ namespace Sintering_of_ceramics
 
         private void EditDataBase(object sender, RoutedEventArgs e)
         {
-            _editDataBaseWindow.Show();
+            _editDataBaseWindow.ShowDialog();
+
+            _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
+                .Include(material => material.TheoreticalMMParam));
+            _selectedMaterial = _context.Materials.FirstOrDefault() ?? new Material();
         }
 
         private void LogOut(object sender, RoutedEventArgs e)
