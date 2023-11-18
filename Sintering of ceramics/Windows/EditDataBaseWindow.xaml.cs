@@ -8,11 +8,13 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Sintering_of_ceramics
 {
-    public partial class EditDataBaseWindow : Window
+    public partial class EditDataBaseWindow : Window, INotifyPropertyChanged
     {
         #region Private
 
@@ -20,17 +22,30 @@ namespace Sintering_of_ceramics
         private readonly CreateEditDeleteWindow _createEditDeleteWindow;
         private delegate void NoArgDelegate();
         private string _defaultDescription = "Нету описания для свойства";
+        private int _mathModelStepsAmount;
 
         #endregion
 
         #region Properties
 
+        public event PropertyChangedEventHandler? PropertyChanged;
         public ObservableCollection<User> Users { get; set; }
         public ObservableCollection<Material> Materials { get; set; }
         public ObservableCollection<TheoreticalMMParams> TheoreticalMMParams { get; set; }
         public User? SelectedUser { get; set; }
         public Material? SelectedMaterial { get; set; }
         public TheoreticalMMParams? SelectedTheoreticalMMParam {  get; set; }
+        public int MathModelStepsAmount { get => _mathModelStepsAmount; 
+            set 
+            {
+                _mathModelStepsAmount = value;
+
+                Properties.Settings.Default.StepsAmount = value;
+                Properties.Settings.Default.Save();
+
+                NotifyPropertyChanged(nameof(MathModelStepsAmount)); 
+            }
+        }
 
         #endregion
 
@@ -39,6 +54,7 @@ namespace Sintering_of_ceramics
         {
             _context = context;
             _createEditDeleteWindow = createEditDeleteWindow;
+            MathModelStepsAmount = Properties.Settings.Default.StepsAmount;
 
             Users = new ObservableCollection<User>(_context.Users.AsNoTracking().ToList());
             Materials = new ObservableCollection<Material>(_context.Materials
@@ -55,6 +71,15 @@ namespace Sintering_of_ceramics
         {
             e.Cancel = true;
             this.Hide();
+        }
+
+        private void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+        }
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region Users

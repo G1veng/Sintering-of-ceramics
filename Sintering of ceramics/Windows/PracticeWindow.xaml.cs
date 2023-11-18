@@ -47,7 +47,7 @@ namespace Sintering_of_ceramics
         public ObservableCollection<Material> MaterialsList
         {
             get { return _materialsList; }
-            set { _materialsList = value; }
+            set { _materialsList = value; NotifyPropertyChanged(nameof(MaterialsList)); }
         }
 
         public Material SelectedMaterial
@@ -55,7 +55,7 @@ namespace Sintering_of_ceramics
             get => _selectedMaterial;
             set
             {
-                _selectedMaterial = value;
+               _selectedMaterial = value;
 
                 NotifyPropertyChanged(nameof(AvarageGrainSize));
                 NotifyPropertyChanged(nameof(SurfaceLayerThickness));
@@ -170,7 +170,7 @@ namespace Sintering_of_ceramics
                 ro0: CompactMaterialDensity,
                 tau2: ExcerptTime * 60);
 
-            var result = model.Calculate(!IsothermalSinteringStageDisabled, Int32.Parse(Properties.Resources.StepsAmount));
+            var result = model.Calculate(!IsothermalSinteringStageDisabled, Properties.Settings.Default.StepsAmount);
 
             ResultPorosity = Math.Round(result.PP, 2);
             ResultDensity = Math.Round(result.Ro, 2);
@@ -229,10 +229,9 @@ namespace Sintering_of_ceramics
 
             MaterialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
                 .Include(material => material.TheoreticalMMParam));
-            SelectedMaterial = _context.Materials.FirstOrDefault() ?? new Material();
-
-            NotifyPropertyChanged(nameof(SelectedMaterial));
-            NotifyPropertyChanged(nameof(MaterialsList));
+            SelectedMaterial = _context.Materials.AsNoTracking()
+                .Include(m => m.TheoreticalMMParam)
+                .FirstOrDefault() ?? new Material();
         }
 
         private void LogOut(object sender, RoutedEventArgs e)

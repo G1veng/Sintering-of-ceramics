@@ -13,6 +13,25 @@
         <sys:Double x:Key="MainFontSize">16</sys:Double>
         <sys:Double x:Key="GridFontSize">10</sys:Double>
         <sys:Double x:Key="AvgGridFontSize">13</sys:Double>
+
+        <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="CustomErrorControlOnErrorStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="placeholder" />
+                            <TextBlock FontSize="10" FontStyle="Italic" Foreground="Red"
+                                   Text="Недопустимое значение"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <TabControl>
@@ -147,7 +166,7 @@
         <TabItem >
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock FontSize="12" Width="170px" TextWrapping="Wrap" TextAlignment="Center">
+                    <TextBlock FontSize="{StaticResource AvgGridFontSize}" Width="170px" TextWrapping="Wrap" TextAlignment="Center">
                         Коэффициенты теоритической математической модели
                     </TextBlock>
                 </StackPanel>
@@ -217,6 +236,32 @@
                         <Button Height="40px" Width="120px" Content="Изменить"
                                 FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="2" Click="EditTheoreticalMMParam"/>
                     </Grid>
+                </Grid>
+            </TabControl>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock FontSize="{StaticResource AvgGridFontSize}" Width="170px" TextWrapping="Wrap" TextAlignment="Center"
+                    Text="Параметры математической модели"/>
+            </TabItem.Header>
+            <TabControl>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock FontSize="{DynamicResource MainFontSize}" TextWrapping="Wrap"
+                               HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"
+                               Margin="10px 20px 10px 0px" Text="Количество шагов математической модели"/>
+
+                    <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Margin="15px 20px 250px 0px"
+                             Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MathModelStepsAmount, 
+                                 Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                             Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                             PreviewTextInput="TextBox_OnPreviewTextInput"
+                             HorizontalAlignment="Stretch"/>
                 </Grid>
             </TabControl>
         </TabItem>
