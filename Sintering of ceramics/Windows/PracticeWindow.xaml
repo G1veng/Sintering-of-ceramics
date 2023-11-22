@@ -265,6 +265,7 @@ Margin="10px 0px 5px 0px">
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
 
                                     <GroupBox Header="Кинетические параметры роста зерен вследствие поверхностой самодиффузии" 
@@ -372,6 +373,29 @@ Margin="10px 0px 5px 0px">
                                         </Grid>
                                     </GroupBox>
 
+                                    <GroupBox Header="Параметры метода решения" Grid.Row="2" 
+                                              Margin="5px" FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                                        <Grid Margin="5px">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                       Margin="10px 0px 15px 0px">
+                                                Шаг расчета по времени
+                                            </TextBlock>
+                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                     Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                     Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=StepsAmount, 
+                                                        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                     PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                     HorizontalAlignment="Left" MinWidth="100px">
+                                            </TextBox>
+                                        </Grid>
+                                    </GroupBox>
                                 </Grid>
                             </GroupBox>
 

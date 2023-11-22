@@ -31,6 +31,7 @@ namespace Sintering_of_ceramics
         private double _excerptTime = 30;
         private double _pressure = 6;
         private bool _isAdmin = true;
+        private int _stepsAmount;
 
         private double _resultPorosity = 0;
         private double _resultAvarageGrainSize = 0;
@@ -110,6 +111,7 @@ namespace Sintering_of_ceramics
         public double ResultAvarageGrainSize { get => _resultAvarageGrainSize; set { _resultAvarageGrainSize = value; NotifyPropertyChanged(); } }
         public double ResultDensity { get => _resultDensity; set { _resultDensity = value; NotifyPropertyChanged(); } }
         public double ResultViscosity { get => _resultViscosity; set { _resultViscosity = value; NotifyPropertyChanged(); } }
+        public int StepsAmount { get => _stepsAmount; set { _stepsAmount = value; NotifyPropertyChanged(); } }
 
         public ObservableCollection<ChartTable> Table { get => _table; set { _table = value; NotifyPropertyChanged(); } }
 
@@ -127,6 +129,7 @@ namespace Sintering_of_ceramics
             _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
                 .Include(material => material.TheoreticalMMParam));
             _selectedMaterial = _materialsList.FirstOrDefault() ?? new Material();
+            _stepsAmount = Properties.Settings.Default.StepsAmount;
 
             this.DataContext = SelectedMaterial;
             this.grid.ItemsSource = Table;
@@ -170,7 +173,7 @@ namespace Sintering_of_ceramics
                 ro0: CompactMaterialDensity,
                 tau2: ExcerptTime * 60);
 
-            var result = model.Calculate(!IsothermalSinteringStageDisabled, Properties.Settings.Default.StepsAmount);
+            var result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount);
 
             ResultPorosity = Math.Round(result.PP, 2);
             ResultDensity = Math.Round(result.Ro, 2);
