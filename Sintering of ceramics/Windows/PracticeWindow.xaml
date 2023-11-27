@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Sintering_of_ceramics"
-        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Спекание керамики" Height="750" Width="1100"
@@ -83,7 +81,7 @@
                                     </Grid.RowDefinitions>
 
                                     <GroupBox Grid.Row="0" Grid.Column="0"
-                  Header="Материал" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5px" Padding="10px">
+                                                Header="Материал" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5px" Padding="10px">
                                         <ComboBox x:Name="materialsListComboBox"
                                                   ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MaterialsList}"
                                                   SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedMaterial, Mode=TwoWay}"
@@ -112,17 +110,17 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-        HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-        Margin="10px 0px 5px 0px">
- Начальный средний размер зерна, мкм
+                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                            Margin="10px 0px 5px 0px">
+                                                    Начальный средний размер зерна, мкм
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-     Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-     Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=AvarageGrainSize, 
-         Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-     Style="{StaticResource CustomErrorControlOnErrorStyle}"
-     PreviewTextInput="TextBox_OnPreviewTextInput"
-     HorizontalAlignment="Stretch" >
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=AvarageGrainSize, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -133,17 +131,17 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-        HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-        Margin="10px 0px 5px 0px">
- Толщина поверхностного слоя, нм
+                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                            Margin="10px 0px 5px 0px">
+                                                    Толщина поверхностного слоя, нм
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-     Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-     Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SurfaceLayerThickness, 
-         Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-     Style="{StaticResource CustomErrorControlOnErrorStyle}"
-     PreviewTextInput="TextBox_OnPreviewTextInput"
-     HorizontalAlignment="Stretch" >
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SurfaceLayerThickness, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -155,16 +153,16 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
-Margin="0,1,5,0">
- Начальная пористость, %
+                                                            HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
+                                                            Margin="0,1,5,0">
+                                                    Начальная пористость, %
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
- Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" Margin="5,0,24,0"
- Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Porosity, 
-     Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
- Style="{StaticResource CustomErrorControlOnErrorStyle}"
- PreviewTextInput="TextBox_OnPreviewTextInput" />
+                                                         Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" Margin="5,0,24,0"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Porosity, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput" />
                                             </Grid>
 
                                             <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
@@ -174,17 +172,17 @@ Margin="0,1,5,0">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
- HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
- Margin="10px 0px 5px 0px">
- Удельная поверхностная энергия, Дж/м^2
+                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                            Margin="10px 0px 5px 0px">
+                                                    Удельная поверхностная энергия, Дж/м^2
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
- Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
- Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SpecificSurfaceEnergy, 
-     Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
- Style="{StaticResource CustomErrorControlOnErrorStyle}"
- PreviewTextInput="TextBox_OnPreviewTextInput"
- HorizontalAlignment="Stretch" >
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SpecificSurfaceEnergy, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -195,17 +193,17 @@ Margin="0,1,5,0">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
- HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
- Margin="10px 0px 5px 0px">
- Плотность компактного материала, кг/м^3
+                                                             HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                             Margin="10px 0px 5px 0px">
+                                                    Плотность компактного материала, кг/м^3
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
- Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
- Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=CompactMaterialDensity, 
-     Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
- Style="{StaticResource CustomErrorControlOnErrorStyle}"
- PreviewTextInput="TextBox_OnPreviewTextInput"
- HorizontalAlignment="Stretch" >
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=CompactMaterialDensity, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -216,17 +214,17 @@ Margin="0,1,5,0">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-Margin="10px 0px 5px 0px">
- Вязкость компактного материала, МПа*с
+                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                            Margin="10px 0px 5px 0px">
+                                                    Вязкость компактного материала, МПа*с
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
- Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
- Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=CompactMaterialViscosity, 
-     Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
- Style="{StaticResource CustomErrorControlOnErrorStyle}"
- PreviewTextInput="TextBox_OnPreviewTextInput"
- HorizontalAlignment="Stretch" >
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=CompactMaterialViscosity, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -237,17 +235,17 @@ Margin="10px 0px 5px 0px">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-Margin="10px 0px 5px 0px">
- Масса материала, кг
+                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                            Margin="10px 0px 5px 0px">
+                                                    Масса материала, кг
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
- Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
- Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Weight, 
-     Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
- Style="{StaticResource CustomErrorControlOnErrorStyle}"
- PreviewTextInput="TextBox_OnPreviewTextInput"
- HorizontalAlignment="Stretch" >
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Weight, 
+                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
                                         </Grid>
@@ -285,17 +283,17 @@ Margin="10px 0px 5px 0px">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Предэкспоненциальный множитель, м^2/с
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                           Margin="10px 0px 5px 0px">
+                                                    Предэкспоненциальный множитель, м^2/с
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=PreExponentialFactorOfSurfaceSelfCoefficient, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=PreExponentialFactorOfSurfaceSelfCoefficient, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                        PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                        HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -306,17 +304,17 @@ Margin="10px 0px 5px 0px">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Энергия активации, кДж/моль
+                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                            Margin="10px 0px 5px 0px">
+                                                    Энергия активации, кДж/моль
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=GrainBoundaryDiffusionActivationEnergy, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=GrainBoundaryDiffusionActivationEnergy, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                        PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                        HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
                                         </Grid>
@@ -337,17 +335,17 @@ Margin="10px 0px 5px 0px">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Предэкспоненциальный множитель, м^2/с
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                           Margin="10px 0px 5px 0px">
+                                                    Предэкспоненциальный множитель, м^2/с
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=PreExponentialFactorOfGraindBoundaryDiffusionCoefficient, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=PreExponentialFactorOfGraindBoundaryDiffusionCoefficient, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                        PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                        HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
 
@@ -358,17 +356,17 @@ Margin="10px 0px 5px 0px">
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Энергия активации, кДж/моль
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                           Margin="10px 0px 5px 0px">
+                                                    Энергия активации, кДж/моль
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SurfaceSelfDiffusionActivationEnergy, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SurfaceSelfDiffusionActivationEnergy, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                        PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                        HorizontalAlignment="Stretch" >
                                                 </TextBox>
                                             </Grid>
                                         </Grid>
@@ -427,17 +425,17 @@ Margin="10px 0px 5px 0px">
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Время спекания,мин
+                                                               HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                               Margin="10px 0px 5px 0px">
+                                                        Время спекания,мин
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SinteringTime, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SinteringTime, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                        PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                        HorizontalAlignment="Stretch" >
                                                     </TextBox>
                                                 </Grid>
 
@@ -448,17 +446,17 @@ Margin="10px 0px 5px 0px">
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Начальная температура в печи, С
+                                                               HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                               Margin="10px 0px 5px 0px">
+                                                        Начальная температура в печи, С
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=InitialTemperatureInFurnace, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                            Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=InitialTemperatureInFurnace, 
+                                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                            PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                            HorizontalAlignment="Stretch" > 
                                                     </TextBox>
                                                 </Grid>
 
@@ -469,17 +467,17 @@ Margin="10px 0px 5px 0px">
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Конечная температура в печи, С
+                                                                HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                                Margin="10px 0px 5px 0px">
+                                                        Конечная температура в печи, С
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=FinalTemperatureInFurnace, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                            Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=FinalTemperatureInFurnace, 
+                                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                            PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                            HorizontalAlignment="Stretch" > 
                                                     </TextBox>
                                                 </Grid>
                                             </Grid>
@@ -521,17 +519,17 @@ Margin="10px 0px 5px 0px">
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Время выдержки, мин
+                                                               HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                               Margin="10px 0px 5px 0px">
+                                                        Время выдержки, мин
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ExcerptTime, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                            Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ExcerptTime, 
+                                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                            PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                            HorizontalAlignment="Stretch" >
                                                     </TextBox>
                                                 </Grid>
 
@@ -542,17 +540,17 @@ Margin="10px 0px 5px 0px">
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-       HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-       Margin="10px 0px 5px 0px">
-Давление, МПа
+                                                                HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
+                                                                Margin="10px 0px 5px 0px">
+                                                        Давление, МПа
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-    Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-    Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Pressure, 
-        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-    Style="{StaticResource CustomErrorControlOnErrorStyle}"
-    PreviewTextInput="TextBox_OnPreviewTextInput"
-    HorizontalAlignment="Stretch" >
+                                                                Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                                Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Pressure, 
+                                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                                Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                                PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                                HorizontalAlignment="Stretch" >
                                                     </TextBox>
                                                 </Grid>
                                             </Grid>
