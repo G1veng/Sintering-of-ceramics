@@ -59,7 +59,7 @@
                 </MenuItem.Style>
             </MenuItem>
         </Menu>
-        <TabControl Margin="0px 30px 0px 0px">
+        <TabControl Margin="0px 30px 0px 0px" x:Name="tabs">
             <TabItem x:Name="calculationTab">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -84,9 +84,10 @@
 
                                     <GroupBox Grid.Row="0" Grid.Column="0"
                   Header="Материал" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5px" Padding="10px">
-                                        <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MaterialsList}"
-                      SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedMaterial, Mode=TwoWay}"
-                      DisplayMemberPath="Name">
+                                        <ComboBox x:Name="materialsListComboBox"
+                                                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MaterialsList}"
+                                                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedMaterial, Mode=TwoWay}"
+                                                  DisplayMemberPath="Name">
                                         </ComboBox>
                                     </GroupBox>
 
@@ -587,18 +588,14 @@ Margin="10px 0px 5px 0px">
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <WpfPlot Margin="5px" x:Name="Temperature" FontSize="10">
-
-                        </WpfPlot>
-                        <WpfPlot Grid.Column="1" Margin="5px" x:Name="Density" FontSize="10">
-
-                        </WpfPlot>
-                        <WpfPlot Grid.Row="1" Margin="5px" x:Name="PorosityPlot" FontSize="10">
-
-                        </WpfPlot>
-                        <WpfPlot Grid.Column="1" Grid.Row="1" Margin="5px" x:Name="AvgGrainSize" FontSize="10">
-
-                        </WpfPlot>
+                        <WpfPlot Margin="5px" x:Name="Temperature" FontSize="10" 
+                                 MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
+                        <WpfPlot Grid.Column="1" Margin="5px" x:Name="Density" FontSize="10" 
+                                 MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
+                        <WpfPlot Grid.Row="1" Margin="5px" x:Name="PorosityPlot" FontSize="10" 
+                                 MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
+                        <WpfPlot Grid.Column="1" Grid.Row="1" Margin="5px" x:Name="AvgGrainSize" FontSize="10" 
+                                 MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
                     </Grid>
                 </TabControl>
             </TabItem>

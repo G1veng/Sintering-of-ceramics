@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Entity;
 using Entity.Models;
 using Mathematics;
 using Microsoft.EntityFrameworkCore;
+using ScottPlot;
+using ScottPlot.Plottable;
 using Sintering_of_ceramics.Models;
 
 namespace Sintering_of_ceramics
@@ -39,16 +40,21 @@ namespace Sintering_of_ceramics
         private double _resultViscosity = 0;
 
         private ObservableCollection<ChartTable> _table = new ObservableCollection<ChartTable>();
+        private Crosshair? _crosshair;
+        private Dictionary<WpfPlot, ScatterPlot> _charts;
 
         #endregion
-
 
         #region Properties
 
         public ObservableCollection<Material> MaterialsList
         {
             get { return _materialsList; }
-            set { _materialsList = value; NotifyPropertyChanged(nameof(MaterialsList)); }
+            set 
+            {
+                _materialsList = value;
+                NotifyPropertyChanged(nameof(MaterialsList)); 
+            }
         }
 
         public Material SelectedMaterial
@@ -56,7 +62,12 @@ namespace Sintering_of_ceramics
             get => _selectedMaterial;
             set
             {
-               _selectedMaterial = value;
+                if(value == null)
+                {
+                    return;
+                }
+
+                _selectedMaterial = value;
 
                 NotifyPropertyChanged(nameof(AvarageGrainSize));
                 NotifyPropertyChanged(nameof(SurfaceLayerThickness));
@@ -123,6 +134,7 @@ namespace Sintering_of_ceramics
         {
             _context = context;
             _editDataBaseWindow = editDataBaseWindow;
+            _charts = new Dictionary<WpfPlot, ScatterPlot>();
 
             InitializeComponent();
 
@@ -203,10 +215,18 @@ namespace Sintering_of_ceramics
             PorosityPlot.Plot.Clear();
             AvgGrainSize.Plot.Clear();
 
-            Temperature.Plot.AddScatter(temperaturePlot.Select(x => x.Key).ToArray(), temperaturePlot.Select(x => x.Value).ToArray(), markerSize: 1);
-            Density.Plot.AddScatter(densityPlot.Select(x => x.Key).ToArray(), densityPlot.Select(x => x.Value).ToArray(), markerSize: 1);
-            PorosityPlot.Plot.AddScatter(porosityPlot.Select(x => x.Key).ToArray(), porosityPlot.Select(x => x.Value).ToArray(), markerSize: 1);
-            AvgGrainSize.Plot.AddScatter(grainSizePlot.Select(x => x.Key).ToArray(), grainSizePlot.Select(x => x.Value).ToArray(), markerSize: 1);
+            _charts.Add(Temperature,
+                Temperature.Plot.AddScatter(temperaturePlot.Select(x => x.Key).ToArray(),
+                    temperaturePlot.Select(x => x.Value).ToArray(), markerSize: 1));
+            _charts.Add(Density, 
+                Density.Plot.AddScatter(densityPlot.Select(x => x.Key).ToArray(),
+                    densityPlot.Select(x => x.Value).ToArray(), markerSize: 1));
+            _charts.Add(PorosityPlot, 
+                PorosityPlot.Plot.AddScatter(porosityPlot.Select(x => x.Key).ToArray(),
+                    porosityPlot.Select(x => x.Value).ToArray(), markerSize: 1));
+            _charts.Add(AvgGrainSize, 
+                AvgGrainSize.Plot.AddScatter(grainSizePlot.Select(x => x.Key).ToArray(),
+                    grainSizePlot.Select(x => x.Value).ToArray(), markerSize: 1));
 
             Temperature.Refresh();
             Density.Refresh();
@@ -232,9 +252,11 @@ namespace Sintering_of_ceramics
 
             MaterialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
                 .Include(material => material.TheoreticalMMParam));
-            SelectedMaterial = _context.Materials.AsNoTracking()
-                .Include(m => m.TheoreticalMMParam)
-                .FirstOrDefault() ?? new Material();
+
+            var material = MaterialsList.FirstOrDefault(m => m.Id == SelectedMaterial.Id);
+            materialsListComboBox.SelectedIndex = material == null 
+                ? 0
+                : MaterialsList.IndexOf(material);
         }
 
         private void LogOut(object sender, RoutedEventArgs e)
@@ -244,5 +266,58 @@ namespace Sintering_of_ceramics
             var authWindow = new AuthorizationWindow(_context, this);
             authWindow.Show();
         }
+
+        #region Crosshair
+
+        private void PlotMouseEnter(object sender, MouseEventArgs e)
+        {
+            if(_charts.Count == 0)
+            {
+                return;
+            }
+
+            var plot = (WpfPlot)sender;
+            var chart = _charts[plot];
+
+            (double mouseCoordX, double mouseCoordY) = plot.GetMouseCoordinates();
+            double xyRatio = plot.Plot.XAxis.Dims.PxPerUnit / plot.Plot.YAxis.Dims.PxPerUnit;
+            (double pointX, double pointY, int pointIndex) = chart.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+
+            _crosshair = plot.Plot.AddCrosshair(mouseCoordX, mouseCoordY);
+            _crosshair.X = pointX; _crosshair.Y = pointY;
+
+            plot.Refresh();
+        }
+
+        private void PlotMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_crosshair != null)
+            {
+                var plot = (WpfPlot)sender;
+
+                _crosshair.IsVisible = false;
+
+                plot.Refresh();
+            }
+        }
+
+        private void PlotMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_crosshair != null)
+            {
+                var plot = (WpfPlot)sender;
+                var chart = _charts[plot];
+
+                (double mouseCoordX, double mouseCoordY) = plot.GetMouseCoordinates();
+                double xyRatio = plot.Plot.XAxis.Dims.PxPerUnit / plot.Plot.YAxis.Dims.PxPerUnit;
+                (double pointX, double pointY, int pointIndex) = chart.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+
+                _crosshair.X = pointX; _crosshair.Y = pointY;
+
+                plot.Refresh();
+            }
+        }
+
+        #endregion
     }
 }
