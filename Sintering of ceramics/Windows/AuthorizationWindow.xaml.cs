@@ -55,14 +55,14 @@ namespace Sintering_of_ceramics
             _wrongPasswordInputs++;
             if(_wrongPasswordInputs == _attemptsAmount)
             {
-                MessageBox.Show("Превышено допустимое количество попыток ввода пароля, выполняется выход из программы",
+                MessageBox.Show("Превышено допустимое количество попыток входа, выполняется выход из программы",
                     "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 Application.Current.Shutdown();
 
                 return;
             }
 
-            MessageBox.Show($"Осталось {_attemptsAmount - _wrongPasswordInputs} попытки ввода пароля",
+            MessageBox.Show($"Осталось попыток для входа: {_attemptsAmount - _wrongPasswordInputs}",
                 "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

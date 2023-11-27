@@ -28,7 +28,7 @@ public class Program
         var context = host.Services.GetService<Context>();
         if(context == null )
         {
-            throw new Exception("Unable to context of db");
+            throw new Exception("Unable to get context of db");
         }
 
         context!.Database.Migrate();

@@ -167,7 +167,7 @@
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontSize="{StaticResource AvgGridFontSize}" Width="170px" TextWrapping="Wrap" TextAlignment="Center">
-                        Коэффициенты теоритической математической модели
+                        Коэффициенты теоретической математической модели
                     </TextBlock>
                 </StackPanel>
             </TabItem.Header>
