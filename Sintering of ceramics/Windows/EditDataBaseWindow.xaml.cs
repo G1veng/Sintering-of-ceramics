@@ -23,18 +23,26 @@ namespace Sintering_of_ceramics
         private delegate void NoArgDelegate();
         private string _defaultDescription = "Нету описания для свойства";
         private int _mathModelStepsAmount;
+        private double _epsilon;
 
         #endregion
 
         #region Properties
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
         public ObservableCollection<User> Users { get; set; }
+
         public ObservableCollection<Material> Materials { get; set; }
+
         public ObservableCollection<TheoreticalMMParams> TheoreticalMMParams { get; set; }
+
         public User? SelectedUser { get; set; }
+
         public Material? SelectedMaterial { get; set; }
+
         public TheoreticalMMParams? SelectedTheoreticalMMParam {  get; set; }
+
         public int MathModelStepsAmount { get => _mathModelStepsAmount; 
             set 
             {
@@ -44,6 +52,20 @@ namespace Sintering_of_ceramics
                 Properties.Settings.Default.Save();
 
                 NotifyPropertyChanged(nameof(MathModelStepsAmount)); 
+            }
+        }
+
+        public double Epsilon
+        {
+            get => _epsilon;
+            set
+            {
+                _epsilon = value;
+
+                Properties.Settings.Default.Epsilon = value;
+                Properties.Settings.Default.Save();
+
+                NotifyPropertyChanged(nameof(Epsilon));
             }
         }
 

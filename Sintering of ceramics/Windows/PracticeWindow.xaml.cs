@@ -33,6 +33,7 @@ namespace Sintering_of_ceramics
         private double _pressure = 6;
         private bool _isAdmin = true;
         private int _stepsAmount;
+        private double _epsilon;
 
         private double _resultPorosity = 0;
         private double _resultAvarageGrainSize = 0;
@@ -123,6 +124,7 @@ namespace Sintering_of_ceramics
         public double ResultDensity { get => _resultDensity; set { _resultDensity = value; NotifyPropertyChanged(); } }
         public double ResultViscosity { get => _resultViscosity; set { _resultViscosity = value; NotifyPropertyChanged(); } }
         public int StepsAmount { get => _stepsAmount; set { _stepsAmount = value; NotifyPropertyChanged(); } }
+        public double Epsilon { get => _epsilon; set { _epsilon = value; NotifyPropertyChanged(); } }
 
         public ObservableCollection<ChartTable> Table { get => _table; set { _table = value; NotifyPropertyChanged(); } }
 
@@ -142,6 +144,7 @@ namespace Sintering_of_ceramics
                 .Include(material => material.TheoreticalMMParam));
             _selectedMaterial = _materialsList.FirstOrDefault() ?? new Material();
             _stepsAmount = Properties.Settings.Default.StepsAmount;
+            _epsilon = Properties.Settings.Default.Epsilon;
 
             this.DataContext = SelectedMaterial;
             this.grid.ItemsSource = Table;
@@ -185,7 +188,7 @@ namespace Sintering_of_ceramics
                 ro0: CompactMaterialDensity,
                 tau2: ExcerptTime * 60);
 
-            var result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount);
+            var result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount, Epsilon);
 
             ResultPorosity = Math.Round(result.PP, 2);
             ResultDensity = Math.Round(result.Ro, 2);
@@ -214,6 +217,7 @@ namespace Sintering_of_ceramics
             Density.Plot.Clear();
             PorosityPlot.Plot.Clear();
             AvgGrainSize.Plot.Clear();
+            _charts.Clear();
 
             _charts.Add(Temperature,
                 Temperature.Plot.AddScatter(temperaturePlot.Select(x => x.Key).ToArray(),

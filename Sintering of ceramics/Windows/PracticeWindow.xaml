@@ -374,25 +374,54 @@
 
                                     <GroupBox Header="Параметры метода решения" Grid.Row="2" 
                                               Margin="5px" FontSize="{DynamicResource ResourceKey=MainFontSize}">
-                                        <Grid Margin="5px">
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
+                                                <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
+                                            
+                                            <Grid Margin="5px">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                       Margin="10px 0px 15px 0px">
-                                                Шаг расчета по времени
-                                            </TextBlock>
-                                            <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-                                                     Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                     Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=StepsAmount, 
-                                                        Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-                                                     Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                     PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                     HorizontalAlignment="Left" MinWidth="100px">
-                                            </TextBox>
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           Margin="10px 0px 15px 0px">
+                                                    Шаг расчета по времени
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=StepsAmount, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch">
+                                                </TextBox>
+                                            </Grid>
+
+                                            <Grid Margin="5px" Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           Margin="10px 0px 15px 0px">
+                                                    Погрешность метода
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Epsilon, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch">
+                                                </TextBox>
+                                            </Grid>
+
                                         </Grid>
                                     </GroupBox>
                                 </Grid>

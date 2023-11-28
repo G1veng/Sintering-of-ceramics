@@ -208,7 +208,9 @@ namespace Mathematics
         /// Расчет характеристик конечно продукта
         /// </summary>
         /// <param name="isothermalSinteringStageEnabled">Включена ли стадия изотермического спекания</param>
-        public MaterialCharacteristicsDTO Calculate(bool isothermalSinteringStageEnabled, int stepsAmount)
+        /// <param name="stepsAmount">Количество шагов математической модели</param>
+        /// <param name="eps">Погрешность</param>
+        public MaterialCharacteristicsDTO Calculate(bool isothermalSinteringStageEnabled, int stepsAmount, double eps)
         {
             _temperature = new Dictionary<double, double>();
             _porosity = new Dictionary<double, double>();
@@ -216,10 +218,15 @@ namespace Mathematics
             _grainSize = new Dictionary<double, double>();
             _shirnkage = new Dictionary<double, double>();
 
+            var PCharp = 0.0;
+            var LCharp = 0.0;
+            var PMinusOne = 0.0;
+            var LMinusOne = 0.0;
+
             double time = 0.0;
             double h = (_tau1 + _tau2) / stepsAmount;
             double T = _t0;
-            double k0, k1, k2, k3;
+            double s1, s2, qMax = 5, trueTime = -h;
 
             double L = _l0;
             double P = _p0 / 100;
@@ -233,32 +240,89 @@ namespace Mathematics
             _density.Add(time / 60, roNach);
             _shirnkage.Add(time / 60, U * Math.Pow(10, 4));
 
-            for (time = 0; time < _tau1; time = time + h)
+            for (time = trueTime + h; time < _tau1; time = trueTime + h)
             {
-                T = dT1dt(time);
-                _temperature.Add(time / 60, T);
+                var trueP = P;
+                var trueL = L;
+                trueTime = time;
+                s1 = 0;
+                s2 = 0;
 
-                k0 = dPdt(time, L, P);
-                k1 = dPdt(time + (h / 2), L, P + (h * k0 / 2));
-                k2 = dPdt(time + (h / 2), L, P + (h * k1 / 2));
-                k3 = dPdt(time + h, L, P + h * k2);
+                while (true)
+                {
+                    P = trueP;
+                    L = trueL;
+                    time = trueTime;
 
-                P = P + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
-                _porosity.Add((time + h) / 60, P * 100);
+                    while (true)
+                    {
+                        time += h;
+                        T = dT1dt(time);
+                        PMinusOne = P;
+                        LMinusOne = L;
+                        P = PorosityFirstStage(time, L, P, h);
+                        L = AvgGrainSizeFirstStage(time, L, h);
 
-                k0 = dLdt(time, L);
-                k1 = dLdt(time + (h / 2), L + (k0 * h / 2));
-                k2 = dLdt(time + (h / 2), L + (k1 * h / 2));
-                k3 = dLdt(time + h, L + h * k2);
+                        if (s1 == 0)
+                        {
+                            PCharp = P;
+                            LCharp = L;
+                            h = h / 2;
+                            s1 = 1;
+                            continue;
+                        }
 
-                L = L + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
-                _grainSize.Add((time + h) / 60, L * 1000000);
+                        if (s2 == 0)
+                        {
+                            time -= h;
+                            P = PMinusOne;
+                            L = LMinusOne;
+                            s2 = 1;
+                            continue;
+                        }
 
-                ro = (1 - P) * _ro0;
-                _density.Add((time + h) / 60, ro);
+                        break;
+                    }
 
-                U = _m * ((1 / roNach) - (1 / ro));
-                _shirnkage.Add((time + h) / 60, U * Math.Pow(10, 4));
+                    var epsJ = Math.Max((Math.Abs(PCharp - P) / P * 100), (Math.Abs(LCharp - L) / L * 100));
+                    if(epsJ > eps)
+                    {
+                        if (s1 >= qMax)
+                        {
+                            return new MaterialCharacteristicsDTO()
+                            {
+                                Ett = 0,
+                                LL = 0,
+                                PP = 0,
+                                PPP = 0,
+                                Ro = 0
+                            };
+                        }
+
+                        PCharp = P;
+                        LCharp = L;
+                        h = h / 2;
+                        s2 = 0;
+                        s1++;
+                        continue;
+                    }
+
+                    ro = (1 - P) * _ro0;
+                    U = _m * ((1 / roNach) - (1 / ro));
+
+                    if (epsJ < eps / 4)
+                    {
+                        h = h * 2;
+                    }
+
+                    break;
+                }
+
+                _temperature.Add((trueTime + h) / 60, T);                
+                _porosity.Add((trueTime + h) / 60, P * 100);                
+                _grainSize.Add((trueTime + h) / 60, L * 1000000);                
+                _density.Add((trueTime + h) / 60, ro);
+                _shirnkage.Add((trueTime + h) / 60, U * Math.Pow(10, 4));
             }
 
             if (!isothermalSinteringStageEnabled)
@@ -281,31 +345,107 @@ namespace Mathematics
 
             _p20 = P;
 
-            for (; time < _tau1 + _tau2; time = time + h)
+
+            if (!isothermalSinteringStageEnabled)
             {
-                _temperature.Add((time + h) / 60, T);
+                _pP = P * 100;
+                _lL = L * 1000000;
+                _ett = eta(P) / 1000000;
+                _pPP = Math.Floor(_pP);
+                _ro = ro;
 
-                k0 = dP2dt(0, P);
-                k1 = dP2dt(0, P + (h * k0 / 2));
-                k2 = dP2dt(0, P + (h * k1 / 2));
-                k3 = dP2dt(0, P + k2 * h);
+                return new MaterialCharacteristicsDTO()
+                {
+                    Ett = _ett,
+                    LL = _lL,
+                    PP = _pP,
+                    PPP = _pPP,
+                    Ro = _ro,
+                };
+            }
 
-                P = P + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
-                _porosity.Add((time + h) / 60, P * 100);
+            for (; time < _tau1 + _tau2; time = trueTime + h)
+            {
+                var trueP = P;
+                var trueL = L;
+                trueTime = time;
+                s1 = 0;
+                s2 = 0;
 
-                k0 = dL2dt(0, L);
-                k1 = dL2dt(0, L + (h / 2));
-                k2 = dL2dt(0, L + (h / 2));
-                k3 = dL2dt(0, L + h);
+                while (true)
+                {
+                    P = trueP;
+                    L = trueL;
+                    time = trueTime;
 
-                L = L + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
-                _grainSize.Add((time + h) / 60, L * 1000000);
+                    while (true)
+                    {
+                        time += h;
+                        PMinusOne = P;
+                        LMinusOne = L;
+                        P = PorositySecondStage(P, h);
+                        L = AvgGrainSizeSecondStage(L, h);
 
-                ro = (1 - P) * _ro0;
-                _density.Add((time + h) / 60, ro);
+                        if (s1 == 0)
+                        {
+                            PCharp = P;
+                            LCharp = L;
+                            h /= 2;
+                            s1 = 1;
+                            continue;
+                        }
 
-                U = _m * ((1 / roNach) - (1 / ro));
-                _shirnkage.Add((time + h) / 60, U * Math.Pow(10, 4));
+                        if (s2 == 0)
+                        {
+                            time -= h;
+                            P = PMinusOne;
+                            L = LMinusOne;
+                            s2 = 1;
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    var epsJ = Math.Max((Math.Abs(PCharp - P) / P * 100), (Math.Abs(LCharp - L) / L * 100));
+                    if (epsJ > eps)
+                    {
+                        if (s1 >= qMax)
+                        {
+                            return new MaterialCharacteristicsDTO()
+                            {
+                                Ett = 0,
+                                LL = 0,
+                                PP = 0,
+                                PPP = 0,
+                                Ro = 0
+                            };
+                        }
+
+                        PCharp = P;
+                        LCharp = L;
+                        h = h / 2;
+                        s2 = 0;
+                        s1++;
+                        continue;
+                    }
+
+                    ro = (1 - P) * _ro0;
+                    U = _m * ((1 / roNach) - (1 / ro));
+
+                    if (epsJ < eps / 4)
+                    {
+                        h *= 2;
+                    }
+
+                    break;
+                }
+
+                _temperature.Add((trueTime + h) / 60, T);
+                _porosity.Add((trueTime + h) / 60, P * 100);
+                _grainSize.Add((trueTime + h) / 60, L * 1000000);
+                _density.Add((trueTime + h) / 60, ro);
+                _shirnkage.Add((trueTime + h) / 60, U * Math.Pow(10, 4));
             }
 
             _pP = P * 100;
@@ -435,6 +575,46 @@ namespace Mathematics
             var a = 8 * Ds(dT2dt(t) + 273) * _d * _d * _d * _d * _s;
             var b = L * L * L * _k * (dT2dt(t) + 273);
             return (a / b);
+        }
+
+        private double PorosityFirstStage(double time, double L, double P, double h)
+        {
+            var k0 = dPdt(time, L, P);
+            var k1 = dPdt(time + (h / 2), L, P + (h * k0 / 2));
+            var k2 = dPdt(time + (h / 2), L, P + (h * k1 / 2));
+            var k3 = dPdt(time + h, L, P + h * k2);
+
+            return P + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
+        }
+
+        private double PorositySecondStage(double P, double h)
+        {
+            var k0 = dP2dt(0, P);
+            var k1 = dP2dt(0, P + (h * k0 / 2));
+            var k2 = dP2dt(0, P + (h * k1 / 2));
+            var k3 = dP2dt(0, P + k2 * h);
+
+            return P + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
+        }
+
+        private double AvgGrainSizeFirstStage(double time, double L, double h)
+        {
+            var k0 = dLdt(time, L);
+            var k1 = dLdt(time + (h / 2), L + (k0 * h / 2));
+            var k2 = dLdt(time + (h / 2), L + (k1 * h / 2));
+            var k3 = dLdt(time + h, L + h * k2);
+
+            return L + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
+        }
+
+        private double AvgGrainSizeSecondStage(double L, double h)
+        {
+            var k0 = dL2dt(0, L);
+            var k1 = dL2dt(0, L + (h / 2));
+            var k2 = dL2dt(0, L + (h / 2));
+            var k3 = dL2dt(0, L + h);
+
+            return L + (h * (k0 + 2 * k1 + 2 * k2 + k3) / 6);
         }
 
         #endregion

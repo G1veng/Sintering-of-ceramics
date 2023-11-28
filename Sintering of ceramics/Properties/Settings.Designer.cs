@@ -34,5 +34,17 @@ namespace Sintering_of_ceramics.Properties {
                 this["StepsAmount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.01")]
+        public double Epsilon {
+            get {
+                return ((double)(this["Epsilon"]));
+            }
+            set {
+                this["Epsilon"] = value;
+            }
+        }
     }
 }
