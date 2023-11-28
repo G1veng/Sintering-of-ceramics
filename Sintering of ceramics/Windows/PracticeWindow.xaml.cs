@@ -248,7 +248,7 @@ namespace Sintering_of_ceramics
             PorosityPlot.Refresh();
             AvgGrainSize.Refresh();
 
-            MessageBox.Show("Рассчет успешно завершен", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Расчет успешно завершен", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Exit(object sender, RoutedEventArgs e)

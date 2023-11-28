@@ -77,6 +77,7 @@ namespace Sintering_of_ceramics
             _context = context;
             _createEditDeleteWindow = createEditDeleteWindow;
             MathModelStepsAmount = Properties.Settings.Default.StepsAmount;
+            Epsilon = Properties.Settings.Default.Epsilon;
 
             Users = new ObservableCollection<User>(_context.Users.AsNoTracking().ToList());
             Materials = new ObservableCollection<Material>(_context.Materials

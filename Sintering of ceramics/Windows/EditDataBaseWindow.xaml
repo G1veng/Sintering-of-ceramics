@@ -269,7 +269,7 @@
 
                     <TextBlock FontSize="{DynamicResource MainFontSize}" TextWrapping="Wrap"
                                HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"
-                               Margin="10px 20px 10px 0px" Text="Погрешность метода"/>
+                               Margin="10px 20px 10px 0px" Text="Погрешность математической медели"/>
 
                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                              Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="15px 20px 250px 0px"

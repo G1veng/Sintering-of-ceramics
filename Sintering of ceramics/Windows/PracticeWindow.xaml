@@ -6,7 +6,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Спекание керамики" Height="750" Width="1100"
-        MinHeight="450" MinWidth="800"
+        MinHeight="1150" MinWidth="800"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -410,7 +410,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center"
                                                            Margin="10px 0px 15px 0px">
-                                                    Погрешность метода
+                                                    Погрешность математической модели
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
