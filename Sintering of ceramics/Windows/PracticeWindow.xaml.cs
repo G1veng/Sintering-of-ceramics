@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Entity;
 using Entity.Models;
 using Mathematics;
+using Mathematics.Models;
 using Microsoft.EntityFrameworkCore;
 using ScottPlot;
 using ScottPlot.Plottable;
@@ -170,6 +171,8 @@ namespace Sintering_of_ceramics
 
         private void Calculate(object sender, RoutedEventArgs e)
         {
+            MaterialCharacteristicsDTO? result = null;
+
             var model = new Sintering(
                 t0: InitialTemperatureInFurnace,
                 tk: FinalTemperatureInFurnace,
@@ -188,7 +191,15 @@ namespace Sintering_of_ceramics
                 ro0: CompactMaterialDensity,
                 tau2: ExcerptTime * 60);
 
-            var result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount, Epsilon);
+            try
+            {
+                result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount, Epsilon);
+            }
+            catch
+            {
+                MessageBox.Show("Возникла непредвиденная ошибка при расчете", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
             ResultPorosity = Math.Round(result.PP, 2);
             ResultDensity = Math.Round(result.Ro, 2);
