@@ -46,5 +46,17 @@ namespace Sintering_of_ceramics.Properties {
                 this["Epsilon"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int MaxDivisionAmount {
+            get {
+                return ((int)(this["MaxDivisionAmount"]));
+            }
+            set {
+                this["MaxDivisionAmount"] = value;
+            }
+        }
     }
 }

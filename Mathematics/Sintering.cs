@@ -210,7 +210,8 @@ namespace Mathematics
         /// <param name="isothermalSinteringStageEnabled">Включена ли стадия изотермического спекания</param>
         /// <param name="stepsAmount">Количество шагов математической модели</param>
         /// <param name="eps">Погрешность</param>
-        public MaterialCharacteristicsDTO Calculate(bool isothermalSinteringStageEnabled, int stepsAmount, double eps)
+        /// <param name="maxStepDivision">Максимальное количество делений шага пополам</param>
+        public MaterialCharacteristicsDTO? Calculate(bool isothermalSinteringStageEnabled, int stepsAmount, double eps, double maxStepDivision)
         {
             _temperature = new Dictionary<double, double>();
             _porosity = new Dictionary<double, double>();
@@ -220,13 +221,13 @@ namespace Mathematics
 
             var PCharp = 0.0;
             var LCharp = 0.0;
-            var PMinusOne = 0.0;
-            var LMinusOne = 0.0;
+            double  PMinusOne;
+            double LMinusOne;
 
             double time = 0.0;
             double h = (_tau1 + _tau2) / stepsAmount;
             double T = _t0;
-            double s1, s2, qMax = 5, trueTime = -h;
+            double s1, s2, qMax = maxStepDivision, trueTime = -h;
 
             double L = _l0;
             double P = _p0 / 100;
@@ -289,14 +290,7 @@ namespace Mathematics
                     {
                         if (s1 >= qMax)
                         {
-                            return new MaterialCharacteristicsDTO()
-                            {
-                                Ett = 0,
-                                LL = 0,
-                                PP = 0,
-                                PPP = 0,
-                                Ro = 0
-                            };
+                            return null;
                         }
 
                         PCharp = P;

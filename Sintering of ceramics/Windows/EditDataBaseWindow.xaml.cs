@@ -24,6 +24,7 @@ namespace Sintering_of_ceramics
         private string _defaultDescription = "Нету описания для свойства";
         private int _mathModelStepsAmount;
         private double _epsilon;
+        private int _mathModelMaxDivisionAmount;
 
         #endregion
 
@@ -66,6 +67,20 @@ namespace Sintering_of_ceramics
                 Properties.Settings.Default.Save();
 
                 NotifyPropertyChanged(nameof(Epsilon));
+            }
+        }
+
+        public int MathModelMaxDivisionAmount
+        {
+            get => _mathModelMaxDivisionAmount;
+            set
+            {
+                _mathModelMaxDivisionAmount = value;
+
+                Properties.Settings.Default.MaxDivisionAmount = value;
+                Properties.Settings.Default.Save();
+
+                NotifyPropertyChanged(nameof(MathModelMaxDivisionAmount));
             }
         }
 

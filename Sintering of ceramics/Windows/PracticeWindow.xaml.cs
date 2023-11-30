@@ -35,6 +35,7 @@ namespace Sintering_of_ceramics
         private bool _isAdmin = true;
         private int _stepsAmount;
         private double _epsilon;
+        private int _maxStepDivision;
 
         private double _resultPorosity = 0;
         private double _resultAvarageGrainSize = 0;
@@ -126,6 +127,7 @@ namespace Sintering_of_ceramics
         public double ResultViscosity { get => _resultViscosity; set { _resultViscosity = value; NotifyPropertyChanged(); } }
         public int StepsAmount { get => _stepsAmount; set { _stepsAmount = value; NotifyPropertyChanged(); } }
         public double Epsilon { get => _epsilon; set { _epsilon = value; NotifyPropertyChanged(); } }
+        public int MathModelMaxDivisionAmount { get => _maxStepDivision; set { _maxStepDivision = value; NotifyPropertyChanged(); } }
 
         public ObservableCollection<ChartTable> Table { get => _table; set { _table = value; NotifyPropertyChanged(); } }
 
@@ -146,6 +148,7 @@ namespace Sintering_of_ceramics
             _selectedMaterial = _materialsList.FirstOrDefault() ?? new Material();
             _stepsAmount = Properties.Settings.Default.StepsAmount;
             _epsilon = Properties.Settings.Default.Epsilon;
+            _maxStepDivision = Properties.Settings.Default.MaxDivisionAmount;
 
             this.DataContext = SelectedMaterial;
             this.grid.ItemsSource = Table;
@@ -193,11 +196,17 @@ namespace Sintering_of_ceramics
 
             try
             {
-                result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount, Epsilon);
+                result = model.Calculate(!IsothermalSinteringStageDisabled, StepsAmount, Epsilon, MathModelMaxDivisionAmount);
             }
             catch
             {
                 MessageBox.Show("Возникла непредвиденная ошибка при расчете", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (result == null)
+            {
+                MessageBox.Show("Не найдено устойчивого решения", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 

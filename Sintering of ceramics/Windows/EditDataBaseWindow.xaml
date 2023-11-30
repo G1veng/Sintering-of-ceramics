@@ -253,6 +253,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <TextBlock FontSize="{DynamicResource MainFontSize}" TextWrapping="Wrap"
@@ -274,6 +275,18 @@
                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                              Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="15px 20px 250px 0px"
                              Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Epsilon, 
+                                 Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                             Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                             PreviewTextInput="TextBox_OnPreviewTextInput"
+                             HorizontalAlignment="Stretch"/>
+
+                    <TextBlock FontSize="{DynamicResource MainFontSize}" TextWrapping="Wrap"
+                               HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2"
+                               Margin="10px 20px 10px 0px" Text="Максимальное количество делений шага пополам"/>
+
+                    <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                             Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Margin="15px 20px 250px 0px"
+                             Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MathModelMaxDivisionAmount, 
                                  Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
                              Style="{StaticResource CustomErrorControlOnErrorStyle}"
                              PreviewTextInput="TextBox_OnPreviewTextInput"

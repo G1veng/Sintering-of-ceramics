@@ -379,6 +379,10 @@
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
                                             
                                             <Grid Margin="5px">
                                                 <Grid.ColumnDefinitions>
@@ -422,6 +426,26 @@
                                                 </TextBox>
                                             </Grid>
 
+                                            <Grid Margin="5px" Grid.Column="0" Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           Margin="10px 0px 15px 0px">
+                                                    Максимальное количество делений шага пополам
+                                                </TextBlock>
+                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
+                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MathModelMaxDivisionAmount, 
+                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
+                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
+                                                         HorizontalAlignment="Stretch">
+                                                </TextBox>
+                                            </Grid>
                                         </Grid>
                                     </GroupBox>
                                 </Grid>
