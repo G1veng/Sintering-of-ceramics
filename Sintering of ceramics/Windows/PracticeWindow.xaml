@@ -62,7 +62,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
-                            Рассчет
+                            Расчет
                         </TextBlock>
                     </StackPanel>
                 </TabItem.Header>
@@ -174,7 +174,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                             HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
                                                             Margin="10px 0px 5px 0px">
-                                                    Удельная поверхностная энергия, Дж/м^2
+                                                    Удельная поверхностная энергия, Дж/м²
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -195,7 +195,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                              HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
                                                              Margin="10px 0px 5px 0px">
-                                                    Плотность компактного материала, кг/м^3
+                                                    Плотность компактного материала, кг/м³
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -216,7 +216,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                             HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
                                                             Margin="10px 0px 5px 0px">
-                                                    Вязкость компактного материала, МПа*с
+                                                    Вязкость компактного материала, МПа×с
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -285,7 +285,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
                                                            Margin="10px 0px 5px 0px">
-                                                    Предэкспоненциальный множитель, м^2/с
+                                                    Предэкспоненциальный множитель, м²/с
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -337,7 +337,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
                                                            Margin="10px 0px 5px 0px">
-                                                    Предэкспоненциальный множитель, м^2/с
+                                                    Предэкспоненциальный множитель, м²/с
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -725,7 +725,7 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
                                                 TextWrapping="Wrap">
-                                        Конечная плотность материала, кг/м^3:
+                                        Конечная плотность материала, кг/м³:
                                     </TextBlock>
                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                 Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -744,7 +744,7 @@
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap">
-                                        Конечная вязкость материала, МПа*с:
+                                        Конечная вязкость материала, МПа×с:
                                     </TextBlock>
                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                 Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -775,7 +775,7 @@
                                 <DataGridTextColumn Header="Средний размер зерна, мкм" Binding="{Binding GrainSize}" Width="1.2*"
                                                     ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                                 <DataGridTextColumn Header="Пористость, %" Binding="{Binding Porosity}"/>
-                                <DataGridTextColumn Header="Плотность материала, кг/м^3" Binding="{Binding Density}" Width="1.2*"
+                                <DataGridTextColumn Header="Плотность материала, кг/м³" Binding="{Binding Density}" Width="1.2*"
                                                     ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                             </DataGrid.Columns>
                         </DataGrid>

@@ -121,17 +121,17 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding SpecificSurfaceEnergy}">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="Удельная поверхностная энергия, Дж/м^2" TextWrapping="Wrap" TextAlignment="Center"/>
+                                    <TextBlock Text="Удельная поверхностная энергия, Дж/м²" TextWrapping="Wrap" TextAlignment="Center"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding CompactMaterialDensity}">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="Плотность компактного материала, кг/м^3" TextWrapping="Wrap" TextAlignment="Center"/>
+                                    <TextBlock Text="Плотность компактного материала, кг/м³" TextWrapping="Wrap" TextAlignment="Center"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding CompactMaterialViscosity}">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="Вязкость компактного материала, МПа*с" TextWrapping="Wrap" TextAlignment="Center"/>
+                                    <TextBlock Text="Вязкость компактного материала, МПа×с" TextWrapping="Wrap" TextAlignment="Center"/>
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding Weight}">
