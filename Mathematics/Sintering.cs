@@ -208,10 +208,10 @@ namespace Mathematics
         /// Расчет характеристик конечно продукта
         /// </summary>
         /// <param name="isothermalSinteringStageEnabled">Включена ли стадия изотермического спекания</param>
-        /// <param name="stepsAmount">Количество шагов математической модели</param>
-        /// <param name="eps">Погрешность</param>
+        /// <param name="initialH">Начальный шаг расчета по времени</param>
+        /// <param name="eps">Предельная погрешность вычислений</param>
         /// <param name="maxStepDivision">Максимальное количество делений шага пополам</param>
-        public MaterialCharacteristicsDTO? Calculate(bool isothermalSinteringStageEnabled, int stepsAmount, double eps, double maxStepDivision)
+        public MaterialCharacteristicsDTO? Calculate(bool isothermalSinteringStageEnabled, int initialH, double eps, double maxStepDivision)
         {
             _temperature = new Dictionary<double, double>();
             _porosity = new Dictionary<double, double>();
@@ -225,9 +225,9 @@ namespace Mathematics
             double LMinusOne;
 
             double time = 0.0;
-            double h = (_tau1 + _tau2) / stepsAmount;
+            double h = initialH * 60;
             double T = _t0;
-            double s1, s2, qMax = maxStepDivision, trueTime = -h;
+            double s1, qMax = maxStepDivision, trueTime = -h;
 
             double L = _l0;
             double P = _p0 / 100;
@@ -247,7 +247,6 @@ namespace Mathematics
                 var trueL = L;
                 trueTime = time;
                 s1 = 0;
-                s2 = 0;
 
                 while (true)
                 {
@@ -273,15 +272,6 @@ namespace Mathematics
                             continue;
                         }
 
-                        if (s2 == 0)
-                        {
-                            time -= h;
-                            P = PMinusOne;
-                            L = LMinusOne;
-                            s2 = 1;
-                            continue;
-                        }
-
                         break;
                     }
 
@@ -296,7 +286,6 @@ namespace Mathematics
                         PCharp = P;
                         LCharp = L;
                         h = h / 2;
-                        s2 = 0;
                         s1++;
                         continue;
                     }
@@ -364,7 +353,6 @@ namespace Mathematics
                 var trueL = L;
                 trueTime = time;
                 s1 = 0;
-                s2 = 0;
 
                 while (true)
                 {
@@ -389,15 +377,6 @@ namespace Mathematics
                             continue;
                         }
 
-                        if (s2 == 0)
-                        {
-                            time -= h;
-                            P = PMinusOne;
-                            L = LMinusOne;
-                            s2 = 1;
-                            continue;
-                        }
-
                         break;
                     }
 
@@ -419,7 +398,6 @@ namespace Mathematics
                         PCharp = P;
                         LCharp = L;
                         h = h / 2;
-                        s2 = 0;
                         s1++;
                         continue;
                     }

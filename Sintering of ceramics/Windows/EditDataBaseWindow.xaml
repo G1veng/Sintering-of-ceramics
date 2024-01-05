@@ -258,7 +258,7 @@
 
                     <TextBlock FontSize="{DynamicResource MainFontSize}" TextWrapping="Wrap"
                                HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"
-                               Margin="10px 20px 10px 0px" Text="Количество шагов математической модели"/>
+                               Margin="10px 20px 10px 0px" Text="Начальный шаг расчета по времени, мин"/>
 
                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                              Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Margin="15px 20px 250px 0px"
@@ -270,7 +270,7 @@
 
                     <TextBlock FontSize="{DynamicResource MainFontSize}" TextWrapping="Wrap"
                                HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"
-                               Margin="10px 20px 10px 0px" Text="Погрешность математической медели"/>
+                               Margin="10px 20px 10px 0px" Text="Передельная погрешность вычислений, %"/>
 
                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                              Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="15px 20px 250px 0px"

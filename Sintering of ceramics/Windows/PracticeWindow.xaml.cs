@@ -156,11 +156,11 @@ namespace Sintering_of_ceramics
             Temperature.Plot.XLabel("Время, мин");
             Temperature.Plot.YLabel("Температура в печи, С");
             Density.Plot.XLabel("Время, мин");
-            Density.Plot.YLabel("Плотность материала, кг/м^3");
+            Density.Plot.YLabel("Плотность материала, кг/м³");
             PorosityPlot.Plot.XLabel("Время, мин");
             PorosityPlot.Plot.YLabel("Пористость материала, %");
             AvgGrainSize.Plot.XLabel("Время, мин");
-            AvgGrainSize.Plot.YLabel("Средний размер зерна, мкм");
+            AvgGrainSize.Plot.YLabel("Средний диаметр зерна, мкм");
         }
 
         private void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -211,7 +211,7 @@ namespace Sintering_of_ceramics
             }
 
             ResultPorosity = Math.Round(result.PP, 2);
-            ResultDensity = Math.Round(result.Ro, 2);
+            ResultDensity = Math.Round(result.Ro, 0);
             ResultViscosity = Math.Round(result.Ett, 2);
             ResultAvarageGrainSize = Math.Round(result.LL, 2);
 
@@ -228,7 +228,7 @@ namespace Sintering_of_ceramics
                     Time = Math.Round(key, 2),
                     Temperature = Math.Round(temperaturePlot[key], 2),
                     Porosity = Math.Round(porosityPlot[key], 2),
-                    Density = Math.Round(densityPlot[key], 2),
+                    Density = Math.Round(densityPlot[key], 0),
                     GrainSize = Math.Round(grainSizePlot[key], 2)
                 });
             }

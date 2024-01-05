@@ -11,8 +11,8 @@ namespace Entity.Migrations.PostDeploymentScripts
                 CREATE TEMP TABLE tempMaterials AS SELECT * FROM Materials;
                 INSERT INTO tempMaterials (Id, MaterialType, Porosity, AvarageGrainSize, SurfaceLayerThickness,
                     SpecificSurfaceEnergy, CompactMaterialDensity, CompactMaterialViscosity, Weight, Name) VALUES 
-                (1, 1, 40, 1, 0.1, 3.5, 14600, 170, 0.1, 'Вольфрам кобальт'),
-                (2, 2, 20, 0.5, 0.5, 5, 12500, 50, 0.1, 'Вольфрам никель'),
+                (1, 1, 40, 1, 0.1, 3.5, 14600, 170, 0.1, 'Карбид вольфрам-кобальт'),
+                (2, 2, 20, 0.5, 0.5, 5, 12500, 50, 0.1, 'Карбид вольфрам-никель'),
                 (3, 3, 60, 2, 0.2, 4, 10300, 70, 0.1, 'Диоксид циркония'),
                 (4, 4, 70, 0.3, 0.5, 6, 13500, 40, 0.1, 'Оксид иттрия'),
                 (5, 5, 5, 1.5, 1, 10, 15000, 10, 0.1, 'Оксид алюминия');

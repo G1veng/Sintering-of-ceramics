@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Спекание керамики" Height="450" Width="800"
-        MinHeight="450" MinWidth="800"
+        Title="Спекание керамики" Height="600" Width="900"
+        MinHeight="550" MinWidth="900"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -112,7 +112,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                             HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
                                                             Margin="10px 0px 5px 0px">
-                                                    Начальный средний размер зерна, мкм
+                                                    Начальный средний диаметр зерна, мкм
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -233,20 +233,6 @@
                                                     <ColumnDefinition Width="3*"/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
-
-                                                <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
-                                                            HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"
-                                                            Margin="10px 0px 5px 0px">
-                                                    Масса материала, кг
-                                                </TextBlock>
-                                                <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-                                                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                         Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Weight, 
-                                                             Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                                                         Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                         PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                         HorizontalAlignment="Stretch" >
-                                                </TextBox>
                                             </Grid>
                                         </Grid>
                                     </GroupBox>
@@ -393,7 +379,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center"
                                                            Margin="10px 0px 15px 0px">
-                                                    Шаг расчета по времени
+                                                    Начальный шаг расчета по времени, мин
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -414,7 +400,7 @@
                                                 <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" TextWrapping="Wrap"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center"
                                                            Margin="10px 0px 15px 0px">
-                                                    Погрешность математической модели
+                                                    Предельная погрешность вычислений, %
                                                 </TextBlock>
                                                 <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                          Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -639,13 +625,13 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <WpfPlot Margin="5px" x:Name="Temperature" FontSize="10" 
+                        <WpfPlot Margin="1px" x:Name="Temperature" FontSize="10" 
                                  MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
-                        <WpfPlot Grid.Column="1" Margin="5px" x:Name="Density" FontSize="10" 
+                        <WpfPlot Grid.Column="1" Margin="1px" x:Name="Density" FontSize="10" 
                                  MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
-                        <WpfPlot Grid.Row="1" Margin="5px" x:Name="PorosityPlot" FontSize="10" 
+                        <WpfPlot Grid.Row="1" Margin="1px" x:Name="PorosityPlot" FontSize="10" 
                                  MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
-                        <WpfPlot Grid.Column="1" Grid.Row="1" Margin="5px" x:Name="AvgGrainSize" FontSize="10" 
+                        <WpfPlot Grid.Column="1" Grid.Row="1" Margin="1px" x:Name="AvgGrainSize" FontSize="10" 
                                  MouseEnter="PlotMouseEnter" MouseLeave="PlotMouseLeave" MouseMove="PlotMouseMove"/>
                     </Grid>
                 </TabControl>
@@ -706,7 +692,7 @@
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap">
-                                        Конечный средний размер зерна, мкм:
+                                        Конечный средний диаметр зерна, мкм:
                                     </TextBlock>
                                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                 Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
@@ -734,25 +720,6 @@
                                                 HorizontalAlignment="Stretch" TextWrapping="Wrap">
                                     </TextBlock>
                                 </Grid>
-
-                                <Grid Margin="10px" Grid.Column="1" Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap">
-                                        Конечная вязкость материала, МПа×с:
-                                    </TextBlock>
-                                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}"
-                                                Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ResultViscosity, 
-                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-                                                HorizontalAlignment="Stretch" TextWrapping="Wrap">
-                                    </TextBlock>
-                                </Grid>
                             </Grid>
                         </GroupBox>
 
@@ -772,7 +739,7 @@
                                                     ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                                 <DataGridTextColumn Header="Температура в печи, С" Binding="{Binding Temperature}"
                                                     ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
-                                <DataGridTextColumn Header="Средний размер зерна, мкм" Binding="{Binding GrainSize}" Width="1.2*"
+                                <DataGridTextColumn Header="Средний диаметр зерна, мкм" Binding="{Binding GrainSize}" Width="1.2*"
                                                     ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                                 <DataGridTextColumn Header="Пористость, %" Binding="{Binding Porosity}"/>
                                 <DataGridTextColumn Header="Плотность материала, кг/м³" Binding="{Binding Density}" Width="1.2*"
