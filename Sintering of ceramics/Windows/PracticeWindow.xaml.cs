@@ -30,7 +30,7 @@ namespace Sintering_of_ceramics
         private Equipment _selectedEquipment;
         private bool _isothermalSinteringStageDisabled = false;
         private double _initialTemperatureInFurnace = 20;
-        private double _finalTemperatureInFurnace = 1350;
+        private double _finalTemperatureInFurnace = 1450;
         private double _sinteringTime = 70;
         private double _excerptTime = 30;
         private double _pressure = 6;
@@ -47,6 +47,8 @@ namespace Sintering_of_ceramics
         private ObservableCollection<ChartTable> _table = new ObservableCollection<ChartTable>();
         private Crosshair? _crosshair;
         private Dictionary<WpfPlot, ScatterPlot> _charts;
+
+        List<object> _isInvalidElements = new List<object>();
 
         #endregion
 
@@ -110,6 +112,13 @@ namespace Sintering_of_ceramics
 
                 _selectedEquipment = value;
                 NotifyPropertyChanged(nameof(MinFinalTempretare));
+                NotifyPropertyChanged(nameof(MaxFinalTempretare));
+                NotifyPropertyChanged(nameof(MinSinteringTime));
+                NotifyPropertyChanged(nameof(MaxSinteringTime));
+                NotifyPropertyChanged(nameof(MinCuringTime));
+                NotifyPropertyChanged(nameof(MaxCuringTime));
+                NotifyPropertyChanged(nameof(MinGasPressure));
+                NotifyPropertyChanged(nameof(MaxGasPressure));
             }
         }
 
@@ -147,6 +156,7 @@ namespace Sintering_of_ceramics
         public double ExcerptTime { get => _excerptTime; set => _excerptTime = value; }
         public double Pressure { get => _pressure; set => _pressure = value; }
         public bool IsAdmin { get => _isAdmin; set { _isAdmin = value; NotifyPropertyChanged(); } }
+        public bool IsCalculateButtonEnabled { get => !_isInvalidElements.Any(); }
 
         public double ResultPorosity { get => _resultPorosity; set { _resultPorosity = value; NotifyPropertyChanged(); } }
         public double ResultAvarageGrainSize { get => _resultAvarageGrainSize; set { _resultAvarageGrainSize = value; NotifyPropertyChanged(); } }
@@ -157,6 +167,13 @@ namespace Sintering_of_ceramics
         public int MathModelMaxDivisionAmount { get => _maxStepDivision; set { _maxStepDivision = value; NotifyPropertyChanged(); } }
 
         public double MinFinalTempretare { get => _selectedEquipment.Regime.MinFinalTempretare; set { _selectedEquipment.Regime.MinFinalTempretare = value; } }
+        public double MaxFinalTempretare { get => _selectedEquipment.Regime.MaxFinalTempretare; set { _selectedEquipment.Regime.MaxFinalTempretare = value; } }
+        public double MinSinteringTime { get => _selectedEquipment.Regime.MinSinteringTime; set { _selectedEquipment.Regime.MinSinteringTime = value; } }
+        public double MaxSinteringTime { get => _selectedEquipment.Regime.MaxSinteringTime; set { _selectedEquipment.Regime.MaxSinteringTime = value; } }
+        public double MinCuringTime { get => _selectedEquipment.Regime.MinCuringTime; set { _selectedEquipment.Regime.MinCuringTime = value; } }
+        public double MaxCuringTime { get => _selectedEquipment.Regime.MaxCuringTime; set { _selectedEquipment.Regime.MaxCuringTime = value; } }
+        public double MinGasPressure { get => _selectedEquipment.Regime.MinGasPressure; set { _selectedEquipment.Regime.MinGasPressure = value; } }
+        public double MaxGasPressure { get => _selectedEquipment.Regime.MaxGasPressure; set { _selectedEquipment.Regime.MaxGasPressure = value; } }
 
         public ObservableCollection<ChartTable> Table { get => _table; set { _table = value; NotifyPropertyChanged(); } }
 
@@ -254,8 +271,21 @@ namespace Sintering_of_ceramics
             var grainSizePlot = model.GetGrainSizeChartValues();
 
             Table.Clear();
+            double prevPorosity = porosityPlot.FirstOrDefault().Value,
+                prevDensity = densityPlot.FirstOrDefault().Value,
+                prevGrainSize = grainSizePlot.FirstOrDefault().Value;
+
             foreach (var key in temperaturePlot.Keys)
             {
+                if (prevPorosity == Math.Round(porosityPlot[key], 2) &&
+                    prevDensity == Math.Round(densityPlot[key], 0) &&
+                    Math.Round(grainSizePlot[key], 2) == prevGrainSize)
+                    continue;
+
+                prevPorosity = Math.Round(porosityPlot[key], 2);
+                prevDensity = Math.Round(densityPlot[key], 0);
+                prevGrainSize = Math.Round(grainSizePlot[key], 2);
+
                 Table.Add(new ChartTable()
                 {
                     Time = Math.Round(key, 2),
@@ -322,6 +352,22 @@ namespace Sintering_of_ceramics
 
             var authWindow = new AuthorizationWindow(_context, this);
             authWindow.Show();
+        }
+
+        private void TextBox_Error(object sender, System.Windows.Controls.ValidationErrorEventArgs e)
+        {
+            if (!_isInvalidElements.Contains(sender))
+                _isInvalidElements.Add(sender);
+
+            NotifyPropertyChanged(nameof(IsCalculateButtonEnabled));
+        }
+
+        private void TextBox_TargetUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+            if (_isInvalidElements.Contains(sender))
+                _isInvalidElements.Remove(sender);
+
+            NotifyPropertyChanged(nameof(IsCalculateButtonEnabled));
         }
 
         #region Crosshair

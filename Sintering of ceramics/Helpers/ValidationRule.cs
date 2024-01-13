@@ -18,7 +18,7 @@ namespace Sintering_of_ceramics.Helpers
             var strValue = Convert.ToString(value);
 
             if (string.IsNullOrEmpty(strValue))
-                return new ValidationResult(false, $"Значение не может быть конвертировано в строку.");
+                return new ValidationResult(false, $"Значение не может быть конвертировано.");
 
             bool canConvert = false;
             switch (ValidationType?.Name)
@@ -43,16 +43,17 @@ namespace Sintering_of_ceramics.Helpers
                     throw new InvalidCastException($"{ValidationType?.Name ?? string.Empty} не поддерживается");
             }
 
-            return canConvert ? new ValidationResult(true, null) : new ValidationResult(false, ErrorMessage == null ? null : string.Format(ErrorMessage, Wrapper.MinValue, value));
+            return canConvert ? new ValidationResult(true, null) : new ValidationResult(false, ErrorMessage == null ? null : string.Format(ErrorMessage, Wrapper.MinValue, Wrapper.MaxValue, value));
         }
 
         private bool IsValid(double passedValue)
             => CompareType switch
             {
                 CompareTypeEnum.Greater => passedValue > (double)Wrapper.MinValue,
-                CompareTypeEnum.Less => passedValue < (double)Wrapper.MinValue,
+                CompareTypeEnum.Less => passedValue < (double)Wrapper.MaxValue,
                 CompareTypeEnum.GreaterOrEqual => passedValue >= (double)Wrapper.MinValue,
-                CompareTypeEnum.LessOrEqual => passedValue <= (double)Wrapper.MinValue,
+                CompareTypeEnum.LessOrEqual => passedValue <= (double)Wrapper.MaxValue,
+                CompareTypeEnum.InRange => passedValue >= (double)Wrapper.MinValue && passedValue <= (double)Wrapper.MaxValue,
                 _ => false
             };
 
@@ -60,9 +61,10 @@ namespace Sintering_of_ceramics.Helpers
             => CompareType switch
             {
                 CompareTypeEnum.Greater => passedValue > (int)Wrapper.MinValue,
-                CompareTypeEnum.Less => passedValue < (int)Wrapper.MinValue,
+                CompareTypeEnum.Less => passedValue < (int)Wrapper.MaxValue,
                 CompareTypeEnum.GreaterOrEqual => passedValue >= (int)Wrapper.MinValue,
-                CompareTypeEnum.LessOrEqual => passedValue <= (int)Wrapper.MinValue,
+                CompareTypeEnum.LessOrEqual => passedValue <= (int)Wrapper.MaxValue,
+                CompareTypeEnum.InRange => passedValue >= (int)Wrapper.MinValue && passedValue <= (int)Wrapper.MaxValue,
                 _ => false
             };
     }
@@ -73,10 +75,20 @@ namespace Sintering_of_ceramics.Helpers
              DependencyProperty.Register("MinValue", typeof(object),
              typeof(Wrapper), new FrameworkPropertyMetadata(0));
 
+        public static readonly DependencyProperty MaxValueProperty =
+             DependencyProperty.Register("MaxValue", typeof(object),
+             typeof(Wrapper), new FrameworkPropertyMetadata(0));
+
         public object MinValue
         {
             get { return GetValue(MinValueProperty); }
             set { SetValue(MinValueProperty, value); }
+        }
+
+        public object MaxValue
+        {
+            get { return GetValue(MaxValueProperty); }
+            set { SetValue(MaxValueProperty, value); }
         }
     }
 }

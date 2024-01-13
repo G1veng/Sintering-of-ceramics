@@ -31,10 +31,10 @@ namespace Entity.Migrations.PostDeploymentScripts
                 INSERT INTO tempTheoreticalMMParams (Id, PreExponentialFactorOfGraindBoundaryDiffusionCoefficient,
                     PreExponentialFactorOfSurfaceSelfCoefficient, GrainBoundaryDiffusionActivationEnergy,
                     SurfaceSelfDiffusionActivationEnergy, MaterialId) VALUES 
-                (1, 0.35, 0.4, 176, 245, 1),
-                (2, 0.25, 0.5, 260, 300, 2),
-                (3, 0.2, 0.3, 152.5, 200, 3),
-                (4, 0.55, 0.55, 198.5, 220, 4),
+                (1, 0.35, 0.4, 181, 245, 1),
+                (2, 0.25, 0.5, 263, 300, 2),
+                (3, 0.2, 0.3, 154, 200, 3),
+                (4, 0.98, 0.55, 198.5, 220, 4),
                 (5, 0.15, 0.2, 177, 200, 5);
                 INSERT INTO TheoreticalMMParams SELECT * FROM tempTheoreticalMMParams
                 WHERE NOT EXISTS (SELECT * FROM TheoreticalMMParams WHERE tempTheoreticalMMParams.Id = TheoreticalMMParams.Id);

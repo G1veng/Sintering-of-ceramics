@@ -6,7 +6,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:validationRules="clr-namespace:Sintering_of_ceramics.Helpers"
         mc:Ignorable="d"
-        Title="Спекание керамики" Height="1200" Width="900"
+        Title="Спекание керамики" Height="600" Width="900"
         MinHeight="550" MinWidth="900"
         Closing="Window_Closing">
 
@@ -31,6 +31,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+        <ControlTemplate x:Key="validationError">
+            <StackPanel>
+                <AdornedElementPlaceholder />
+                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" />
+            </StackPanel>
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid>
@@ -479,12 +487,34 @@
                                                         Время спекания,мин
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-                                                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SinteringTime, 
-                                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                        PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                        HorizontalAlignment="Stretch" >
+                                                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                             Validation.ErrorTemplate="{DynamicResource ResourceKey=validationError}"
+                                                             HorizontalAlignment="Stretch" 
+                                                             Validation.Error="TextBox_Error"
+                                                             TargetUpdated="TextBox_TargetUpdated"
+                                                             SourceUpdated="TextBox_TargetUpdated">
+                                                        <TextBox.Text>
+                                                            <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type Window}}"
+                                                                     Path="SinteringTime"
+                                                                     Mode="TwoWay"
+                                                                     ValidatesOnExceptions="True"
+                                                                     UpdateSourceTrigger="PropertyChanged"
+                                                                     NotifyOnValidationError="True"
+                                                                     NotifyOnSourceUpdated="True"
+                                                                     NotifyOnTargetUpdated="True">
+                                                                <Binding.ValidationRules>
+                                                                    <validationRules:ValidationRule ValidationType="{x:Type sys:Double}"
+                                                                                                    ValidatesOnTargetUpdated="True"
+                                                                                                    CompareType="InRange"
+                                                                                                    ErrorMessage="Время спекания должно быть больше {0} но меньше {1}">
+                                                                        <validationRules:ValidationRule.Wrapper>
+                                                                            <validationRules:Wrapper MinValue="{Binding DataContext.MinSinteringTime, Source={x:Reference ProxyElement}}"
+                                                                                                     MaxValue="{Binding DataContext.MaxSinteringTime, Source={x:Reference ProxyElement}}"/>
+                                                                        </validationRules:ValidationRule.Wrapper>
+                                                                    </validationRules:ValidationRule>
+                                                                </Binding.ValidationRules>
+                                                            </Binding>
+                                                        </TextBox.Text>
                                                     </TextBox>
                                                 </Grid>
 
@@ -511,7 +541,7 @@
                                                                      ValidatesOnExceptions="True"
                                                                      UpdateSourceTrigger="PropertyChanged">
                                                             </Binding>
-                                                        </TextBox.Text>    
+                                                        </TextBox.Text>
                                                     </TextBox>
                                                 </Grid>
 
@@ -530,21 +560,28 @@
 
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                            Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                            HorizontalAlignment="Stretch">
+                                                            HorizontalAlignment="Stretch"
+                                                            Validation.ErrorTemplate="{DynamicResource ResourceKey=validationError}"
+                                                            Validation.Error="TextBox_Error"
+                                                            TargetUpdated="TextBox_TargetUpdated"
+                                                            SourceUpdated="TextBox_TargetUpdated">
                                                         <TextBox.Text>
                                                             <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type Window}}"
                                                                      Path="FinalTemperatureInFurnace"
                                                                      Mode="TwoWay"
                                                                      ValidatesOnExceptions="True"
-                                                                     UpdateSourceTrigger="PropertyChanged">
+                                                                     UpdateSourceTrigger="PropertyChanged"
+                                                                     NotifyOnValidationError="True"
+                                                                     NotifyOnSourceUpdated="True"
+                                                                     NotifyOnTargetUpdated="True">
                                                                 <Binding.ValidationRules>
                                                                     <validationRules:ValidationRule ValidationType="{x:Type sys:Double}"
-                                                                                                    ValidatesOnTargetUpdated="False"
-                                                                                                    CompareType="LessOrEqual"
-                                                                                                    ErrorMessage="Конечная температура в печи должна быть меньше {0}">
+                                                                                                    ValidatesOnTargetUpdated="True"
+                                                                                                    CompareType="InRange"
+                                                                                                    ErrorMessage="Конечная температура в печи должна быть больше {0} но меньше {1}">
                                                                         <validationRules:ValidationRule.Wrapper>
-                                                                            <validationRules:Wrapper MinValue="{Binding DataContext.MinFinalTempretare, Source={x:Reference ProxyElement}}"/>
+                                                                            <validationRules:Wrapper MinValue="{Binding DataContext.MinFinalTempretare, Source={x:Reference ProxyElement}}"
+                                                                                                     MaxValue="{Binding DataContext.MaxFinalTempretare, Source={x:Reference ProxyElement}}"/>
                                                                         </validationRules:ValidationRule.Wrapper>
                                                                     </validationRules:ValidationRule>
                                                                 </Binding.ValidationRules>
@@ -567,7 +604,7 @@
                                                     <RowDefinition/>
                                                 </Grid.RowDefinitions>
 
-                                                <Grid Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
@@ -584,7 +621,7 @@
                                                     </CheckBox>
                                                 </Grid>
 
-                                                <Grid Grid.Column="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                <Grid Grid.Column="0" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="3*"/>
                                                         <ColumnDefinition/>
@@ -596,12 +633,34 @@
                                                         Время выдержки, мин
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
-                                                            Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=ExcerptTime, 
-                                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-                                                            Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                            PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                            HorizontalAlignment="Stretch" >
+                                                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
+                                                             Validation.ErrorTemplate="{DynamicResource ResourceKey=validationError}"
+                                                             HorizontalAlignment="Stretch" 
+                                                             Validation.Error="TextBox_Error"
+                                                             TargetUpdated="TextBox_TargetUpdated"
+                                                             SourceUpdated="TextBox_TargetUpdated">
+                                                        <TextBox.Text>
+                                                            <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type Window}}"
+                                                                     Path="ExcerptTime"
+                                                                     Mode="TwoWay"
+                                                                     ValidatesOnExceptions="True"
+                                                                     UpdateSourceTrigger="PropertyChanged"
+                                                                     NotifyOnValidationError="True"
+                                                                     NotifyOnSourceUpdated="True"
+                                                                     NotifyOnTargetUpdated="True">
+                                                                <Binding.ValidationRules>
+                                                                    <validationRules:ValidationRule ValidationType="{x:Type sys:Double}"
+                                                                                                    ValidatesOnTargetUpdated="True"
+                                                                                                    CompareType="InRange"
+                                                                                                    ErrorMessage="Время выдержки должно быть больше {0} но меньше {1}">
+                                                                        <validationRules:ValidationRule.Wrapper>
+                                                                            <validationRules:Wrapper MinValue="{Binding DataContext.MinCuringTime, Source={x:Reference ProxyElement}}"
+                                                                                                     MaxValue="{Binding DataContext.MaxCuringTime, Source={x:Reference ProxyElement}}"/>
+                                                                        </validationRules:ValidationRule.Wrapper>
+                                                                    </validationRules:ValidationRule>
+                                                                </Binding.ValidationRules>
+                                                            </Binding>
+                                                        </TextBox.Text>
                                                     </TextBox>
                                                 </Grid>
 
@@ -618,11 +677,33 @@
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                                 Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                                Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Pressure, 
-                                                                    Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
-                                                                Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                                PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                                HorizontalAlignment="Stretch" >
+                                                                Validation.ErrorTemplate="{DynamicResource ResourceKey=validationError}"
+                                                                HorizontalAlignment="Stretch" 
+                                                                Validation.Error="TextBox_Error"
+                                                                TargetUpdated="TextBox_TargetUpdated"
+                                                                SourceUpdated="TextBox_TargetUpdated">
+                                                        <TextBox.Text>
+                                                            <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type Window}}"
+                                                                     Path="Pressure"
+                                                                     Mode="TwoWay"
+                                                                     ValidatesOnExceptions="True"
+                                                                     UpdateSourceTrigger="PropertyChanged"
+                                                                     NotifyOnValidationError="True"
+                                                                     NotifyOnSourceUpdated="True"
+                                                                     NotifyOnTargetUpdated="True">
+                                                                <Binding.ValidationRules>
+                                                                    <validationRules:ValidationRule ValidationType="{x:Type sys:Double}"
+                                                                                                    ValidatesOnTargetUpdated="True"
+                                                                                                    CompareType="InRange"
+                                                                                                    ErrorMessage="Давление должно быть больше {0} но меньше {1}">
+                                                                        <validationRules:ValidationRule.Wrapper>
+                                                                            <validationRules:Wrapper MinValue="{Binding DataContext.MinGasPressure, Source={x:Reference ProxyElement}}"
+                                                                                                     MaxValue="{Binding DataContext.MaxGasPressure, Source={x:Reference ProxyElement}}"/>
+                                                                        </validationRules:ValidationRule.Wrapper>
+                                                                    </validationRules:ValidationRule>
+                                                                </Binding.ValidationRules>
+                                                            </Binding>
+                                                        </TextBox.Text>
                                                     </TextBox>
                                                 </Grid>
                                             </Grid>
@@ -634,7 +715,8 @@
                             </GroupBox>
 
                             <Button Content="Рассчитать" Click="Calculate" Width="150px" Height="40px" Margin="10px" HorizontalAlignment="Right"
-                                    FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                                    FontSize="{DynamicResource ResourceKey=MainFontSize}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},
+                                                                Path=IsCalculateButtonEnabled, Mode=OneWay}">
 
                             </Button>
                         </StackPanel>

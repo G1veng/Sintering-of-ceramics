@@ -5,6 +5,7 @@
         Greater = 0,
         Less = 1,
         GreaterOrEqual = 2,
-        LessOrEqual = 3
+        LessOrEqual = 3,
+        InRange = 4
     }
 }

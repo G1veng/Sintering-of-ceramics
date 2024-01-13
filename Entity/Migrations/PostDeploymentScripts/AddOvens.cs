@@ -26,8 +26,8 @@ namespace Entity.Migrations.PostDeploymentScripts
                 INSERT INTO tempRegimes (Id, MinSinteringTime, MaxSinteringTime, MinFinalTempretare, MaxFinalTempretare, 
                                         MinCuringTime, MaxCuringTime, MinGasPressure, MaxGasPressure, EquipmentId) VALUES 
                 (1, 50, 90, 1200, 1600, 20, 50, 4, 8, 1),
-                (2, 50, 90, 1200, 1600, 20, 50, 4, 8, 2),
-                (3, 50, 90, 1200, 1600, 20, 50, 4, 8, 3);
+                (2, 45, 95, 1100, 1800, 25, 60, 4, 9, 2),
+                (3, 50, 85, 1150, 1700, 30, 70, 3, 8, 3);
                 INSERT INTO Regimes SELECT * FROM tempRegimes
                 WHERE NOT EXISTS (SELECT * FROM Regimes WHERE tempRegimes.Id = Regimes.Id);
                 UPDATE Regimes SET MinSinteringTime = (SELECT MinSinteringTime FROM tempRegimes WHERE tempRegimes.Id = Regimes.Id);
