@@ -26,6 +26,8 @@ namespace Sintering_of_ceramics
 
         private ObservableCollection<Material> _materialsList;
         private Material _selectedMaterial;
+        private ObservableCollection<Equipment> _equipmentList;
+        private Equipment _selectedEquipment;
         private bool _isothermalSinteringStageDisabled = false;
         private double _initialTemperatureInFurnace = 20;
         private double _finalTemperatureInFurnace = 1350;
@@ -86,6 +88,31 @@ namespace Sintering_of_ceramics
             }
         }
 
+        public ObservableCollection<Equipment> EquipmentList
+        {
+            get { return _equipmentList; }
+            set
+            {
+                _equipmentList = value;
+                NotifyPropertyChanged(nameof(EquipmentList));
+            }
+        }
+
+        public Equipment SelectedEquipment
+        {
+            get => _selectedEquipment;
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+
+                _selectedEquipment = value;
+                NotifyPropertyChanged(nameof(MinFinalTempretare));
+            }
+        }
+
         public double AvarageGrainSize { get => _selectedMaterial.AvarageGrainSize; set => _selectedMaterial.AvarageGrainSize = value; }
         public double SurfaceLayerThickness { get => _selectedMaterial.SurfaceLayerThickness; set => _selectedMaterial.SurfaceLayerThickness = value; }
         public double Porosity { get => _selectedMaterial.Porosity; set => _selectedMaterial.Porosity = value; }
@@ -129,6 +156,8 @@ namespace Sintering_of_ceramics
         public double Epsilon { get => _epsilon; set { _epsilon = value; NotifyPropertyChanged(); } }
         public int MathModelMaxDivisionAmount { get => _maxStepDivision; set { _maxStepDivision = value; NotifyPropertyChanged(); } }
 
+        public double MinFinalTempretare { get => _selectedEquipment.Regime.MinFinalTempretare; set { _selectedEquipment.Regime.MinFinalTempretare = value; } }
+
         public ObservableCollection<ChartTable> Table { get => _table; set { _table = value; NotifyPropertyChanged(); } }
 
         #endregion
@@ -141,18 +170,22 @@ namespace Sintering_of_ceramics
             _editDataBaseWindow = editDataBaseWindow;
             _charts = new Dictionary<WpfPlot, ScatterPlot>();
 
-            InitializeComponent();
-
             _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
                 .Include(material => material.TheoreticalMMParam));
             _selectedMaterial = _materialsList.FirstOrDefault() ?? new Material();
             _stepsAmount = Properties.Settings.Default.StepsAmount;
             _epsilon = Properties.Settings.Default.Epsilon;
             _maxStepDivision = Properties.Settings.Default.MaxDivisionAmount;
+            _equipmentList = new ObservableCollection<Equipment>(_context.Equipments.AsNoTracking()
+                .Include(e => e.Regime));
+            _selectedEquipment = _equipmentList.FirstOrDefault() ?? new Equipment();
 
-            this.DataContext = SelectedMaterial;
+            this.DataContext = this;
+
+            InitializeComponent();
+            
             this.grid.ItemsSource = Table;
-
+            
             Temperature.Plot.XLabel("Время, мин");
             Temperature.Plot.YLabel("Температура в печи, С");
             Density.Plot.XLabel("Время, мин");

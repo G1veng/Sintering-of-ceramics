@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:validationRules="clr-namespace:Sintering_of_ceramics.Helpers"
         mc:Ignorable="d"
-        Title="Спекание керамики" Height="600" Width="900"
+        Title="Спекание керамики" Height="1200" Width="900"
         MinHeight="550" MinWidth="900"
         Closing="Window_Closing">
 
@@ -86,6 +87,15 @@
                                                   ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=MaterialsList}"
                                                   SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedMaterial, Mode=TwoWay}"
                                                   DisplayMemberPath="Name">
+                                        </ComboBox>
+                                    </GroupBox>
+
+                                    <GroupBox Grid.Row="0" Grid.Column="1"
+                                        Header="Печь" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5px" Padding="10px">
+                                        <ComboBox x:Name="equipmentListComboBox"
+                                            ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=EquipmentList}"
+                                            SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedEquipment, Mode=TwoWay}"
+                                            DisplayMemberPath="EquipmentBrand"> 
                                         </ComboBox>
                                     </GroupBox>
 
@@ -491,15 +501,22 @@
                                                     </TextBlock>
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=InitialTemperatureInFurnace, 
-                                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                                            
                                                             Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                            PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                            HorizontalAlignment="Stretch" > 
+                                                            HorizontalAlignment="Stretch" >
+                                                        <TextBox.Text>
+                                                            <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type Window}}"
+                                                                     Path="InitialTemperatureInFurnace"
+                                                                     Mode="TwoWay"
+                                                                     ValidatesOnExceptions="True"
+                                                                     UpdateSourceTrigger="PropertyChanged">
+                                                            </Binding>
+                                                        </TextBox.Text>    
                                                     </TextBox>
                                                 </Grid>
 
                                                 <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="5px 5px 5px 10px">
+                                                    
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="3*"/>
                                                         <ColumnDefinition/>
@@ -510,13 +527,31 @@
                                                                 Margin="10px 0px 5px 0px">
                                                         Конечная температура в печи, С
                                                     </TextBlock>
+                                                    
+                                                    <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed"/>
+                                                    
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
-                                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=FinalTemperatureInFurnace, 
-                                                                Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
                                                             Style="{StaticResource CustomErrorControlOnErrorStyle}"
-                                                            PreviewTextInput="TextBox_OnPreviewTextInput"
-                                                            HorizontalAlignment="Stretch" > 
+                                                            HorizontalAlignment="Stretch">
+                                                        <TextBox.Text>
+                                                            <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type Window}}"
+                                                                     Path="FinalTemperatureInFurnace"
+                                                                     Mode="TwoWay"
+                                                                     ValidatesOnExceptions="True"
+                                                                     UpdateSourceTrigger="PropertyChanged">
+                                                                <Binding.ValidationRules>
+                                                                    <validationRules:ValidationRule ValidationType="{x:Type sys:Double}"
+                                                                                                    ValidatesOnTargetUpdated="False"
+                                                                                                    CompareType="LessOrEqual"
+                                                                                                    ErrorMessage="Конечная температура в печи должна быть меньше {0}">
+                                                                        <validationRules:ValidationRule.Wrapper>
+                                                                            <validationRules:Wrapper MinValue="{Binding DataContext.MinFinalTempretare, Source={x:Reference ProxyElement}}"/>
+                                                                        </validationRules:ValidationRule.Wrapper>
+                                                                    </validationRules:ValidationRule>
+                                                                </Binding.ValidationRules>
+                                                            </Binding>
+                                                        </TextBox.Text>
                                                     </TextBox>
                                                 </Grid>
                                             </Grid>

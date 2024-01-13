@@ -24,6 +24,7 @@ namespace Entity.Migrations
                 defaultValue: "");
 
             AddUsers.AddUpScripts(migrationBuilder);
+            AddOvens.AddUpScripts(migrationBuilder);
         }
 
         /// <inheritdoc />
