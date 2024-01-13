@@ -527,9 +527,7 @@
                                                                 Margin="10px 0px 5px 0px">
                                                         Конечная температура в печи, С
                                                     </TextBlock>
-                                                    
-                                                    <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed"/>
-                                                    
+
                                                     <TextBox FontSize="{DynamicResource ResourceKey=MainFontSize}"
                                                             Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"
                                                             Style="{StaticResource CustomErrorControlOnErrorStyle}"
@@ -556,7 +554,7 @@
                                                 </Grid>
                                             </Grid>
                                         </GroupBox>
-
+                
                                         <GroupBox Grid.Row="1" Header="Стадия изотермического спекания" 
                                                   FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="5px">
                                             <Grid>
@@ -629,6 +627,8 @@
                                                 </Grid>
                                             </Grid>
                                         </GroupBox>
+
+                                        <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed"/>
                                     </Grid>
                                 </GroupBox>
                             </GroupBox>
