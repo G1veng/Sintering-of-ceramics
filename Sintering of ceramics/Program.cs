@@ -24,9 +24,9 @@ public class Program
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["mainDb"].ConnectionString));
             })
             .Build();
-        
+
         var context = host.Services.GetService<Context>();
-        if(context == null )
+        if (context == null)
         {
             throw new Exception("Unable to get context of db");
         }

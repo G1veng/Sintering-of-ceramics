@@ -14,5 +14,11 @@ namespace Entity.Models
 
         [Description("Администратор")]
         public bool IsAdmin { get; set; }
+        public int RoleId { get; set; }
+
+        [Description("Роль")]
+        public virtual Role? Role { get; set; }
+        /*public virtual List<Script>? ScriptsTrainee { get; set; }
+        public virtual List<Script>? ScriptsInstructor { get; set; }*/
     }
 }

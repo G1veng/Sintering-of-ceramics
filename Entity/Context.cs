@@ -1,6 +1,5 @@
 ﻿using Entity.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 
 namespace Entity
 {
@@ -76,6 +75,14 @@ namespace Entity
                 .HasMany(x => x.Models)
                 .WithOne(x => x.Equipment)
                 .HasForeignKey(x => x.EquipmentId);
+
+            modelBuilder.Entity<Role>()
+                .HasKey(x => x.Id);
+
+            modelBuilder.Entity<Role>()
+                .HasMany(x => x.Users)
+                .WithOne(x => x.Role)
+                .HasForeignKey(x => x.RoleId);
         }
 
         //Tables
@@ -91,6 +98,10 @@ namespace Entity
         public DbSet<ExperimentalData> ExperimentalDatas => Set<ExperimentalData>();
         public DbSet<Qualities> Qualities => Set<Qualities>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<Role> Roles => Set<Role>();
+        /**//*public DbSet<EmergencySituation> EmergencySituations => Set<EmergencySituation>();
+        public DbSet<Script> Scripts => Set<Script>();
+        public DbSet<Models.Task> Tasks => Set<Models.Task>();*/
         #endregion
     }
 }
