@@ -15,8 +15,8 @@ public class Program
         var host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-                services.AddSingleton<App>();
-                services.AddSingleton<MainWindow>();
+                services.AddScoped<App>();
+                services.AddScoped<MainWindow>();
                 services.AddScoped<AuthorizationWindow>();
                 services.AddScoped<EditDataBaseWindow>();
                 services.AddScoped<CreateEditDeleteWindow>();

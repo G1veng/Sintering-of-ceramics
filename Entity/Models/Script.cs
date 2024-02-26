@@ -9,8 +9,8 @@
         public int InstructorId { get; set; }
         public int TraineeId { get; set; }
 
-        public virtual List<User>? Trainee { get; set; }
-        public virtual List<User>? Instructor { get; set; }
+        public virtual User? Trainee { get; set; }
+        public virtual User? Instructor { get; set; }
         public virtual Task Task { get; set; } = null!;
     }
 }

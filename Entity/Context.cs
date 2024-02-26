@@ -83,6 +83,21 @@ namespace Entity
                 .HasMany(x => x.Users)
                 .WithOne(x => x.Role)
                 .HasForeignKey(x => x.RoleId);
+
+            modelBuilder.Entity<Script>()
+                .HasOne(x => x.Instructor)
+                .WithMany(x => x.ScriptsInstructor)
+                .HasForeignKey(x => x.InstructorId);
+
+            modelBuilder.Entity<Script>()
+                .HasOne(x => x.Trainee)
+                .WithMany(x => x.ScriptsTrainee)
+                .HasForeignKey(x => x.TraineeId);
+
+            modelBuilder.Entity<Script>()
+                .HasOne(x => x.Task)
+                .WithOne(x => x.Script)
+                .HasForeignKey<Models.Task>(x => x.ScriptId);
         }
 
         //Tables
@@ -99,9 +114,9 @@ namespace Entity
         public DbSet<Qualities> Qualities => Set<Qualities>();
         public DbSet<User> Users => Set<User>();
         public DbSet<Role> Roles => Set<Role>();
-        /**//*public DbSet<EmergencySituation> EmergencySituations => Set<EmergencySituation>();
+        public DbSet<EmergencySituation> EmergencySituations => Set<EmergencySituation>();
         public DbSet<Script> Scripts => Set<Script>();
-        public DbSet<Models.Task> Tasks => Set<Models.Task>();*/
+        public DbSet<Models.Task> Tasks => Set<Models.Task>();
         #endregion
     }
 }

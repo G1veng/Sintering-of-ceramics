@@ -23,7 +23,6 @@ namespace Entity.Migrations
                 nullable: false,
                 defaultValue: "");
 
-            AddUsers.AddUpScripts(migrationBuilder);
             AddOvens.AddUpScripts(migrationBuilder);
         }
 

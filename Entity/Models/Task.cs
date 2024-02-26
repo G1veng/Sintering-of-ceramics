@@ -15,6 +15,6 @@
         public virtual Regime Regime { get; set; } = null!;
         public virtual Material Material { get; set; } = null!;
         public virtual List<EmergencySituation> EmergencySituation { get; set; } = null!;
-        public virtual Script? Script { get; set; }
+        public virtual Script Script { get; set; } = null!;
     }
 }
