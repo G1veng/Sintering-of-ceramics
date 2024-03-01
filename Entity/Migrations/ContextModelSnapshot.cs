@@ -92,7 +92,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("EmpiricalModel");
+                    b.ToTable("EmpiricalModels");
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModelCoeff", b =>
@@ -115,7 +115,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("EmpiricalModelId");
 
-                    b.ToTable("EmpiricalModelCoeff");
+                    b.ToTable("EmpiricalModelCoeffs");
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModelType", b =>
@@ -130,7 +130,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmpiricalModelType");
+                    b.ToTable("EmpiricalModelTypes");
                 });
 
             modelBuilder.Entity("Entity.Models.Equipment", b =>
@@ -335,7 +335,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("ParamRange");
+                    b.ToTable("ParamsRanges");
                 });
 
             modelBuilder.Entity("Entity.Models.ParamRangeUnit", b =>
@@ -350,7 +350,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParamRangeUnit");
+                    b.ToTable("ParamsRangesUnits");
                 });
 
             modelBuilder.Entity("Entity.Models.Qualities", b =>

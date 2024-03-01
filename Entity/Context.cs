@@ -117,6 +117,11 @@ namespace Entity
         public DbSet<EmergencySituation> EmergencySituations => Set<EmergencySituation>();
         public DbSet<Script> Scripts => Set<Script>();
         public DbSet<Models.Task> Tasks => Set<Models.Task>();
+        public DbSet<EmpiricalModel> EmpiricalModels => Set<EmpiricalModel>();
+        public DbSet<EmpiricalModelCoeff> EmpiricalModelCoeffs => Set<EmpiricalModelCoeff>();
+        public DbSet<EmpiricalModelType> EmpiricalModelTypes => Set<EmpiricalModelType>();
+        public DbSet<ParamRange> ParamsRanges => Set<ParamRange>();
+        public DbSet<ParamRangeUnit> ParamsRangesUnits => Set<ParamRangeUnit>();
         #endregion
     }
 }

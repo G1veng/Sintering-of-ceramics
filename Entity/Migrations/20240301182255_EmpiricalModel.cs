@@ -11,7 +11,7 @@ namespace Entity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "EmpiricalModelType",
+                name: "EmpiricalModelTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -20,11 +20,11 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmpiricalModelType", x => x.Id);
+                    table.PrimaryKey("PK_EmpiricalModelTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ParamRangeUnit",
+                name: "ParamsRangesUnits",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -33,11 +33,11 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParamRangeUnit", x => x.Id);
+                    table.PrimaryKey("PK_ParamsRangesUnits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmpiricalModel",
+                name: "EmpiricalModels",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -49,21 +49,21 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmpiricalModel", x => x.Id);
+                    table.PrimaryKey("PK_EmpiricalModels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmpiricalModel_EmpiricalModelType_TypeId",
+                        name: "FK_EmpiricalModels_EmpiricalModelTypes_TypeId",
                         column: x => x.TypeId,
-                        principalTable: "EmpiricalModelType",
+                        principalTable: "EmpiricalModelTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmpiricalModel_Equipments_EquipmentId",
+                        name: "FK_EmpiricalModels_Equipments_EquipmentId",
                         column: x => x.EquipmentId,
                         principalTable: "Equipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmpiricalModel_Materials_MaterialId",
+                        name: "FK_EmpiricalModels_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalTable: "Materials",
                         principalColumn: "Id",
@@ -71,7 +71,7 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmpiricalModelCoeff",
+                name: "EmpiricalModelCoeffs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -82,17 +82,17 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmpiricalModelCoeff", x => x.Id);
+                    table.PrimaryKey("PK_EmpiricalModelCoeffs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmpiricalModelCoeff_EmpiricalModel_EmpiricalModelId",
+                        name: "FK_EmpiricalModelCoeffs_EmpiricalModels_EmpiricalModelId",
                         column: x => x.EmpiricalModelId,
-                        principalTable: "EmpiricalModel",
+                        principalTable: "EmpiricalModels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ParamRange",
+                name: "ParamsRanges",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -104,49 +104,49 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParamRange", x => x.Id);
+                    table.PrimaryKey("PK_ParamsRanges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ParamRange_EmpiricalModel_ModelId",
+                        name: "FK_ParamsRanges_EmpiricalModels_ModelId",
                         column: x => x.ModelId,
-                        principalTable: "EmpiricalModel",
+                        principalTable: "EmpiricalModels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ParamRange_ParamRangeUnit_UnitId",
+                        name: "FK_ParamsRanges_ParamsRangesUnits_UnitId",
                         column: x => x.UnitId,
-                        principalTable: "ParamRangeUnit",
+                        principalTable: "ParamsRangesUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmpiricalModel_EquipmentId",
-                table: "EmpiricalModel",
-                column: "EquipmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmpiricalModel_MaterialId",
-                table: "EmpiricalModel",
-                column: "MaterialId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmpiricalModel_TypeId",
-                table: "EmpiricalModel",
-                column: "TypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmpiricalModelCoeff_EmpiricalModelId",
-                table: "EmpiricalModelCoeff",
+                name: "IX_EmpiricalModelCoeffs_EmpiricalModelId",
+                table: "EmpiricalModelCoeffs",
                 column: "EmpiricalModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParamRange_ModelId",
-                table: "ParamRange",
+                name: "IX_EmpiricalModels_EquipmentId",
+                table: "EmpiricalModels",
+                column: "EquipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmpiricalModels_MaterialId",
+                table: "EmpiricalModels",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmpiricalModels_TypeId",
+                table: "EmpiricalModels",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParamsRanges_ModelId",
+                table: "ParamsRanges",
                 column: "ModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParamRange_UnitId",
-                table: "ParamRange",
+                name: "IX_ParamsRanges_UnitId",
+                table: "ParamsRanges",
                 column: "UnitId");
         }
 
@@ -154,19 +154,19 @@ namespace Entity.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmpiricalModelCoeff");
+                name: "EmpiricalModelCoeffs");
 
             migrationBuilder.DropTable(
-                name: "ParamRange");
+                name: "ParamsRanges");
 
             migrationBuilder.DropTable(
-                name: "EmpiricalModel");
+                name: "EmpiricalModels");
 
             migrationBuilder.DropTable(
-                name: "ParamRangeUnit");
+                name: "ParamsRangesUnits");
 
             migrationBuilder.DropTable(
-                name: "EmpiricalModelType");
+                name: "EmpiricalModelTypes");
         }
     }
 }
