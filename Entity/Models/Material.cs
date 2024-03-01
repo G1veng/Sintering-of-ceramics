@@ -71,5 +71,6 @@ namespace Entity.Models
 
         public virtual TheoreticalMMParams TheoreticalMMParam { get; set; } = null!;
         public virtual List<Model> Models { get; set; } = null!;
+        public virtual List<EmpiricalModel>? EmpiricalModels { get; set; }
     }
 }

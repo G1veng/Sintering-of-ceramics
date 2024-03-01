@@ -37,5 +37,6 @@
 
         public virtual Regime Regime { get; set; } = null!;
         public virtual List<Model> Models { get; set; } = null!;
+        public virtual List<EmpiricalModel>? EmpiricalModels { get; set;}
     }
 }

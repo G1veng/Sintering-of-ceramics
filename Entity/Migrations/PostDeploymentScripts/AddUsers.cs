@@ -24,8 +24,7 @@ namespace Entity.Migrations.PostDeploymentScripts
                 (2, 'User', '1', 1, 4);
                 INSERT INTO Users SELECT * FROM tempUsers
                 WHERE NOT EXISTS (SELECT * FROM Users WHERE tempUsers.Id = Users.Id);
-                UPDATE Users SET Login = (SELECT Login FROM tempUsers WHERE tempUsers.Id = Users.Id);
-                ");
+                UPDATE Users SET Login = (SELECT Login FROM tempUsers WHERE tempUsers.Id = Users.Id);");
         }
     }
 }
