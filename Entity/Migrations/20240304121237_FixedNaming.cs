@@ -15,8 +15,6 @@ namespace Entity.Migrations
                 name: "Furmula",
                 table: "EmpiricalModels",
                 newName: "Formula");
-
-            AddEmpiricalModels.AddUpScripts(migrationBuilder);
         }
 
         /// <inheritdoc />

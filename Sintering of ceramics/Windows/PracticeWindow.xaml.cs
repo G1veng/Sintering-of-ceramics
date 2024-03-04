@@ -13,6 +13,7 @@ using Mathematics.Models;
 using Microsoft.EntityFrameworkCore;
 using ScottPlot;
 using ScottPlot.Plottable;
+using Sintering_of_ceramics.Enums;
 using Sintering_of_ceramics.Models;
 
 namespace Sintering_of_ceramics
@@ -43,6 +44,10 @@ namespace Sintering_of_ceramics
         private double _resultAvarageGrainSize = 0;
         private double _resultDensity = 0;
         private double _resultViscosity = 0;
+        private double? _bendingStrengthE = null;
+        private double? _hardnessE = null;
+        private double? _porosityE = null;
+        private double? _densityE = null;
 
         private ObservableCollection<ChartTable> _table = new ObservableCollection<ChartTable>();
         private Crosshair? _crosshair;
@@ -165,6 +170,10 @@ namespace Sintering_of_ceramics
         public int StepsAmount { get => _stepsAmount; set { _stepsAmount = value; NotifyPropertyChanged(); } }
         public double Epsilon { get => _epsilon; set { _epsilon = value; NotifyPropertyChanged(); } }
         public int MathModelMaxDivisionAmount { get => _maxStepDivision; set { _maxStepDivision = value; NotifyPropertyChanged(); } }
+        public double BendingStrengthE { get => Math.Round(_bendingStrengthE ?? 0, 2); set { _bendingStrengthE = value; NotifyPropertyChanged(); } }
+        public double DensityE { get => Math.Round(_densityE ?? 0, 2); set { _densityE = value; NotifyPropertyChanged(); } }
+        public double PorosityE { get => Math.Round(_porosityE ?? 0, 2); set { _porosityE = value; NotifyPropertyChanged(); } }
+        public double HardnessE { get => Math.Round(_hardnessE ?? 0, 2); set { _hardnessE = value; NotifyPropertyChanged(); } }
 
         public double MinFinalTempretare { get => _selectedEquipment.Regime.MinFinalTempretare; set { _selectedEquipment.Regime.MinFinalTempretare = value; } }
         public double MaxFinalTempretare { get => _selectedEquipment.Regime.MaxFinalTempretare; set { _selectedEquipment.Regime.MaxFinalTempretare = value; } }
@@ -264,6 +273,8 @@ namespace Sintering_of_ceramics
             ResultDensity = Math.Round(result.Ro, 0);
             ResultViscosity = Math.Round(result.Ett, 2);
             ResultAvarageGrainSize = Math.Round(result.LL, 2);
+
+            CalculateImpericalModels();
 
             var temperaturePlot = model.GetTemperatureChartValues();
             var densityPlot = model.GetDensityChartValues();
@@ -368,6 +379,80 @@ namespace Sintering_of_ceramics
                 _isInvalidElements.Remove(sender);
 
             NotifyPropertyChanged(nameof(IsCalculateButtonEnabled));
+        }
+
+        private void CalculateImpericalModels()
+        {
+            var empiricalModels = _context.EmpiricalModels.AsNoTracking()
+                .Include(x => x.ParamsRanges)
+                .Include(x => x.EmpiricalModelCoeffs)
+                .Where(x => x.MaterialId == _selectedMaterial.Id)
+                .ToList();
+
+            if (!empiricalModels.Any())
+                return;
+
+            empiricalModels.ForEach(model =>
+            {
+                int satisfiesAmount = 0;
+
+                model.ParamsRanges.ForEach(param =>
+                {
+                    if (param.UnitId == (int)EmpiricalModelUnitTypeEnum.Temperature &&
+                        param.MaxValue >= _finalTemperatureInFurnace &&
+                        param.MinValue <= _finalTemperatureInFurnace)
+                        satisfiesAmount++;
+
+                    if (param.UnitId == (int)EmpiricalModelUnitTypeEnum.Time &&
+                        param.MaxValue >= _excerptTime &&
+                        param.MinValue <= _excerptTime)
+                        satisfiesAmount++;
+
+                    if (param.UnitId == (int)EmpiricalModelUnitTypeEnum.Atmosphere &&
+                        param.MaxValue >= _pressure &&
+                        param.MinValue <= _pressure)
+                        satisfiesAmount++;
+                });
+
+                if (satisfiesAmount == model.ParamsRanges.Count)
+                {
+                    NCalc.Expression e = new NCalc.Expression(model.Formula);
+
+                    e.Parameters["tao"] = _excerptTime;
+                    e.Parameters["T"] = _finalTemperatureInFurnace;
+                    e.Parameters["Pg"] = _pressure;
+
+                    model.EmpiricalModelCoeffs.ForEach(coef =>
+                    {
+                        e.Parameters[coef.Alias] = coef.Value;
+                    });
+
+                    try
+                    {
+                        if (model.TypeId == (int)EmpiricalModelTypeEnum.Endurance)
+                        {
+                            BendingStrengthE = e.Evaluate() as double? ?? 0;
+                        }
+                        else if (model.TypeId == (int)EmpiricalModelTypeEnum.Hardness)
+                        {
+                            HardnessE = e.Evaluate() as double? ?? 0;
+                        }
+                        else if (model.TypeId == (int)EmpiricalModelTypeEnum.Porosity)
+                        {
+                            PorosityE = e.Evaluate() as double? ?? 0;
+                        }
+                        else if (model.TypeId == (int)EmpiricalModelTypeEnum.Density)
+                        {
+                            DensityE = e.Evaluate() as double? ?? 0;
+                        }
+                    }
+                    catch 
+                    {
+                        MessageBox.Show("Произошла ошибка при расчете эмипирических моделей",
+                            "Уведомление", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            });
         }
 
         #region Crosshair
