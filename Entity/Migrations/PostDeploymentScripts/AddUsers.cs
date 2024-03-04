@@ -10,10 +10,10 @@ namespace Entity.Migrations.PostDeploymentScripts
                 @"DROP TABLE IF EXISTS tempRoles;
                 CREATE TEMP TABLE tempRoles AS SELECT * FROM Roles;
                 INSERT INTO tempRoles (Id, Alias) VALUES
-                (1, 'Admin'),
-                (2, 'Instructor'),
-                (3, 'Math model specialist'),
-                (4, 'Researcher');
+                (1, 'Администратор'),
+                (2, 'Инструктор'),
+                (3, 'Специалист по математическим моделям'),
+                (4, 'Исследователь');
                 INSERT INTO Roles SELECT * FROM tempRoles
                 WHERE NOT EXISTS (SELECT * FROM Roles WHERE tempRoles.Id = Roles.Id);
                 UPDATE Roles SET Alias = (SELECT Alias FROM tempRoles WHERE tempRoles.Id = Roles.Id);

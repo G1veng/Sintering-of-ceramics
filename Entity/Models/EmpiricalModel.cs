@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int TypeId { get; set; }
         public int MaterialId { get; set; }
-        public string Furmula { get; set; } = null!;
+        public string Formula { get; set; } = null!;
         public int EquipmentId { get; set; }
 
         public virtual Material Material { get; set; } = null!;

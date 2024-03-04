@@ -98,6 +98,16 @@ namespace Entity
                 .HasOne(x => x.Task)
                 .WithOne(x => x.Script)
                 .HasForeignKey<Models.Task>(x => x.ScriptId);
+
+            modelBuilder.Entity<ParamRange>()
+                .HasOne(x => x.Model)
+                .WithMany(x => x.ParamsRanges)
+                .HasForeignKey(x => x.ModelId);
+
+            modelBuilder.Entity<ParamRangeUnit>()
+                .HasMany(x => x.ParamRanges)
+                .WithOne(x => x.Unit)
+                .HasForeignKey(x => x.UnitId);
         }
 
         //Tables
