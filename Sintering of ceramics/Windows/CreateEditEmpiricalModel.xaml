@@ -1,0 +1,156 @@
+﻿<Window x:Class="Sintering_of_ceramics.Windows.CreateEditEmpiricalModel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sintering_of_ceramics.Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Closing="Window_Closing"
+        Title="CreateEditEmpiricalModel" Height="450" Width="800">
+    <Window.Resources>
+        <sys:Double x:Key="SmallFontSize">12</sys:Double>
+        <sys:Double x:Key="MainFontSize">14</sys:Double>
+        <sys:Double x:Key="BigFontSize">20</sys:Double>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Материал для модели:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0"
+                               FontSize="{DynamicResource ResourceKey=MainFontSize}"/>
+                    <ComboBox Grid.Column="1" Margin="10 15" Name="MaterialsComboBox" DisplayMemberPath="Name"
+                              FontSize="{DynamicResource ResourceKey=MainFontSize}"/>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Тип модели:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0"
+                               FontSize="{DynamicResource ResourceKey=MainFontSize}"/>
+                    <ComboBox Grid.Column="1" Margin="10 15" Name="EmpiricalModelTypeComboBox" DisplayMemberPath="Alias"
+                              FontSize="{DynamicResource ResourceKey=MainFontSize}"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Тип печи:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0"
+                               FontSize="{DynamicResource ResourceKey=MainFontSize}"/>
+                    <ComboBox Grid.Column="1" Margin="10 15" Name="OvensComboBox" DisplayMemberPath="Manufacturer"
+                              FontSize="{DynamicResource ResourceKey=MainFontSize}"/>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" Text="Формула:" 
+                               VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0"/>
+                    <TextBox x:Name="Formula" Grid.Column="1" FontSize="{DynamicResource ResourceKey=BigFontSize}" 
+                             VerticalAlignment="Center" Margin="10"/>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Регламентные пороговые значения" FontSize="{DynamicResource BigFontSize}" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <DataGrid Grid.Row="1" FontSize="{DynamicResource ResourceKey=SmallFontSize}" Margin="10px" 
+                              AutoGenerateColumns="False" x:Name="ParamRangesDataGrid" ColumnWidth="*">
+                        <DataGrid.Resources>
+                            <Style x:Key="wordWrapStyleView" TargetType="{x:Type TextBlock}">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                            <Style x:Key="wordWrapStyleEdit" TargetType="{x:Type TextBox}">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="Обозначение регламентного диапазона" Binding="{Binding Alias}" 
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
+                                                IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Максимальное значение регламентного диапазона" Binding="{Binding MaxValue}"
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                            <DataGridTextColumn Header="Минимальное значение регламентного диапазона" Binding="{Binding MaxValue}"
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                            <DataGridTextColumn Header="Единица измерения регламентного диапазона" Binding="{Binding CoefficientAlias}"
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Коэффициенты модели" FontSize="{DynamicResource BigFontSize}" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <DataGrid Grid.Row="1" FontSize="{DynamicResource ResourceKey=MainFontSize}" Margin="10px" 
+                              AutoGenerateColumns="False" x:Name="CoefficientsDataGrid" ColumnWidth="*">
+                        <DataGrid.Resources>
+                            <Style x:Key="wordWrapStyleView" TargetType="{x:Type TextBlock}">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                            <Style x:Key="wordWrapStyleEdit" TargetType="{x:Type TextBox}">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="Обозначение коэффициента" Binding="{Binding Alias}" Width="0.6*" 
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
+                                                IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Значение коэффициента" Binding="{Binding CoefficientValue}"
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+        <Button FontSize="{DynamicResource ResourceKey=BigFontSize}" Grid.Row="1" Width="120px" 
+            Height="40px" Content="Отменить" HorizontalAlignment="Right" Margin="0px 0px 180px 0px"
+            Click="Cancel"/>
+
+        <Button FontSize="{DynamicResource ResourceKey=BigFontSize}" Grid.Row="1" Width="120px" 
+                Height="40px" Content="Действие" HorizontalAlignment="Right" Margin="0px 0px 20px 0px"
+                x:Name="actionButton"/>
+    </Grid>
+</Window>

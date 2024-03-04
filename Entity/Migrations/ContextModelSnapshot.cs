@@ -29,7 +29,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("TasksId");
 
-                    b.ToTable("EmergencySituationTask");
+                    b.ToTable("EmergencySituationTask", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.ControlAction", b =>
@@ -43,7 +43,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ControlActions");
+                    b.ToTable("ControlActions", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.EmergencySituation", b =>
@@ -62,7 +62,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmergencySituations");
+                    b.ToTable("EmergencySituations", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModel", b =>
@@ -92,7 +92,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("EmpiricalModels");
+                    b.ToTable("EmpiricalModels", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModelCoeff", b =>
@@ -115,7 +115,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("EmpiricalModelId");
 
-                    b.ToTable("EmpiricalModelCoeffs");
+                    b.ToTable("EmpiricalModelCoeffs", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModelType", b =>
@@ -134,7 +134,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmpiricalModelTypes");
+                    b.ToTable("EmpiricalModelTypes", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Equipment", b =>
@@ -163,7 +163,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("Equipments", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.ExperimentalData", b =>
@@ -206,7 +206,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("ThirdControlActionId");
 
-                    b.ToTable("ExperimentalDatas");
+                    b.ToTable("ExperimentalDatas", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.MM", b =>
@@ -220,7 +220,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MMs");
+                    b.ToTable("MMs", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.MMCoefficient", b =>
@@ -242,7 +242,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("MMId");
 
-                    b.ToTable("MMCoefficients");
+                    b.ToTable("MMCoefficients", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Material", b =>
@@ -281,7 +281,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Materials");
+                    b.ToTable("Materials", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Model", b =>
@@ -312,7 +312,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("QualityId");
 
-                    b.ToTable("Models");
+                    b.ToTable("Models", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.ParamRange", b =>
@@ -342,7 +342,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("ParamsRanges");
+                    b.ToTable("ParamsRanges", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.ParamRangeUnit", b =>
@@ -357,7 +357,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParamsRangesUnits");
+                    b.ToTable("ParamsRangesUnits", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Qualities", b =>
@@ -371,7 +371,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Qualities");
+                    b.ToTable("Qualities", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Regime", b =>
@@ -412,7 +412,7 @@ namespace Entity.Migrations
                     b.HasIndex("EquipmentId")
                         .IsUnique();
 
-                    b.ToTable("Regimes");
+                    b.ToTable("Regimes", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Role", b =>
@@ -427,7 +427,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Script", b =>
@@ -459,7 +459,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("Scripts");
+                    b.ToTable("Scripts", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.Task", b =>
@@ -499,7 +499,7 @@ namespace Entity.Migrations
                     b.HasIndex("ScriptId")
                         .IsUnique();
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.TheoreticalMMParams", b =>
@@ -528,7 +528,7 @@ namespace Entity.Migrations
                     b.HasIndex("MaterialId")
                         .IsUnique();
 
-                    b.ToTable("TheoreticalMMParams");
+                    b.ToTable("TheoreticalMMParams", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Models.User", b =>
@@ -555,7 +555,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EmergencySituationTask", b =>

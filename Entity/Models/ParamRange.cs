@@ -1,4 +1,6 @@
-﻿namespace Entity.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Entity.Models
 {
     public class ParamRange
     {
@@ -11,5 +13,11 @@
 
         public virtual EmpiricalModel? Model { get; set; }
         public virtual ParamRangeUnit Unit { get; set; } = null!;
+
+        #region NotMapped
+        [NotMapped]
+        public string CoefficientAlias { get; set; } = null!;
+        public string Alias { get; set; } = null!;
+        #endregion
     }
 }
