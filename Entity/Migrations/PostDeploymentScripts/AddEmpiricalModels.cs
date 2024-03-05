@@ -9,14 +9,15 @@ namespace Entity.Migrations.PostDeploymentScripts
             migrationBuilder.Sql(@"
             DROP TABLE IF EXISTS tempUnits;
             CREATE TEMP TABLE tempUnits AS SELECT * FROM ParamsRangesUnits;
-            INSERT INTO tempUnits (Id, Alias) VALUES
-            (1, '--'),
-            (2, 'атм'),
-            (3, '°C'),
-            (4, 'мин');
+            INSERT INTO tempUnits (Id, Alias, LetterAlias) VALUES
+            (1, '--', ''),
+            (2, 'атм', 'Pg'),
+            (3, '°C', 'T'),
+            (4, 'мин', 'tao');
             INSERT INTO ParamsRangesUnits SELECT * FROM tempUnits
             WHERE NOT EXISTS (SELECT * FROM ParamsRangesUnits WHERE ParamsRangesUnits.Id = tempUnits.Id);
             UPDATE ParamsRangesUnits SET Alias = (SELECT Alias FROM tempUnits WHERE tempUnits.Id = ParamsRangesUnits.Id);
+            UPDATE ParamsRangesUnits SET LetterAlias = (SELECT LetterAlias FROM tempUnits WHERE tempUnits.Id = ParamsRangesUnits.Id);
 
             DROP TABLE IF EXISTS tempEmpiricalModelTypes;
             CREATE TEMP TABLE tempEmpiricalModelTypes AS SELECT * FROM EmpiricalModelTypes;

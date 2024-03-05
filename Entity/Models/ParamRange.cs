@@ -17,6 +17,7 @@ namespace Entity.Models
         #region NotMapped
         [NotMapped]
         public string CoefficientAlias { get; set; } = null!;
+        [NotMapped]
         public string Alias { get; set; } = null!;
         #endregion
     }

@@ -73,12 +73,15 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}" Text="Формула:" 
                                VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0"/>
                     <TextBox x:Name="Formula" Grid.Column="1" FontSize="{DynamicResource ResourceKey=BigFontSize}" 
                              VerticalAlignment="Center" Margin="10"/>
+                    <Button Grid.Column="2" Margin="15" Content="Применить" FontSize="{DynamicResource BigFontSize}"
+                            Click="ParseFormula"/>
                 </Grid>
 
                 <Grid Grid.Row="3" Grid.ColumnSpan="2">
@@ -90,7 +93,7 @@
                     <TextBlock Text="Регламентные пороговые значения" FontSize="{DynamicResource BigFontSize}" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <DataGrid Grid.Row="1" FontSize="{DynamicResource ResourceKey=SmallFontSize}" Margin="10px" 
-                              AutoGenerateColumns="False" x:Name="ParamRangesDataGrid" ColumnWidth="*">
+                              AutoGenerateColumns="False" x:Name="ParamRangesDataGrid" ColumnWidth="*" >
                         <DataGrid.Resources>
                             <Style x:Key="wordWrapStyleView" TargetType="{x:Type TextBlock}">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -104,12 +107,13 @@
                             <DataGridTextColumn Header="Обозначение регламентного диапазона" Binding="{Binding Alias}" 
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Максимальное значение регламентного диапазона" Binding="{Binding MaxValue}"
+                            <DataGridTextColumn Header="Максимальное значение регламентного диапазона" Binding="{Binding MaxValue, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
-                            <DataGridTextColumn Header="Минимальное значение регламентного диапазона" Binding="{Binding MaxValue}"
+                            <DataGridTextColumn Header="Минимальное значение регламентного диапазона" Binding="{Binding MaxValue, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
-                            <DataGridTextColumn Header="Единица измерения регламентного диапазона" Binding="{Binding CoefficientAlias}"
-                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
+                            <DataGridTextColumn Header="Единица измерения регламентного диапазона" Binding="{Binding CoefficientAlias, Mode=TwoWay}"
+                                                ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
+                                                IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -137,7 +141,7 @@
                             <DataGridTextColumn Header="Обозначение коэффициента" Binding="{Binding Alias}" Width="0.6*" 
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Значение коэффициента" Binding="{Binding CoefficientValue}"
+                            <DataGridTextColumn Header="Значение коэффициента" Binding="{Binding CoefficientValue, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                         </DataGrid.Columns>
                     </DataGrid>

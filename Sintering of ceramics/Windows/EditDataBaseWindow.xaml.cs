@@ -20,6 +20,7 @@ namespace Sintering_of_ceramics
 
         private readonly Context _context;
         private readonly CreateEditDeleteWindow _createEditDeleteWindow;
+        private readonly CreateEditEmpiricalModel _createEditEmpiricalModel;
         private delegate void NoArgDelegate();
         private string _defaultDescription = "Нету описания для свойства";
         private int _mathModelStepsAmount;
@@ -90,10 +91,11 @@ namespace Sintering_of_ceramics
         #endregion
 
 
-        public EditDataBaseWindow(Context context, CreateEditDeleteWindow createEditDeleteWindow)
+        public EditDataBaseWindow(Context context, CreateEditDeleteWindow createEditDeleteWindow, CreateEditEmpiricalModel createEditEmpiricalModel)
         {
             _context = context;
             _createEditDeleteWindow = createEditDeleteWindow;
+            _createEditEmpiricalModel = createEditEmpiricalModel;
             MathModelStepsAmount = Properties.Settings.Default.StepsAmount;
             Epsilon = Properties.Settings.Default.Epsilon;
 
@@ -691,85 +693,9 @@ namespace Sintering_of_ceramics
 
         private void CreateEmpiricalModel(object sender, RoutedEventArgs e)
         {
-            TheoreticalMMParams param = new();
-            Material m = new();
 
-            _createEditDeleteWindow.InitializeWindow("Добавление эмпирической модели", Enums.WindowActionTypeEnum.Create,
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient))?.Description ?? _defaultDescription,
-                    DValue = 0,
-                    Name = nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient))?.Description ?? _defaultDescription,
-                    DValue = 0,
-                    Name = nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.GrainBoundaryDiffusionActivationEnergy))?.Description ?? _defaultDescription,
-                    DValue = 0,
-                    Name = nameof(param.GrainBoundaryDiffusionActivationEnergy)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.SurfaceSelfDiffusionActivationEnergy))?.Description ?? _defaultDescription,
-                    DValue = 0,
-                    Name = nameof(param.SurfaceSelfDiffusionActivationEnergy)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.MaterialId))?.Description ?? _defaultDescription,
-                    LValues = Materials.Cast<object>().ToList(),
-                    Name = nameof(param.MaterialId),
-                    DisplayMemberPath = nameof(m.Name)
-                }
-            );
-
-            _createEditDeleteWindow.ShowDialog();
-
-            if (_createEditDeleteWindow.ResultValues.Count != 5)
-                return;
-
-            var theoreticalMMParam = new TheoreticalMMParams()
-            {
-                GrainBoundaryDiffusionActivationEnergy =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.GrainBoundaryDiffusionActivationEnergy)]),
-                PreExponentialFactorOfSurfaceSelfCoefficient =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient)]),
-                PreExponentialFactorOfGraindBoundaryDiffusionCoefficient =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient)]),
-                SurfaceSelfDiffusionActivationEnergy =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.SurfaceSelfDiffusionActivationEnergy)]),
-                MaterialId = Materials[(int)_createEditDeleteWindow.ResultValues[nameof(param.MaterialId)]].Id
-            };
-
-            if (_context.TheoreticalMMParams.AsNoTracking().FirstOrDefault(p => p.MaterialId == theoreticalMMParam.MaterialId) != null)
-            {
-                MessageBox.Show($"У выбранного материала уже есть параметры теоретической математической модели",
-                    "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            _context.TheoreticalMMParams.Add(theoreticalMMParam);
-
-            _context.SaveChanges();
-            TheoreticalMMParams.Add(theoreticalMMParam);
-
-            theoreticalMMParamsGrid.ItemsSource = null;
-            theoreticalMMParamsGrid.ItemsSource = TheoreticalMMParams;
+            _createEditEmpiricalModel.InitializeWindow("Создание эмперической модели", Enums.WindowActionTypeEnum.Create, null);
+            _createEditEmpiricalModel.ShowDialog();
         }
 
         private void DeleteEmpiricalModel(object sender, RoutedEventArgs e)
