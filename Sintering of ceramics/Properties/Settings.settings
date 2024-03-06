@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="StepsAmount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="MaxDivisionAmount" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>

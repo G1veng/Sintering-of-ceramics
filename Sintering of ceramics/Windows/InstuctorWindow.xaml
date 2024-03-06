@@ -1,0 +1,22 @@
+﻿<Window x:Class="Sintering_of_ceramics.Windows.InstuctorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sintering_of_ceramics.Windows"
+        mc:Ignorable="d"
+        Title="InstuctorWindow" Height="450" Width="800">
+    <Grid>
+        <Button Content="Создать сценарий" HorizontalAlignment="Center" Margin="0,330,0,0" VerticalAlignment="Top" Height="42" Width="172" BorderBrush="#FF686868" Background="White" FontWeight="Bold" FontSize="14"/>
+        <Label Content="Тип материала" HorizontalAlignment="Left" Margin="57,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
+        <Label Content="Марка печи" HorizontalAlignment="Left" Margin="231,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
+        <Label Content="Показатель качества" HorizontalAlignment="Left" Margin="380,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
+        <ComboBox HorizontalAlignment="Left" Margin="57,64,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Margin="384,64,0,0" VerticalAlignment="Top" Width="149"/>
+        <ComboBox HorizontalAlignment="Left" Margin="217,64,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Для заданных входных параметров процесса спекания Х варьированием режимных параметров U&#xD;&#xA;в регламентных диапазонах Uϵ[Umin, Umax] по математической модели найти такие их значения,&#xD;&#xA;которые обеспечивают требуемое качество твердого сплава: П≤Пmax , p&gt;=p min , bb ≥bbmin, HR ≥ HRmin,&#xD;&#xA;&#xD;&#xA;где П max – максимальная предельная остаточная пористость твердого сплава, %;&#xD;&#xA;p min – минимальная предельная плотность сплава, кг/м3;&#xD;&#xA;bb min – минимальная предельная прочность твердого сплава при поперечном изгибе, МПа;&#xD;&#xA;HR min   – минимальная предельная твердость сплава (по Роквеллу), ед.&#xD;&#xA;" HorizontalAlignment="Center" VerticalAlignment="Center" Height="188" Width="746" FontStyle="Italic" FontSize="14"/>
+        <Label Content="Обучаемый" HorizontalAlignment="Left" Margin="608,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
+        <ComboBox HorizontalAlignment="Left" Margin="594,64,0,0" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>
