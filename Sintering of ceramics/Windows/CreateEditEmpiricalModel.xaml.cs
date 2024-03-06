@@ -29,6 +29,7 @@ namespace Sintering_of_ceramics.Windows
     {
         private readonly Context _context;
 
+        private int? _modelId;
         private EmpiricalModel? _empiricalModel;
         private List<ParamRange> _paramRanges;
         private List<EmpiricalModelCoeff> _empiricalModelCoeffs;
@@ -48,23 +49,48 @@ namespace Sintering_of_ceramics.Windows
 
         public void InitializeWindow(string actionName, WindowActionTypeEnum actionType, int? modelId)
         {
+            _modelId = modelId;
             this.Title = actionName;
             actionButton.Content = actionType.GetAttributeOfType<DescriptionAttribute>()?.Description ?? string.Empty;
-            EmpiricalModelTypeComboBox.ItemsSource = _context.EmpiricalModelTypes.AsNoTracking().ToList();
-            EmpiricalModelTypeComboBox.SelectedIndex = 0;
-            MaterialsComboBox.ItemsSource = _context.Materials.AsNoTracking().ToList();
-            MaterialsComboBox.SelectedIndex = 0;
-            OvensComboBox.ItemsSource = _context.Equipments.AsNoTracking().ToList();
-            OvensComboBox.SelectedIndex = 0;
-            ParamRangesDataGrid.ItemsSource = _paramRanges;
-            CoefficientsDataGrid.ItemsSource = _empiricalModelCoeffs;
+            var modelTypes = _context.EmpiricalModelTypes.AsNoTracking().ToList();
+            var materials = _context.Materials.AsNoTracking().ToList();
+            var equipments = _context.Equipments.AsNoTracking().ToList();
 
             if (modelId.HasValue)
             {
-                _empiricalModel = _context.EmpiricalModels.FirstOrDefault(x => x.Id == modelId);
+                var model = _context.EmpiricalModels
+                    .AsNoTracking()
+                    .Include(x => x.ParamsRanges).ThenInclude(x => x.Unit)
+                    .Include(x => x.EmpiricalModelCoeffs)
+                    .First(x => x.Id == modelId);
+
+                model.ParamsRanges.ForEach(p =>
+                {
+                    p.Alias = p.Unit.LetterAlias;
+                    p.CoefficientAlias = p.Unit.Alias;
+                });
+
+                _empiricalModel = model;
+                EmpiricalModelTypeComboBox.ItemsSource = modelTypes;
+                EmpiricalModelTypeComboBox.SelectedIndex = modelTypes.FindIndex(0, m => m.Id == model.TypeId);
+                MaterialsComboBox.ItemsSource = materials;
+                MaterialsComboBox.SelectedIndex = materials.FindIndex(0, m => m.Id == model.MaterialId);
+                OvensComboBox.ItemsSource = equipments;
+                OvensComboBox.SelectedIndex = equipments.FindIndex(0, o => o.Id == model.EquipmentId);
+                ParamRangesDataGrid.ItemsSource = model.ParamsRanges;
+                CoefficientsDataGrid.ItemsSource = model.EmpiricalModelCoeffs;
+                Formula.Text = model.Formula;
             }
             else
             {
+                EmpiricalModelTypeComboBox.ItemsSource = modelTypes;
+                EmpiricalModelTypeComboBox.SelectedIndex = 0;
+                MaterialsComboBox.ItemsSource = materials;
+                MaterialsComboBox.SelectedIndex = 0;
+                OvensComboBox.ItemsSource = equipments;
+                OvensComboBox.SelectedIndex = 0;
+                ParamRangesDataGrid.ItemsSource = _paramRanges;
+                CoefficientsDataGrid.ItemsSource = _empiricalModelCoeffs;
                 _empiricalModel = new EmpiricalModel();
             }
         }
@@ -108,13 +134,60 @@ namespace Sintering_of_ceramics.Windows
                 {
                     _empiricalModelCoeffs.Add(new EmpiricalModelCoeff
                     {
-                        Alias = letter
+                        Alias = letter,
                     });
                 }
             }
 
             ParamRangesDataGrid.Items.Refresh();
             CoefficientsDataGrid.Items.Refresh();
+        }
+
+        private void ActionButtonPress(object sender, RoutedEventArgs e)
+        {
+            if (!_modelId.HasValue)
+            {
+                var typeId = ((EmpiricalModelType)EmpiricalModelTypeComboBox.Items[EmpiricalModelTypeComboBox.SelectedIndex]).Id;
+                var materialId = ((Material)MaterialsComboBox.Items[MaterialsComboBox.SelectedIndex]).Id;
+
+                if (_context.EmpiricalModels.AsNoTracking()
+                    .FirstOrDefault(m => m.TypeId == typeId && m.MaterialId == materialId) != null)
+                {
+                    MessageBox.Show("Эмпирическая модель данного типа уже сущеуствует для данного материала, пожалуйста, выберите другой тип или материал",
+                            "Уведомление", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                    return;
+                }
+
+                var res = _context.EmpiricalModels.Add(new EmpiricalModel()
+                {
+                    EmpiricalModelCoeffs = _empiricalModelCoeffs,
+                    TypeId = typeId,
+                    MaterialId = materialId,
+                    Formula = Formula.Text,
+                    EquipmentId = ((Equipment)OvensComboBox.Items[OvensComboBox.SelectedIndex]).Id,
+                    ParamsRanges = _paramRanges
+                });
+
+                var r = res.Entity;
+            }
+            else
+            {
+                var model = _context.EmpiricalModels.First(x => x.Id == _modelId);
+
+                model.MaterialId = ((Material)MaterialsComboBox.Items[MaterialsComboBox.SelectedIndex]).Id;
+                model.Formula = Formula.Text;
+                model.EmpiricalModelCoeffs = _empiricalModelCoeffs;
+                model.TypeId = ((EmpiricalModelType)EmpiricalModelTypeComboBox.Items[EmpiricalModelTypeComboBox.SelectedIndex]).Id;
+                model.EquipmentId = ((Equipment)OvensComboBox.Items[OvensComboBox.SelectedIndex]).Id;
+                model.ParamsRanges = _paramRanges;
+            }
+
+            _context.SaveChanges();
+
+            _paramRanges.Clear();
+            _empiricalModelCoeffs.Clear();
+            this.Hide();
         }
     }
 }

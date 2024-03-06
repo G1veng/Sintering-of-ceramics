@@ -5,6 +5,7 @@ using Sintering_of_ceramics.Helpers;
 using Sintering_of_ceramics.Models;
 using Sintering_of_ceramics.Windows;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace Sintering_of_ceramics
 
         public TheoreticalMMParams? SelectedTheoreticalMMParam {  get; set; }
 
-        public ObservableCollection<EmpiricalModel> EmpiricalModels { get; set; }
+        public ObservableCollection<EmpiricalModel>? EmpiricalModels { get; set; }
         public EmpiricalModel? SelectedEmpiricalModel { get; set; }
 
         public int MathModelStepsAmount { get => _mathModelStepsAmount; 
@@ -106,25 +107,7 @@ namespace Sintering_of_ceramics
                 .ToList());
             TheoreticalMMParams = new ObservableCollection<TheoreticalMMParams>(
                 _context.TheoreticalMMParams.AsNoTracking().ToList());
-            EmpiricalModels = new ObservableCollection<EmpiricalModel>(
-                _context.EmpiricalModels.AsNoTracking()
-                .Include(x => x.Type)
-                .Include(x => x.Material)
-                .Include(x => x.Equipment)
-                .Include(x => x.ParamsRanges).ThenInclude(x => x.Unit)
-                .ToList());
-
-            foreach (var model in EmpiricalModels)
-            {
-                model.ParamsRanges.ForEach(param =>
-                {
-                    model.RangeParamsAlias += $"{param.Unit.Alias}, ";
-                });
-                model.RangeParamsAlias = model.RangeParamsAlias.TrimEnd().TrimEnd(',');
-                model.MaterialAlias = model.Material.Name;
-                model.EmpiricalModelTypeAlias = model.Type.Alias;
-                model.EquipmentAlias = model.Equipment.Manufacturer;
-            }
+            InitializeImpiricalMathModels();
 
             InitializeComponent();
         }
@@ -696,125 +679,66 @@ namespace Sintering_of_ceramics
 
             _createEditEmpiricalModel.InitializeWindow("Создание эмперической модели", Enums.WindowActionTypeEnum.Create, null);
             _createEditEmpiricalModel.ShowDialog();
+
+            InitializeImpiricalMathModels();
+            empiricalMathModelsGrid.ItemsSource = null;
+            empiricalMathModelsGrid.ItemsSource = EmpiricalModels;
         }
 
         private void DeleteEmpiricalModel(object sender, RoutedEventArgs e)
         {
-            var selectedTheoreticalMMParams = theoreticalMMParamsGrid.SelectedItems.Cast<TheoreticalMMParams>().ToList();
+            var selectedEmpiricalMathModels = empiricalMathModelsGrid.SelectedItems.Cast<EmpiricalModel>().ToList();
+            var coefs = new List<EmpiricalModelCoeff>();
+            selectedEmpiricalMathModels.Select(x => x.EmpiricalModelCoeffs).ToList().ForEach(c => coefs.AddRange(c));
 
-            _context.TheoreticalMMParams.RemoveRange(selectedTheoreticalMMParams);
+            _context.EmpiricalModelCoeffs.RemoveRange(coefs);
+            _context.EmpiricalModels.RemoveRange(selectedEmpiricalMathModels);
             _context.SaveChanges();
 
-            TheoreticalMMParams = new ObservableCollection<TheoreticalMMParams>(TheoreticalMMParams.Except(selectedTheoreticalMMParams));
+            InitializeImpiricalMathModels();
 
-            theoreticalMMParamsGrid.ItemsSource = null;
-            theoreticalMMParamsGrid.ItemsSource = TheoreticalMMParams;
+            empiricalMathModelsGrid.ItemsSource = null;
+            empiricalMathModelsGrid.ItemsSource = EmpiricalModels;
         }
 
         private void EditEmpiricalModel(object sender, RoutedEventArgs e)
         {
-            if (SelectedTheoreticalMMParam == null)
+            if (SelectedEmpiricalModel == null)
                 return;
 
-            TheoreticalMMParams param = new();
-            Material m = new();
+            _createEditEmpiricalModel.InitializeWindow("Редактирование эмперической модели", Enums.WindowActionTypeEnum.Edit, SelectedEmpiricalModel.Id);
+            _createEditEmpiricalModel.ShowDialog();
 
-            var selectedIndex = 0;
-            for (int i = 0; i < Materials.Count; i++)
-            {
-                if (Materials[i].TheoreticalMMParam.Id != SelectedTheoreticalMMParam.Id)
-                    continue;
+            InitializeImpiricalMathModels();
 
-                selectedIndex = i;
-                break;
-            }
-
-            _createEditDeleteWindow.InitializeWindow("Редактирование параметра теоретической математической модели", Enums.WindowActionTypeEnum.Edit,
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient))?.Description ?? _defaultDescription,
-                    DValue = SelectedTheoreticalMMParam.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient,
-                    Name = nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient))?.Description ?? _defaultDescription,
-                    DValue = SelectedTheoreticalMMParam.PreExponentialFactorOfSurfaceSelfCoefficient,
-                    Name = nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.GrainBoundaryDiffusionActivationEnergy))?.Description ?? _defaultDescription,
-                    DValue = SelectedTheoreticalMMParam.GrainBoundaryDiffusionActivationEnergy,
-                    Name = nameof(param.GrainBoundaryDiffusionActivationEnergy)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.SurfaceSelfDiffusionActivationEnergy))?.Description ?? _defaultDescription,
-                    DValue = SelectedTheoreticalMMParam.SurfaceSelfDiffusionActivationEnergy,
-                    Name = nameof(param.SurfaceSelfDiffusionActivationEnergy)
-                },
-                new ModelParamDTO()
-                {
-                    Description =
-                        ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(TheoreticalMMParams),
-                            nameof(param.MaterialId))?.Description ?? _defaultDescription,
-                    LValues = Materials.Cast<object>().ToList(),
-                    Name = nameof(param.MaterialId),
-                    DisplayMemberPath = nameof(m.Name),
-                    SelectedIndex = selectedIndex
-                }
-            );
-
-            _createEditDeleteWindow.ShowDialog();
-
-            if (_createEditDeleteWindow.ResultValues.Count != 5)
-                return;
-
-            var theoreticalMMParam = _context.TheoreticalMMParams.FirstOrDefault(param => param.Id == SelectedTheoreticalMMParam.Id);
-            if (theoreticalMMParam != null)
-            {
-                theoreticalMMParam.GrainBoundaryDiffusionActivationEnergy =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.GrainBoundaryDiffusionActivationEnergy)]);
-                theoreticalMMParam.PreExponentialFactorOfSurfaceSelfCoefficient =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient)]);
-                theoreticalMMParam.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient)]);
-                theoreticalMMParam.SurfaceSelfDiffusionActivationEnergy =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.SurfaceSelfDiffusionActivationEnergy)]);
-                theoreticalMMParam.MaterialId = Materials[(int)_createEditDeleteWindow.ResultValues[nameof(param.MaterialId)]].Id;
-            }
-
-            _context.SaveChanges();
-
-            foreach (var arrTheoreticalMMParam in TheoreticalMMParams)
-            {
-                if (arrTheoreticalMMParam.Id != SelectedTheoreticalMMParam.Id)
-                    continue;
-
-                arrTheoreticalMMParam.GrainBoundaryDiffusionActivationEnergy =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.GrainBoundaryDiffusionActivationEnergy)]);
-                arrTheoreticalMMParam.PreExponentialFactorOfSurfaceSelfCoefficient =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.PreExponentialFactorOfSurfaceSelfCoefficient)]);
-                arrTheoreticalMMParam.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient)]);
-                arrTheoreticalMMParam.SurfaceSelfDiffusionActivationEnergy =
-                    Double.Parse((string)_createEditDeleteWindow.ResultValues[nameof(param.SurfaceSelfDiffusionActivationEnergy)]);
-                arrTheoreticalMMParam.MaterialId = Materials[(int)_createEditDeleteWindow.ResultValues[nameof(param.MaterialId)]].Id;
-            }
-
-            theoreticalMMParamsGrid.ItemsSource = null;
-            theoreticalMMParamsGrid.ItemsSource = TheoreticalMMParams;
+            empiricalMathModelsGrid.ItemsSource = null;
+            empiricalMathModelsGrid.ItemsSource = EmpiricalModels;
         }
 
         #endregion
+
+        private void InitializeImpiricalMathModels()
+        {
+            EmpiricalModels = new ObservableCollection<EmpiricalModel>(
+                _context.EmpiricalModels.AsNoTracking()
+                .Include(x => x.Type)
+                .Include(x => x.Material)
+                .Include(x => x.Equipment)
+                .Include(x => x.ParamsRanges).ThenInclude(x => x.Unit)
+                .Include(x => x.EmpiricalModelCoeffs)
+                .ToList());
+
+            foreach (var model in EmpiricalModels)
+            {
+                model.ParamsRanges.ForEach(param =>
+                {
+                    model.RangeParamsAlias += $"{param.Unit.Alias}, ";
+                });
+                model.RangeParamsAlias = model.RangeParamsAlias.TrimEnd().TrimEnd(',');
+                model.MaterialAlias = model.Material.Name;
+                model.EmpiricalModelTypeAlias = model.Type.Alias;
+                model.EquipmentAlias = model.Equipment.Manufacturer;
+            }
+        }
     }
 }

@@ -107,9 +107,9 @@
                             <DataGridTextColumn Header="Обозначение регламентного диапазона" Binding="{Binding Alias}" 
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Максимальное значение регламентного диапазона" Binding="{Binding MaxValue, Mode=TwoWay}"
+                            <DataGridTextColumn Header="Минимальное значение регламентного диапазона" Binding="{Binding MinValue, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
-                            <DataGridTextColumn Header="Минимальное значение регламентного диапазона" Binding="{Binding MaxValue, Mode=TwoWay}"
+                            <DataGridTextColumn Header="Максимальное значение регламентного диапазона" Binding="{Binding MaxValue, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                             <DataGridTextColumn Header="Единица измерения регламентного диапазона" Binding="{Binding CoefficientAlias, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
@@ -141,7 +141,7 @@
                             <DataGridTextColumn Header="Обозначение коэффициента" Binding="{Binding Alias}" Width="0.6*" 
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Значение коэффициента" Binding="{Binding CoefficientValue, Mode=TwoWay}"
+                            <DataGridTextColumn Header="Значение коэффициента" Binding="{Binding Value, Mode=TwoWay}"
                                                 ElementStyle="{StaticResource wordWrapStyleView}" EditingElementStyle="{StaticResource wordWrapStyleEdit}"/>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -155,6 +155,6 @@
 
         <Button FontSize="{DynamicResource ResourceKey=BigFontSize}" Grid.Row="1" Width="120px" 
                 Height="40px" Content="Действие" HorizontalAlignment="Right" Margin="0px 0px 20px 0px"
-                x:Name="actionButton"/>
+                x:Name="actionButton" Click="ActionButtonPress"/>
     </Grid>
 </Window>
