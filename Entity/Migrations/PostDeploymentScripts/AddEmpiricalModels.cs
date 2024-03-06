@@ -9,22 +9,23 @@ namespace Entity.Migrations.PostDeploymentScripts
             migrationBuilder.Sql(@"
             DROP TABLE IF EXISTS tempUnits;
             CREATE TEMP TABLE tempUnits AS SELECT * FROM ParamsRangesUnits;
-            INSERT INTO tempUnits (Id, Alias) VALUES
-            (1, '--'),
-            (2, 'атм'),
-            (3, '°C'),
-            (4, 'мин');
+            INSERT INTO tempUnits (Id, Alias, LetterAlias) VALUES
+            (1, '--', ''),
+            (2, 'атм', 'Pg'),
+            (3, '°C', 'T'),
+            (4, 'мин', 'tao');
             INSERT INTO ParamsRangesUnits SELECT * FROM tempUnits
             WHERE NOT EXISTS (SELECT * FROM ParamsRangesUnits WHERE ParamsRangesUnits.Id = tempUnits.Id);
             UPDATE ParamsRangesUnits SET Alias = (SELECT Alias FROM tempUnits WHERE tempUnits.Id = ParamsRangesUnits.Id);
+            UPDATE ParamsRangesUnits SET LetterAlias = (SELECT LetterAlias FROM tempUnits WHERE tempUnits.Id = ParamsRangesUnits.Id);
 
             DROP TABLE IF EXISTS tempEmpiricalModelTypes;
             CREATE TEMP TABLE tempEmpiricalModelTypes AS SELECT * FROM EmpiricalModelTypes;
-            INSERT INTO tempEmpiricalModelTypes (Id, Alias) VALUES
-            (1, 'Плотность твердого сплава'),
-            (2, 'Прочность твердого сплава при поперечном изгибе'),
-            (3, 'Остаточная пористость твердого сплава'),
-            (4, 'Твердость сплава');
+            INSERT INTO tempEmpiricalModelTypes (Id, Alias, UnitAlias) VALUES
+            (1, 'Плотность твердого сплава', 'кг/см³'),
+            (2, 'Прочность твердого сплава при поперечном изгибе', 'МПа'),
+            (3, 'Остаточная пористость твердого сплава', '%'),
+            (4, 'Твердость сплава', 'кгс/мм²');
             INSERT INTO EmpiricalModelTypes SELECT * FROM tempEmpiricalModelTypes
             WHERE NOT EXISTS (SELECT * FROM EmpiricalModelTypes WHERE tempEmpiricalModelTypes.Id = EmpiricalModelTypes.Id);
             UPDATE EmpiricalModelTypes SET Alias = (SELECT Alias FROM tempEmpiricalModelTypes WHERE tempEmpiricalModelTypes.Id = EmpiricalModelTypes.Id);
@@ -46,14 +47,14 @@ namespace Entity.Migrations.PostDeploymentScripts
             DROP TABLE IF EXISTS tempParamsRanges;
             CREATE TEMP TABLE tempParamsRanges AS SELECT * FROM ParamsRanges;
             INSERT INTO tempParamsRanges (Id, ModelId, UnitId, MaxValue, MinValue, Step) VALUES
-            (1, 1, 2, 80, 40, 2),
+            (1, 1, 2, 8, 4, 2),
             (2, 1, 3, 1500, 1300, 10),
-            (3, 2, 2, 80, 40, 2),
+            (3, 2, 2, 8, 4, 2),
             (4, 2, 3, 1500, 1300, 10),
             (5, 3, 3, 1550, 1300, 10),
             (6, 3, 4, 60, 30, 2),
-            (7, 4, 3, 1400, 1200, 10),
-            (8, 4, 4, 70, 50, 1);
+            (7, 4, 3, 1450, 1200, 10),
+            (8, 4, 4, 70, 30, 1);
             INSERT INTO ParamsRanges SELECT * FROM tempParamsRanges
             WHERE NOT EXISTS (SELECT * FROM ParamsRanges WHERE tempParamsRanges.Id = ParamsRanges.Id);
             UPDATE ParamsRanges SET UnitId = (SELECT UnitId FROM tempParamsRanges WHERE tempParamsRanges.Id = ParamsRanges.Id);

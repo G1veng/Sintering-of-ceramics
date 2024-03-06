@@ -20,6 +20,7 @@ public class Program
                 services.AddScoped<AuthorizationWindow>();
                 services.AddScoped<EditDataBaseWindow>();
                 services.AddScoped<CreateEditDeleteWindow>();
+                services.AddScoped<CreateEditEmpiricalModel>();
                 services.AddDbContext<Context>(options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["mainDb"].ConnectionString));
             })

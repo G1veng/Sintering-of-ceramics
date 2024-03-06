@@ -132,6 +132,7 @@ namespace Entity
         public DbSet<EmpiricalModelType> EmpiricalModelTypes => Set<EmpiricalModelType>();
         public DbSet<ParamRange> ParamsRanges => Set<ParamRange>();
         public DbSet<ParamRangeUnit> ParamsRangesUnits => Set<ParamRangeUnit>();
+
         #endregion
     }
 }

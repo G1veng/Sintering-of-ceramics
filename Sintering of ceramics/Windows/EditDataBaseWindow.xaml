@@ -294,5 +294,81 @@
                 </Grid>
             </TabControl>
         </TabItem>
+        <TabItem >
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="{StaticResource AvgGridFontSize}" Width="170px" TextWrapping="Wrap" TextAlignment="Center">
+                        Эмпирические математические модели
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+            <TabControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=EmpiricalModels, 
+                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedEmpiricalModel, 
+                                            Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                            ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" FontSize="{DynamicResource ResourceKey=AvgGridFontSize}"
+                            x:Name="empiricalMathModelsGrid">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Width="auto">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Id" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding EmpiricalModelTypeAlias}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Тип математической модели" TextWrapping="Wrap"
+                                                TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding MaterialAlias}" Width="auto">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Материал" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding EquipmentAlias}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Тип печи" TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding RangeParamsAlias}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Характеристики объекта исследования" TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Formula}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Формула" TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Height="40px" Width="120px" Content="Удалить" 
+                        FontSize="{StaticResource ResourceKey=MainFontSize}" Click="DeleteEmpiricalModel"/>
+                        <Button Height="40px" Width="120px" Content="Добавить" 
+                        FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="1" Click="CreateEmpiricalModel"/>
+                        <Button Height="40px" Width="120px" Content="Изменить"
+                        FontSize="{StaticResource ResourceKey=MainFontSize}" Grid.Column="2" Click="EditEmpiricalModel"/>
+                    </Grid>
+                </Grid>
+            </TabControl>
+        </TabItem>
     </TabControl>
 </Window>

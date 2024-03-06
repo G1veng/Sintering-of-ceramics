@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string Alias { get; set; } = null!;
+        public string LetterAlias { get; set; } = null!;
 
         public virtual List<ParamRange>? ParamRanges { get; set; }
     }

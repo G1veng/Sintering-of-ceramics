@@ -6,24 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Entity.Migrations
 {
     /// <inheritdoc />
-    public partial class FixedNaming : Migration
+    public partial class AddUnitTiEmpiricalModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Furmula",
-                table: "EmpiricalModels",
-                newName: "Formula");
+            migrationBuilder.AddColumn<string>(
+                name: "UnitAlias",
+                table: "EmpiricalModelTypes",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: "");
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Formula",
-                table: "EmpiricalModels",
-                newName: "Furmula");
+            migrationBuilder.DropColumn(
+                name: "UnitAlias",
+                table: "EmpiricalModelTypes");
         }
     }
 }
