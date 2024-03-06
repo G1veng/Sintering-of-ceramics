@@ -14,8 +14,11 @@
         /// Единица измерения показателя качества
         /// </summary>
         public double Unit { get; set; }
+        public string UnitAlias { get; set; } = null!;
 
-        public virtual List<ExperimentalData> ExperimentalDatas { get; set; } = null!;
-        public virtual List<Model> Models { get; set; } = null!;
+        public string Alias { get; set; } = null!;
+
+        public virtual List<ExperimentalData>? ExperimentalDatas { get; set; }
+        public virtual List<Model>? Models { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,12 +11,29 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entity.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240306204248_FixedScriptRelationsship")]
+    partial class FixedScriptRelationsship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
+
+            modelBuilder.Entity("EmergencySituationTask", b =>
+                {
+                    b.Property<int>("EmergencySituationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TasksId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EmergencySituationId", "TasksId");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("EmergencySituationTask");
+                });
 
             modelBuilder.Entity("Entity.Models.ControlAction", b =>
                 {
@@ -477,18 +495,21 @@ namespace Entity.Migrations
                     b.Property<int>("QualityId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("RegimeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ScriptId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmergencySituationId");
 
                     b.HasIndex("MaterialId");
 
                     b.HasIndex("OvenTypeId");
 
                     b.HasIndex("QualityId");
+
+                    b.HasIndex("RegimeId");
 
                     b.HasIndex("ScriptId")
                         .IsUnique();
@@ -550,6 +571,21 @@ namespace Entity.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EmergencySituationTask", b =>
+                {
+                    b.HasOne("Entity.Models.EmergencySituation", null)
+                        .WithMany()
+                        .HasForeignKey("EmergencySituationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Models.Task", null)
+                        .WithMany()
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModel", b =>
@@ -718,10 +754,6 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.Task", b =>
                 {
-                    b.HasOne("Entity.Models.EmergencySituation", null)
-                        .WithMany("Tasks")
-                        .HasForeignKey("EmergencySituationId");
-
                     b.HasOne("Entity.Models.Material", "Material")
                         .WithMany()
                         .HasForeignKey("MaterialId")
@@ -740,6 +772,12 @@ namespace Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entity.Models.Regime", "Regime")
+                        .WithMany()
+                        .HasForeignKey("RegimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Entity.Models.Script", "Script")
                         .WithOne("Task")
                         .HasForeignKey("Entity.Models.Task", "ScriptId")
@@ -751,6 +789,8 @@ namespace Entity.Migrations
                     b.Navigation("OvenType");
 
                     b.Navigation("Quality");
+
+                    b.Navigation("Regime");
 
                     b.Navigation("Script");
                 });
@@ -782,11 +822,6 @@ namespace Entity.Migrations
                     b.Navigation("SecondExperimentalDatas");
 
                     b.Navigation("ThirdExperimentalDatas");
-                });
-
-            modelBuilder.Entity("Entity.Models.EmergencySituation", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Entity.Models.EmpiricalModel", b =>

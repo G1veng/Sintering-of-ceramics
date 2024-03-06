@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity.Models
 {
@@ -20,5 +21,9 @@ namespace Entity.Models
         public virtual Role? Role { get; set; }
         public virtual List<Script>? ScriptsTrainee { get; set; }
         public virtual List<Script>? ScriptsInstructor { get; set; }
+
+        [NotMapped]
+        [Description("Роль")]
+        public string RoleAlias { get; set; } = null!;
     }
 }

@@ -4,19 +4,91 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sintering_of_ceramics.Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="InstuctorWindow" Height="450" Width="800">
+        Title="InstuctorWindow" Height="450" Width="900"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <sys:Double x:Key="MainFontSize">16</sys:Double>
+        <sys:Double x:Key="SmallFontSize">13</sys:Double>
+    </Window.Resources>
     <Grid>
-        <Button Content="Создать сценарий" HorizontalAlignment="Center" Margin="0,330,0,0" VerticalAlignment="Top" Height="42" Width="172" BorderBrush="#FF686868" Background="White" FontWeight="Bold" FontSize="14"/>
-        <Label Content="Тип материала" HorizontalAlignment="Left" Margin="57,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
-        <Label Content="Марка печи" HorizontalAlignment="Left" Margin="231,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
-        <Label Content="Показатель качества" HorizontalAlignment="Left" Margin="380,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
-        <ComboBox HorizontalAlignment="Left" Margin="57,64,0,0" VerticalAlignment="Top" Width="120"/>
-        <ComboBox HorizontalAlignment="Left" Margin="384,64,0,0" VerticalAlignment="Top" Width="149"/>
-        <ComboBox HorizontalAlignment="Left" Margin="217,64,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Для заданных входных параметров процесса спекания Х варьированием режимных параметров U&#xD;&#xA;в регламентных диапазонах Uϵ[Umin, Umax] по математической модели найти такие их значения,&#xD;&#xA;которые обеспечивают требуемое качество твердого сплава: П≤Пmax , p&gt;=p min , bb ≥bbmin, HR ≥ HRmin,&#xD;&#xA;&#xD;&#xA;где П max – максимальная предельная остаточная пористость твердого сплава, %;&#xD;&#xA;p min – минимальная предельная плотность сплава, кг/м3;&#xD;&#xA;bb min – минимальная предельная прочность твердого сплава при поперечном изгибе, МПа;&#xD;&#xA;HR min   – минимальная предельная твердость сплава (по Роквеллу), ед.&#xD;&#xA;" HorizontalAlignment="Center" VerticalAlignment="Center" Height="188" Width="746" FontStyle="Italic" FontSize="14"/>
-        <Label Content="Обучаемый" HorizontalAlignment="Left" Margin="608,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.358,-0.579" FontWeight="Bold" FontSize="14"/>
-        <ComboBox HorizontalAlignment="Left" Margin="594,64,0,0" VerticalAlignment="Top" Width="120"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock FontSize="{DynamicResource MainFontSize}" Text="Тип материала" TextAlignment="Center" VerticalAlignment="Bottom" Padding="0 0 0 10"/>
+                <ComboBox x:Name="materialsListComboBox" Grid.Row="1" Margin="10 10" VerticalAlignment="Top"
+                          ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Materials}"
+                          SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedMaterial, Mode=TwoWay}"
+                          DisplayMemberPath="Name">
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock FontSize="{DynamicResource MainFontSize}" Text="Марка печи" TextAlignment="Center" VerticalAlignment="Bottom" Padding="0 0 0 10"/>
+                <ComboBox x:Name="equipmentListComboBox" Grid.Row="1" Margin="10 10" VerticalAlignment="Top"
+                          ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Equipments}"
+                          SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedEquipment, Mode=TwoWay}"
+                          DisplayMemberPath="Manufacturer">
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock FontSize="{DynamicResource MainFontSize}" Text="Показатель качества" TextAlignment="Center" VerticalAlignment="Bottom" Padding="0 0 0 10"/>
+                <ComboBox x:Name="rangeParamComboBox" Grid.Row="1" Margin="10 10" VerticalAlignment="Top"
+                          ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Qualities}"
+                          SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedQualities, Mode=TwoWay}"
+                          DisplayMemberPath="Alias">
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock FontSize="{DynamicResource MainFontSize}" Text="Обучаемый" TextAlignment="Center" VerticalAlignment="Bottom" Padding="0 0 0 10"/>
+                <ComboBox x:Name="usersListComboBox" Grid.Row="1" Margin="10 10" VerticalAlignment="Top"
+                          ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=Users}"
+                          SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}},Path=SelectedUser, Mode=TwoWay}"
+                          DisplayMemberPath="Login">
+                </ComboBox>
+            </Grid>
+        </Grid>
+
+        <TextBox Grid.Row="1" x:Name="taskText"
+                 Text="Для заданных входных параметров процесса спекания Х варьированием режимных параметров U&#xD;&#xA;в регламентных диапазонах Uϵ[Umin, Umax] по математической модели найти такие их значения,&#xD;&#xA;которые обеспечивают требуемое качество твердого сплава: П≤Пmax , p&gt;=p min , bb ≥bbmin, HR ≥ HRmin,&#xD;&#xA;&#xD;&#xA;где П max – максимальная предельная остаточная пористость твердого сплава, %;&#xD;&#xA;p min – минимальная предельная плотность сплава, кг/м3;&#xD;&#xA;bb min – минимальная предельная прочность твердого сплава при поперечном изгибе, МПа;&#xD;&#xA;HR min   – минимальная предельная твердость сплава (по Роквеллу), ед.&#xD;&#xA;"
+                 HorizontalAlignment="Center" VerticalAlignment="Center" Height="188" Width="746" FontStyle="Italic" FontSize="14"/>
+
+        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="20" Width="150" Content="Создать сценарий" FontSize="{DynamicResource MainFontSize}"
+                BorderBrush="#FF686868" FontWeight="Bold" Click="CreateScript"/>
     </Grid>
 </Window>

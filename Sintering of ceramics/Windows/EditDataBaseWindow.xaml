@@ -60,7 +60,7 @@
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Логин" Binding="{Binding Login}"/>
                             <DataGridTextColumn Header="Пароль" Binding="{Binding Password}"/>
-                            <DataGridCheckBoxColumn Header="Администратор" Binding="{Binding IsAdmin}"/>
+                            <DataGridTextColumn Header="Роль" Binding="{Binding RoleAlias}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid Grid.Row="1">

@@ -21,7 +21,8 @@ namespace Entity.Migrations.PostDeploymentScripts
                 CREATE TEMP TABLE tempUsers AS SELECT * FROM Users;
                 INSERT INTO tempUsers (Id, Login, Password, IsAdmin, RoleId) VALUES 
                 (1, 'Admin', 'root', 1, 1),
-                (2, 'User', '1', 1, 4);
+                (2, 'User', '1', 0, 4),
+                (3, 'Instructor', '1', 0, 2);
                 INSERT INTO Users SELECT * FROM tempUsers
                 WHERE NOT EXISTS (SELECT * FROM Users WHERE tempUsers.Id = Users.Id);
                 UPDATE Users SET Login = (SELECT Login FROM tempUsers WHERE tempUsers.Id = Users.Id);");

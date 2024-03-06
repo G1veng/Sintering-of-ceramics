@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Microsoft.EntityFrameworkCore;
+using Sintering_of_ceramics.Enums;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -45,7 +46,10 @@ namespace Sintering_of_ceramics
             {
                 _wrongPasswordInputs = 0;
                 this.Hide();
-                _mainWindow.IsAdmin = user.IsAdmin;
+                _mainWindow.RoleId = user.RoleId;
+                _mainWindow.IsAdmin = user.RoleId == (int?)UserRoleEnum.Administrator;
+                _mainWindow.IsInstructor = user.RoleId == (int?)UserRoleEnum.Instructor;
+                _mainWindow.UserId = user.Id;
 
                 _mainWindow.Show();
 

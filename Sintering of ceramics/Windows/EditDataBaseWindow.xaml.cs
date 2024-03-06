@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -100,7 +101,12 @@ namespace Sintering_of_ceramics
             MathModelStepsAmount = Properties.Settings.Default.StepsAmount;
             Epsilon = Properties.Settings.Default.Epsilon;
 
-            Users = new ObservableCollection<User>(_context.Users.AsNoTracking().ToList());
+            Users = new ObservableCollection<User>(_context.Users.AsNoTracking().Include(x => x.Role).ToList());
+            foreach (var user in Users)
+            {
+                user.RoleAlias = user.Role!.Alias;
+            }
+
             Materials = new ObservableCollection<Material>(_context.Materials
                 .Include(m => m.TheoreticalMMParam)
                 .AsNoTracking()
@@ -131,7 +137,9 @@ namespace Sintering_of_ceramics
 
         private void CreateUser(object sender, RoutedEventArgs e)
         {
+            var roles = _context.Roles.AsNoTracking().ToList();
             User u = new();
+            Role r = new();
 
             _createEditDeleteWindow.InitializeWindow("Добавление пользователя", Enums.WindowActionTypeEnum.Create,
                 new ModelParamDTO()
@@ -152,8 +160,9 @@ namespace Sintering_of_ceramics
                 {
                     Description = ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(User),
                             nameof(u.IsAdmin))?.Description ?? _defaultDescription,
-                    BValue = false,
-                    Name = nameof(u.IsAdmin)
+                    LValues = roles.Cast<object>().ToList(),
+                    Name = nameof(r.Id),
+                    DisplayMemberPath = nameof(r.Alias)
                 });
 
             _createEditDeleteWindow.ShowDialog();
@@ -163,9 +172,10 @@ namespace Sintering_of_ceramics
             
             var user = new User()
             {
-                IsAdmin = (bool)_createEditDeleteWindow.ResultValues[nameof(u.IsAdmin)],
+                RoleId = roles[(int)_createEditDeleteWindow.ResultValues[nameof(r.Id)]].Id,
                 Login = (string)_createEditDeleteWindow.ResultValues[nameof(u.Login)],
-                Password = (string)_createEditDeleteWindow.ResultValues[nameof(u.Password)]
+                Password = (string)_createEditDeleteWindow.ResultValues[nameof(u.Password)],
+                RoleAlias = roles[(int)_createEditDeleteWindow.ResultValues[nameof(r.Id)]].Alias
             };
 
             _context.Users.Add(user);
@@ -195,7 +205,9 @@ namespace Sintering_of_ceramics
             if (SelectedUser == null)
                 return;
 
+            var roles = _context.Roles.AsNoTracking().ToList();
             User u = new();
+            Role r = new();
 
             _createEditDeleteWindow.InitializeWindow("Редактирование пользователя", Enums.WindowActionTypeEnum.Edit,
                 new ModelParamDTO()
@@ -216,8 +228,10 @@ namespace Sintering_of_ceramics
                 {
                     Description = ClassHelper.GetAttributeOfType<DescriptionAttribute>(typeof(User),
                             nameof(u.IsAdmin))?.Description ?? _defaultDescription,
-                    BValue = SelectedUser.IsAdmin,
-                    Name = nameof(u.IsAdmin)
+                    LValues = roles.Cast<object>().ToList(),
+                    Name = nameof(r.Id),
+                    DisplayMemberPath = nameof(r.Alias),
+                    SelectedIndex = roles.FindIndex(x => x.Id == SelectedUser.RoleId)
                 });
 
             _createEditDeleteWindow.ShowDialog();
@@ -230,7 +244,7 @@ namespace Sintering_of_ceramics
             {
                 user.Login = (string)_createEditDeleteWindow.ResultValues[nameof(u.Login)];
                 user.Password = (string)_createEditDeleteWindow.ResultValues[nameof(u.Password)];
-                user.IsAdmin = (bool)_createEditDeleteWindow.ResultValues[nameof(u.IsAdmin)];
+                user.RoleId = roles[(int)_createEditDeleteWindow.ResultValues[nameof(r.Id)]].Id;
             }
 
             _context.SaveChanges();
@@ -242,7 +256,7 @@ namespace Sintering_of_ceramics
 
                 arrUser.Login = (string)_createEditDeleteWindow.ResultValues[nameof(u.Login)];
                 arrUser.Password = (string)_createEditDeleteWindow.ResultValues[nameof(u.Password)];
-                arrUser.IsAdmin = (bool)_createEditDeleteWindow.ResultValues[nameof(u.IsAdmin)];
+                arrUser.RoleAlias = roles[(int)_createEditDeleteWindow.ResultValues[nameof(r.Id)]].Alias;
             }
 
             usersGrid.ItemsSource = null;
@@ -715,8 +729,6 @@ namespace Sintering_of_ceramics
             empiricalMathModelsGrid.ItemsSource = EmpiricalModels;
         }
 
-        #endregion
-
         private void InitializeImpiricalMathModels()
         {
             EmpiricalModels = new ObservableCollection<EmpiricalModel>(
@@ -740,5 +752,7 @@ namespace Sintering_of_ceramics
                 model.EquipmentAlias = model.Equipment.Manufacturer;
             }
         }
+
+        #endregion
     }
 }

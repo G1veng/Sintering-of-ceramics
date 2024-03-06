@@ -15,6 +15,7 @@ using ScottPlot;
 using ScottPlot.Plottable;
 using Sintering_of_ceramics.Enums;
 using Sintering_of_ceramics.Models;
+using Sintering_of_ceramics.Windows;
 
 namespace Sintering_of_ceramics
 {
@@ -24,6 +25,7 @@ namespace Sintering_of_ceramics
 
         private readonly Context _context;
         private readonly EditDataBaseWindow _editDataBaseWindow;
+        private readonly InstuctorWindow _instuctorWindow;
 
         private ObservableCollection<Material> _materialsList;
         private Material _selectedMaterial;
@@ -36,6 +38,7 @@ namespace Sintering_of_ceramics
         private double _excerptTime = 30;
         private double _pressure = 6;
         private bool _isAdmin = true;
+        private bool _isInstructor = true;
         private int _stepsAmount;
         private double _epsilon;
         private int _maxStepDivision;
@@ -127,6 +130,7 @@ namespace Sintering_of_ceramics
             }
         }
 
+        public int UserId { get; set; } = 1;
         public double AvarageGrainSize { get => _selectedMaterial.AvarageGrainSize; set => _selectedMaterial.AvarageGrainSize = value; }
         public double SurfaceLayerThickness { get => _selectedMaterial.SurfaceLayerThickness; set => _selectedMaterial.SurfaceLayerThickness = value; }
         public double Porosity { get => _selectedMaterial.Porosity; set => _selectedMaterial.Porosity = value; }
@@ -161,6 +165,8 @@ namespace Sintering_of_ceramics
         public double ExcerptTime { get => _excerptTime; set => _excerptTime = value; }
         public double Pressure { get => _pressure; set => _pressure = value; }
         public bool IsAdmin { get => _isAdmin; set { _isAdmin = value; NotifyPropertyChanged(); } }
+        public bool IsInstructor { get => _isInstructor; set { _isInstructor = value; NotifyPropertyChanged(); } }
+        public int? RoleId { get ; set; }
         public bool IsCalculateButtonEnabled { get => !_isInvalidElements.Any(); }
 
         public double ResultPorosity { get => _resultPorosity; set { _resultPorosity = value; NotifyPropertyChanged(); } }
@@ -190,10 +196,12 @@ namespace Sintering_of_ceramics
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public MainWindow(Context context, EditDataBaseWindow editDataBaseWindow)
+        public MainWindow(Context context, EditDataBaseWindow editDataBaseWindow,
+            InstuctorWindow instuctorWindow)
         {
             _context = context;
             _editDataBaseWindow = editDataBaseWindow;
+            _instuctorWindow = instuctorWindow;
             _charts = new Dictionary<WpfPlot, ScatterPlot>();
 
             _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
@@ -355,6 +363,12 @@ namespace Sintering_of_ceramics
             materialsListComboBox.SelectedIndex = material == null 
                 ? 0
                 : MaterialsList.IndexOf(material);
+        }
+
+        private void ShowInstructorWindow(object sender, RoutedEventArgs e)
+        {
+            _instuctorWindow.InitializeWindow(UserId);
+            _instuctorWindow.Show();
         }
 
         private void LogOut(object sender, RoutedEventArgs e)
