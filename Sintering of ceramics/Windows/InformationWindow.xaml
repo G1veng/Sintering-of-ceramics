@@ -1,0 +1,172 @@
+﻿<Window x:Class="Sintering_of_ceramics.Windows.InformationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sintering_of_ceramics.Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Справка" Height="450" Width="800"
+        Closing="Window_Closing">
+    <Window.Resources>
+        
+        <sys:Double x:Key="MainFontSize">16</sys:Double>
+        <sys:Double x:Key="SmallFontSize">13</sys:Double>
+        <sys:Double x:Key="BigFontSize">18</sys:Double>
+        
+    </Window.Resources>
+    <Grid>
+        <Menu>
+            <MenuItem Header="Выйти" FontSize="{DynamicResource MainFontSize}" Click="Close"/>
+        </Menu>
+        <TabControl Margin="0px 30px 0px 0px" >
+            <TabItem x:Name="General">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                            Спекание
+                        </TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabControl>
+                    <ScrollViewer>
+                        <StackPanel Margin="10 0">
+                            <TextBlock Margin="0 5 0 0" Text="Спекание" FontSize="{DynamicResource BigFontSize}"
+                                        FontWeight="Bold" TextAlignment="Center"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="{DynamicResource BigFontSize}" Margin="0 10">
+                                    Спекание – это уплотнение (усадка) поликристаллических материалов при термообработке. Процессы, протекающие при спекании и приводящие к повышению плотности материала:
+                                    <LineBreak/>1) уменьшение объема пор;
+                                    <LineBreak/>2) увеличение площади контакта между зернами;
+                                    <LineBreak/>3) рост зерен, изменение их формы и укладки.
+                                    <LineBreak/>Схема процесса спекания в производстве тонкодисперсных твердых сплавов представлена на рисунке 1.
+                                    <LineBreak/>
+                            </TextBlock>
+                            <Image Source="../Files/Sintering.jpg" Width="500" Height="500" 
+                                                       HorizontalAlignment="Center" Margin="0 -100 0 0"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="{DynamicResource BigFontSize}"
+                                       Margin="0 -100 0 0">
+                                <LineBreak/> Спеканию подлежат гетерогенные спрессованные порошки (порошковые прессовки), представляющие собой пористые тела, состоящие из контактирующих друг с другом частиц и пор между ними (межзеренная пористость) и характеризующиеся определенным составом компонентов, дисперсностью (средними размерами частиц компонентов) и пористостью
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabControl>
+            </TabItem>
+            <TabItem x:Name="SinteringModel">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                            Модель спекания
+                        </TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabControl>
+                    <ScrollViewer>
+                        <StackPanel Margin="10 0">
+                            <TextBlock Margin="0 5" Text="Модель спекания по диффузионному механизму"
+                                       FontSize="{DynamicResource BigFontSize}" FontWeight="Bold"
+                                       TextAlignment="Center"/>
+                            <TextBlock />
+                            <Image Source="../Files/DiffusionModel.png" Width="400" Height="200"/>
+                            <TextBlock FontSize="{DynamicResource BigFontSize}" TextWrapping="Wrap" HorizontalAlignment="Center">
+                                Рисунок 1 – Модель спекания по диффузионному механизму
+                            </TextBlock>
+                            <TextBlock FontSize="{DynamicResource BigFontSize}" TextWrapping="Wrap" Margin="0 5"
+                                Text="r — радиус сферы, ρ — радиус кривизны образовавшейся перемычки, x — радиус площади контакта, у — разность между диаметрами сферы и центрами сблизившихся "/>
+                            <TextBlock FontSize="{DynamicResource BigFontSize}" Margin="0 5">
+                                Если эти две сферы ввести в соприкосновение, нагреть до некоторой температуры и выдержать в таком состоянии, то они через некоторое время срастутся между собой. Перенос вещества в этом случае будет происходить от контактной поверхности между частицами к поверхности образующихся перемычек, как это показано стрелками на рисунке "Модель спекания по диффузионному механизму". Спекание сопровождается сближением частиц, т. е. общей усадкой системы.
+                                <LineBreak/>Если эти две сферы ввести в соприкосновение, нагреть до некоторой температуры и выдержать в таком состоянии, то они через некоторое время срастутся между собой. Перенос вещества в этом случае будет происходить от контактной поверхности между частицами к поверхности образующихся перемычек, как это показано стрелками на рисунке "Модель спекания по диффузионному механизму". Спекание сопровождается сближением частиц, т. е. общей усадкой системы.
+                                <LineBreak/>На поверхности кристалла или границе зерна после некоторой миграции по телу кристалла вакансия разрежается и исчезает совсем. Миграция вакансий происходит вследствие разности их концентраций. В рассматриваемой модели разница в концентрации вакансий связана с различной кривизной поверхностей перемычки и самого кристалла. Вакансии движутся в направлении наибольших их концентраций в сторону поверхностей с большей кривизной, обладающих меньшей свободной энергией.
+                                <LineBreak/>В процессе диффузионного спекания тонкодисперсных кристаллических порошков отдельные частицы срастаются, и пористость всей спекаемой системы уменьшается с 30—40% до нескольких процентов или даже почти до теоретической плотности. Первоначально поры заполняют пространство между зернами. При повышении температуры поры меняют свою форму, становясь сферичными, и уменьшаются в размере. По мере роста зерен поры передвигаются к границам кристалла и выжимаются за пределы опекаемого тела. Однако в некоторых случаях возможен захват пор спекаемым поликристаллическим сростком, в результате чего и образуется внутрикристаллическая пористость.
+                                <LineBreak/>Степень и скорость спекания зависят от факторов, из них основными являются температура и продолжительность спекания, дисперсность частиц, коэффициент диффузии. Скорость спекания меняется со временем. Наиболее интенсивное спекание происходит до достижения пористости около 10%, после чего скорость уплотнения редко падает. Это совпадает с началом интенсивного роста кристаллов. Очень большое влияние на спекание кристаллических порошков оказывает их дисперсность. Скорость спекания кристаллического керамического материала приблизительно обратно пропорциональна диаметру его частиц. Поэтому для интенсивного спекания такого материала требуется очень тонкое измельчение.
+                                <LineBreak/>Спекание зависит от коэффициента диффузии. Последний возрастает по мере увеличения дефектности кристаллической решетки. Коэффициент диффузии может быть повышен путем введения небольшого количества добавок, увеличивающих дефектность кристаллической решетки. Такой метод, как будет видно из дальнейшего, часто используют в технологии технической керамики, особенно оксидной.
+                                <LineBreak/>Диффузионное спекание кристаллических тел в подавляющем большинстве случаев в некотором температурном интервале сопровождается ростом зерен. Образование более крупных по размеру кристаллов, чем исходные, носит название рекристаллизации. Крупные кристаллы образуются за счет переноса вещества при общей границе с кристалла малого размера на кристалл большего размера. Перенос вещества будет происходить путем перескока атомов через границу кристаллов в сторону кристалла с меньшей свободной энергией.
+                                <LineBreak/>Изменение свободной энергии ΔF зависит от кривизны границы между зернами и определяется уравнением:
+                            </TextBlock>
+                            <Image Source="../Files/FreeEnergy.png" Width="150" HorizontalAlignment="Left" Margin="10 0"/>
+                            <TextBlock FontSize="{DynamicResource BigFontSize}" Margin="0 5">
+                                где ΔF — изменение свободной энергии;
+                                    <LineBreak/>           γ — поверхностная энергия; 
+                                    <LineBreak/>V — молярный объем;
+                                    <LineBreak/>r1, r2—радиусы границы между зернами.
+                                <LineBreak/><LineBreak/>Разница свободной энергии кристаллов по обе стороны границы между зернами есть та движущая сила, которая определяет направление движения границы к центру ее кривизны. Установлена закономерность, согласно которой при рекристаллизации границы между зернами мигрируют к центру кривизны. Элементарные кристаллы, имеющие больше шести сторон, будут расти до некоторого предельного размера, а кристаллы с меньшим числом сторон уменьшаются и полностью исчезают.
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabControl>
+            </TabItem>
+            <TabItem x:Name="Ovens">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="{DynamicResource ResourceKey=MainFontSize}">
+                            Печи
+                        </TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabControl>
+                    <ScrollViewer>
+                        <StackPanel Margin="10 0">
+                            <TextBlock Margin="0 5" Text="Краткая информация о печах" HorizontalAlignment="Center"
+                                       FontWeight="Bold" FontSize="{DynamicResource BigFontSize}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock TextWrapping="Wrap" FontSize="{DynamicResource MainFontSize}">
+                                    Вакуумно-компрессионная печь для спекания COD633-R-100
+                                    <LineBreak/>Производитель:  PVA-TePLA GmbH, Германия
+                                    <LineBreak/>Размеры рабочего пространства: 500x470х1000 (мм)
+                                    <LineBreak/>Объем: 235 литров
+                                    <LineBreak/>Рабочее давление аргона: 100 бар
+                                    <LineBreak/>Рабочая температура: 1600 °C
+                                    <LineBreak/>Максимальная масса садки: 900 кг
+                                </TextBlock>
+
+                                <Image Grid.Column="1" Source="../Files/COD633-R.jpg"/>
+                            </Grid>
+
+                            <Grid Margin="0 10 0 0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock TextWrapping="Wrap" FontSize="{DynamicResource MainFontSize}">
+                                    Вакуумно-компрессионная печь COD 733 RL - 2000 - 100
+                                    <LineBreak/>Производитель: PVA-TePla GmbH, Германия
+                                    <LineBreak/>Размеры рабочего пространства: 500 х 470 х 2000 (мм)
+                                    <LineBreak/>Объем: 470 литров
+                                    <LineBreak/>Рабочее давление аргона: 100 бар
+                                    <LineBreak/>Рабочая температура: 1600 °С
+                                    <LineBreak/>Максимальная масса садки: 1800 кг
+                                </TextBlock>
+
+                                <Image Grid.Column="1" Source="../Files/COD 733 RL - 2000 - 100.jpg"/>
+                            </Grid>
+
+                            <Grid Margin="0 10 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock TextWrapping="Wrap" FontSize="{DynamicResource MainFontSize}">
+                                    Вакуумно-компрессионная печь Тип FP W 90-SD
+                                    <LineBreak/>Производитель: FCT Systeme GmbH, Германия
+                                    <LineBreak/>Рабочая температура: 2000 °С
+                                    <LineBreak/>Рабочее давление: 10 МПа (N2/Ar)
+                                    <LineBreak/>Внутренний диаметр – 400 мм, высота - 900 мм
+                                    <LineBreak/>Регулируемые газовые смеси: водород, азот, аргон, метан
+                                </TextBlock>
+
+                                <Image Grid.Column="1" Source="../Files/FP W 90-SD.png" Height="300"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabControl>
+            </TabItem>
+            
+        </TabControl>
+    </Grid>
+</Window>

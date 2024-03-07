@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Sintering_of_ceramics.Windows"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="InstuctorWindow" Height="450" Width="900"
+        Title="Создание задания" Height="450" Width="900"
         Closing="Window_Closing">
     <Window.Resources>
         <sys:Double x:Key="MainFontSize">16</sys:Double>

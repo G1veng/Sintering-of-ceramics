@@ -22,6 +22,7 @@ public class Program
                 services.AddScoped<CreateEditDeleteWindow>();
                 services.AddScoped<CreateEditEmpiricalModel>();
                 services.AddScoped<InstuctorWindow>();
+                services.AddScoped<InformationWindow>();
                 services.AddDbContext<Context>(options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["mainDb"].ConnectionString));
             })

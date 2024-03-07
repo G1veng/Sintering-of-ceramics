@@ -83,6 +83,7 @@
                     </Style>
                 </MenuItem.Style>
             </MenuItem>
+            <MenuItem Header="Справка" Click="InformationClick"/>
         </Menu>
         <TabControl Margin="0px 30px 0px 0px" x:Name="tabs">
             <TabItem x:Name="calculationTab">

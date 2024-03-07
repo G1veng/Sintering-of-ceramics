@@ -26,6 +26,7 @@ namespace Sintering_of_ceramics
         private readonly Context _context;
         private readonly EditDataBaseWindow _editDataBaseWindow;
         private readonly InstuctorWindow _instuctorWindow;
+        private readonly InformationWindow _informationWindow;
 
         private ObservableCollection<Material> _materialsList;
         private Material _selectedMaterial;
@@ -197,11 +198,12 @@ namespace Sintering_of_ceramics
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainWindow(Context context, EditDataBaseWindow editDataBaseWindow,
-            InstuctorWindow instuctorWindow)
+            InstuctorWindow instuctorWindow, InformationWindow informationWindow)
         {
             _context = context;
             _editDataBaseWindow = editDataBaseWindow;
             _instuctorWindow = instuctorWindow;
+            _informationWindow = informationWindow;
             _charts = new Dictionary<WpfPlot, ScatterPlot>();
 
             _materialsList = new ObservableCollection<Material>(_context.Materials.AsNoTracking()
@@ -521,5 +523,10 @@ namespace Sintering_of_ceramics
         }
 
         #endregion
+
+        private void InformationClick(object sender, RoutedEventArgs e)
+        {
+            _informationWindow.ShowDialog();
+        }
     }
 }
