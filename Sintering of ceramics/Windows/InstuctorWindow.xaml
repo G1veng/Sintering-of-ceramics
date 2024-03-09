@@ -88,6 +88,14 @@
                  Text="Для заданных входных параметров процесса спекания Х варьированием режимных параметров U&#xD;&#xA;в регламентных диапазонах Uϵ[Umin, Umax] по математической модели найти такие их значения,&#xD;&#xA;которые обеспечивают требуемое качество твердого сплава: П≤Пmax , p&gt;=p min , bb ≥bbmin, HR ≥ HRmin,&#xD;&#xA;&#xD;&#xA;где П max – максимальная предельная остаточная пористость твердого сплава, %;&#xD;&#xA;p min – минимальная предельная плотность сплава, кг/м3;&#xD;&#xA;bb min – минимальная предельная прочность твердого сплава при поперечном изгибе, МПа;&#xD;&#xA;HR min   – минимальная предельная твердость сплава (по Роквеллу), ед.&#xD;&#xA;"
                  HorizontalAlignment="Center" VerticalAlignment="Center" Height="188" Width="746" FontStyle="Italic" FontSize="14"/>
 
+        <Button Grid.Row="2" HorizontalAlignment="Left" Width="150" Margin="20"
+                FontSize="{DynamicResource SmallFontSize}" BorderBrush="#FF686868" FontWeight="Bold"
+                Click="GenerateProtocolClick">
+            <Button.Content>
+                <TextBlock Text="Сгенерировать протокол обучения" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Button.Content>
+        </Button>
+
         <Button Grid.Row="2" HorizontalAlignment="Right" Margin="20" Width="150" Content="Создать сценарий" FontSize="{DynamicResource MainFontSize}"
                 BorderBrush="#FF686868" FontWeight="Bold" Click="CreateScript"/>
     </Grid>

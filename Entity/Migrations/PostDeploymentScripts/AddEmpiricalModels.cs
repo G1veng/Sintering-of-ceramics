@@ -22,7 +22,7 @@ namespace Entity.Migrations.PostDeploymentScripts
             DROP TABLE IF EXISTS tempEmpiricalModelTypes;
             CREATE TEMP TABLE tempEmpiricalModelTypes AS SELECT * FROM EmpiricalModelTypes;
             INSERT INTO tempEmpiricalModelTypes (Id, Alias, UnitAlias) VALUES
-            (1, 'Плотность твердого сплава', 'кг/см³'),
+            (1, 'Плотность твердого сплава', 'кг/см²'),
             (2, 'Прочность твердого сплава при поперечном изгибе', 'МПа'),
             (3, 'Остаточная пористость твердого сплава', '%'),
             (4, 'Твердость сплава', 'кгс/мм²');

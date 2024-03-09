@@ -868,7 +868,7 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
                                                 TextWrapping="Wrap">
-                                        Плотность, кг/см³:
+                                        Плотность, кг/см²:
                                     </TextBlock>
                                     <TextBlock FontSize="{DynamicResource ResourceKey=SmallFontSize}"
                                                 Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5px 0px 25px 0px"

@@ -236,6 +236,7 @@ namespace Mathematics
 
             double U = _m * ((1 / roNach) - (1 / ro));
 
+            _temperature.Add(time / 60, _t0);
             _grainSize.Add(time / 60, L * 1000000);
             _porosity.Add(time / 60, P * 100);
             _density.Add(time / 60, roNach);
@@ -301,8 +302,8 @@ namespace Mathematics
                     break;
                 }
 
-                _temperature.Add((trueTime + h) / 60, T);                
-                _porosity.Add((trueTime + h) / 60, P * 100);                
+                _temperature.Add((trueTime + h) / 60, T);
+                _porosity.Add((trueTime + h) / 60, P * 100);
                 _grainSize.Add((trueTime + h) / 60, L * 1000000);                
                 _density.Add((trueTime + h) / 60, ro);
                 _shirnkage.Add((trueTime + h) / 60, U * Math.Pow(10, 4));
