@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -20,6 +21,7 @@ namespace Sintering_of_ceramics.Windows
     {
         #region Private
 
+        private readonly string _protocolFolder = "Protocols";
         private readonly Context _context;
 
         private int _currentUserId;
@@ -133,28 +135,31 @@ namespace Sintering_of_ceramics.Windows
                             "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+            var material = _context.Materials.AsNoTracking()
+                .Include(x => x.TheoreticalMMParam).First();
+
             MaterialCharacteristicsDTO? result = null;
             var model = new Sintering(
                 t0: 20,
                 tk: 1450,
-                l0: 1 / 1000000,
-                p0: 40,
+                l0: material.AvarageGrainSize / 1000000,
+                p0: material.Porosity,
                 tau1: 70 * 60,
-                d: 0.1 * 0.000000001,
-                db0: 0.35,
-                ds0: 0.4,
-                eb: 181 * 1000,
-                es: 245 * 1000,
-                s: 3.5,
-                eta0: 170 * 1000000,
+                d: material.SurfaceLayerThickness * 0.000000001,
+                db0: material.TheoreticalMMParam.PreExponentialFactorOfGraindBoundaryDiffusionCoefficient,
+                ds0: material.TheoreticalMMParam.PreExponentialFactorOfSurfaceSelfCoefficient,
+                eb: material.TheoreticalMMParam.GrainBoundaryDiffusionActivationEnergy * 1000,
+                es: material.TheoreticalMMParam.SurfaceSelfDiffusionActivationEnergy * 1000,
+                s: material.SpecificSurfaceEnergy,
+                eta0: material.CompactMaterialViscosity * 1000000,
                 pg: 6 * 1000000,
                 m: 0.1,
-                ro0: 14600,
+                ro0: material.CompactMaterialDensity,
                 tau2: 30 * 60);
 
             try
             {
-                result = model.Calculate(false, 1, 1, 10);
+                result = model.Calculate(true, 1, 1, 10);
             }
             catch
             {
@@ -183,63 +188,130 @@ namespace Sintering_of_ceramics.Windows
             wb.Worksheets.Clear();
             var sheet = wb.Worksheets.Add("Протокол");
 
-            sheet.Range["A1"].Value = "Пользователь";
+            sheet.Range["A1"].Value = "Пользователь"; sheet.Range["A1"].ColumnWidth = 50;
             sheet.Range["B1"].Value = _selectedUser.Login;
 
             sheet.Range["A2"].Value = "Прошел обучение?";
             sheet.Range["B2"].Value = "Да";
 
+            sheet.Range["A4"].Value = "Исходные данные:";
+            sheet.Range["A5"].Value = "Материал";
+            sheet.Range["B5"].Value = _selectedMaterial.Name;
+            sheet.Range["A6"].Value = "Печь";
+            sheet.Range["B6"].Value = _selectedEquipment.Manufacturer;
+            sheet.Range["A7"].Value = "Начальная температура в печи, °C";
+            sheet.Range["B7"].Value = 20.ToString();
+            sheet.Range["A8"].Value = "Конечная температура в печи, °C";
+            sheet.Range["B8"].Value = 1450.ToString();
+            sheet.Range["A9"].Value = "Время спекания, мин";
+            sheet.Range["B9"].Value = 70.ToString();
+            sheet.Range["A10"].Value = "Время выдержки, мин";
+            sheet.Range["B10"].Value = 30.ToString();
+            sheet.Range["A11"].Value = "Давление инертного газа, МПа";
+            sheet.Range["B11"].Value = 6.ToString();
+
             DataTable dt = new DataTable();
-            dt.Columns.Add("Действие");
+            dt.Columns.Add("Действия");
 
             foreach (var log in logs)
             {
                 dt.Rows.Add(log);
             }
 
-            sheet.InsertDataTable(dt, true, 3, 1);
+            sheet.InsertDataTable(dt, true, 13, 1);
 
-            sheet.Range[$"A{2 + logs.Count}"].Value = "Результаты моделирования";
+            sheet.Range[$"A{15 + logs.Count}"].Value = "Результаты моделирования";
 
-            sheet.Range[$"A{3 + logs.Count}"].Value = "Пористость, %";
-            sheet.Range[$"B{3 + logs.Count}"].Value = resultPorosity.ToString();
+            sheet.Range[$"A{16 + logs.Count}"].Value = "Пористость, %";
+            sheet.Range[$"B{16 + logs.Count}"].Value = resultPorosity.ToString();
 
-            sheet.Range[$"A{4 + logs.Count}"].Value = "Конечный средний диаметр зерна, мкм";
-            sheet.Range[$"B{4 + logs.Count}"].Value = resultAvarageGrainSize.ToString();
+            sheet.Range[$"A{17 + logs.Count}"].Value = "Конечный средний диаметр зерна, мкм";
+            sheet.Range[$"B{17 + logs.Count}"].Value = resultAvarageGrainSize.ToString();
 
-            sheet.Range[$"A{4 + logs.Count}"].Value = "Конечная плотность материала, кг/м³";
-            sheet.Range[$"B{4 + logs.Count}"].Value = resultDensity.ToString();
+            sheet.Range[$"A{18 + logs.Count}"].Value = "Конечная плотность материала, кг/м³";
+            sheet.Range[$"B{18 + logs.Count}"].Value = resultDensity.ToString();
 
             var (bendingStrengthE, hardnessE, porosityE, densityE) = CalculateImpericalModels(1450, 30, 6);
 
             if (bendingStrengthE.HasValue)
             {
-                sheet.Range[$"A{5 + logs.Count}"].Value = "Плотность, кг/см²";
-                sheet.Range[$"B{5 + logs.Count}"].Value = bendingStrengthE.Value.ToString();
+                sheet.Range[$"A{19 + logs.Count}"].Value = "Плотность, кг/см²";
+                sheet.Range[$"B{19 + logs.Count}"].Value = bendingStrengthE.Value.ToString();
             }
             if (hardnessE.HasValue)
             {
-                sheet.Range[$"A{6 + logs.Count}"].Value = "Прочность при поперечном изгибе, МПа";
-                sheet.Range[$"B{6 + logs.Count}"].Value = hardnessE.Value.ToString();
+                sheet.Range[$"A{20 + logs.Count}"].Value = "Прочность при поперечном изгибе, МПа";
+                sheet.Range[$"B{20 + logs.Count}"].Value = hardnessE.Value.ToString();
             }
             if (porosityE.HasValue)
             {
-                sheet.Range[$"A{7 + logs.Count}"].Value = "Остаточная пористость, %";
-                sheet.Range[$"B{7 + logs.Count}"].Value = porosityE.Value.ToString();
+                sheet.Range[$"A{21 + logs.Count}"].Value = "Остаточная пористость, %";
+                sheet.Range[$"B{21 + logs.Count}"].Value = porosityE.Value.ToString();
             }
             if (densityE.HasValue)
             {
-                sheet.Range[$"A{8 + logs.Count}"].Value = "Твердость сплава, кг/см²";
-                sheet.Range[$"B{8 + logs.Count}"].Value = densityE.Value.ToString();
+                sheet.Range[$"A{22 + logs.Count}"].Value = "Твердость сплава, кг/см²";
+                sheet.Range[$"B{22 + logs.Count}"].Value = densityE.Value.ToString();
             }
 
-            var chartSheet = wb.Worksheets.Add("Графики");
-            Chart chart = chartSheet.Charts.Add(ExcelChartType.ScatterLine);
-            var series = chart.Series.Add();
-            series.EnteredDirectlyValues = new object[] { temperaturePlot.Select(x => Math.Round(x.Value, 2)).ToArray() };
-            series.EnteredDirectlyCategoryLabels = new object[] { temperaturePlot.Select(x => x.Key).ToArray() };
+            Chart chart = sheet.Charts.Add(ExcelChartType.ScatterLine);
+            sheet.Charts[0].LeftColumn = 7; sheet.Charts[0].RightColumn = 15;
+            sheet.Charts[0].TopRow = 1; sheet.Charts[0].BottomRow = 20;
 
-            wb.SaveToFile("test.xlsx");
+            var series = chart.Series.Add();
+            chart.ChartTitle = "График изменения температуры";
+            chart.ValueAxisTitle = "Температура, °C";
+            chart.HasLegend = false;
+            chart.CategoryAxisTitle = "Время";
+            series.EnteredDirectlyValues = temperaturePlot.Select(x => Math.Round(x.Value, 2)).Cast<object>().ToArray();
+            series.EnteredDirectlyCategoryLabels = temperaturePlot.Select(x => x.Key).Cast<object>().ToArray();
+
+            chart = sheet.Charts.Add(ExcelChartType.ScatterLine);
+            sheet.Charts[1].LeftColumn = 7; sheet.Charts[1].RightColumn = 15;
+            sheet.Charts[1].TopRow = 22; sheet.Charts[1].BottomRow = 41;
+
+            series = chart.Series.Add();
+            chart.ChartTitle = "График изменения пористости";
+            chart.ValueAxisTitle = "Пористость, мкм";
+            chart.HasLegend = false;
+            chart.CategoryAxisTitle = "Время";
+            series.EnteredDirectlyValues = porosityPlot.Select(x => Math.Round(x.Value, 2)).Cast<object>().ToArray();
+            series.EnteredDirectlyCategoryLabels = porosityPlot.Select(x => x.Key).Cast<object>().ToArray();
+
+            chart = sheet.Charts.Add(ExcelChartType.ScatterLine);
+            sheet.Charts[2].LeftColumn = 16; sheet.Charts[2].RightColumn = 24;
+            sheet.Charts[2].TopRow = 22; sheet.Charts[2].BottomRow = 41;
+
+            series = chart.Series.Add();
+            chart.ChartTitle = "График изменения плотности";
+            chart.ValueAxisTitle = "Плотность, кг/м³";
+            chart.HasLegend = false;
+            chart.CategoryAxisTitle = "Время";
+            series.EnteredDirectlyValues = densityPlot.Select(x => Math.Round(x.Value, 2)).Cast<object>().ToArray();
+            series.EnteredDirectlyCategoryLabels = densityPlot.Select(x => x.Key).Cast<object>().ToArray();
+
+            chart = sheet.Charts.Add(ExcelChartType.ScatterLine);
+            sheet.Charts[3].LeftColumn = 16; sheet.Charts[3].RightColumn = 24;
+            sheet.Charts[3].TopRow = 1; sheet.Charts[3].BottomRow = 20;
+
+            series = chart.Series.Add();
+            chart.ChartTitle = "График изменения среднего диаметра зерна";
+            chart.ValueAxisTitle = "Средний диаметр зерна, мкм";
+            chart.HasLegend = false;
+            chart.CategoryAxisTitle = "Время";
+            series.EnteredDirectlyValues = grainSizePlot.Select(x => Math.Round(x.Value, 2)).Cast<object>().ToArray();
+            series.EnteredDirectlyCategoryLabels = grainSizePlot.Select(x => x.Key).Cast<object>().ToArray();
+
+            var now = DateTime.Now;
+
+            if (!Directory.Exists(Path.Join(Directory.GetCurrentDirectory(), _protocolFolder)))
+            {
+                Directory.CreateDirectory(Path.Join(Directory.GetCurrentDirectory(), _protocolFolder));
+            }
+
+            var fileName = Path.Join(_protocolFolder, $"{_selectedUser.Login}{now.Year}{now.Month}{now.Day}{now.Hour}{now.Minute}{now.Second}.xlsx");
+            wb.SaveToFile(fileName);
+            
         }
 
         private (double?, double?, double?, double?) CalculateImpericalModels(double finalTemperatureInFurnace, double excerptTime, double pressure)
