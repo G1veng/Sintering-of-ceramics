@@ -183,7 +183,10 @@ namespace Sintering_of_ceramics.Windows
             var porosityPlot = model.GetPorosityChartValues();
             var grainSizePlot = model.GetGrainSizeChartValues();
 
-            var logs = new List<string> { "Изменил начальную температуру c 50 на 100", "Изменил давление инертного газа с 5 на 6", "Изменил время изотермической выдержики с 30 на 50"};
+            var logs = new List<string> { "15:32 Начальная температура 1200","15:33 Начальная температура 1300",
+            "15:33 Давление инертного газа 50","15:35 Давление инертного газа 70",
+            "15:38 Время изотермической выдержики 30","15:40 Время изотермической выдержики 50",
+};
             Workbook wb = new Workbook();
             wb.Worksheets.Clear();
             var sheet = wb.Worksheets.Add("Протокол");
